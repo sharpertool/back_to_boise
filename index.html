@@ -2,95 +2,158 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Back to Boise — Blue Mounds → Meridian</title>
   <style>
     :root {
-      --bg: #0f172a;
       --panel: #ffffff;
       --text: #1a202c;
       --muted: #4a5568;
       --accent: #2b6cb0;
+      --accent-dark: #2c5282;
       --border: #cbd5e0;
+      --err-bg: #fff5f5;
+      --err: #c53030;
+      --tap: 44px;
     }
     * { box-sizing: border-box; }
     html, body {
       margin: 0; padding: 0;
       height: 100%;
+      width: 100%;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
       background: #e2e8f0;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
     }
     header {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
-      padding: 10px 14px;
+      flex: 0 0 auto;
+      padding: 8px 10px calc(8px) 10px;
+      padding-top: max(8px, env(safe-area-inset-top));
       background: var(--panel);
       border-bottom: 1px solid var(--border);
       box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      z-index: 10;
+    }
+    .title-row {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      min-width: 0;
     }
     header h1 {
-      margin: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap;
+      margin: 0; font-size: 1rem; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
-    header .subtitle {
-      font-size: 0.85rem; color: var(--muted);
+    .title-row a {
+      flex: 0 0 auto; font-size: 0.85rem; color: var(--accent); font-weight: 600;
+      text-decoration: none; padding: 6px 0;
     }
     #controls {
-      display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1 1 320px;
-    }
-    #pac-input {
-      flex: 1 1 220px;
-      min-width: 180px;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 6px;
     }
     #origin-select {
+      width: 100%;
+      min-height: var(--tap);
       padding: 8px 10px;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 13px;
+      border-radius: 8px;
+      font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
       background: #fff;
+      color: var(--text);
     }
-    button.ctrl {
-      padding: 8px 12px;
+    #search-wrap {
+      width: 100%;
+      min-width: 0;
+      min-height: var(--tap);
+    }
+    #search-wrap gmp-place-autocomplete {
+      width: 100%;
+      min-height: var(--tap);
+      font-size: 16px;
+      color-scheme: light;
+    }
+    #search-fallback {
+      width: 100%; min-height: var(--tap); padding: 8px 10px; font-size: 16px;
+      border: 1px dashed var(--border); border-radius: 8px; background: #f7fafc; color: var(--muted);
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    button.ctrl, a.ctrl {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: var(--tap);
+      padding: 8px 10px;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       background: #edf2f7;
       color: var(--text);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
+      text-decoration: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    button.ctrl:hover { background: #e2e8f0; }
-    button.ctrl.primary {
-      background: var(--accent);
-      border-color: #2c5282;
-      color: #fff;
+    button.ctrl:active, a.ctrl:active { filter: brightness(0.93); }
+    button.ctrl.primary, a.ctrl.primary {
+      background: var(--accent); border-color: var(--accent-dark); color: #fff;
     }
-    button.ctrl.primary:hover { background: #2c5282; }
-    #map {
-      width: 100%;
-      height: 80vh;
-      min-height: 560px;
+    #msg {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--muted);
+      min-height: 0;
+      overflow-wrap: anywhere;
     }
+    #msg:empty { display: none; }
+    #msg.error {
+      color: var(--err); background: var(--err-bg);
+      border: 1px solid #feb2b2; border-radius: 8px; padding: 8px 10px; font-weight: 600;
+    }
+    #map-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 240px;
+      overflow: hidden;
+    }
+    #map { position: absolute; inset: 0; }
     #legend {
       position: absolute;
-      bottom: 28px;
-      left: 14px;
+      left: 8px;
+      bottom: 22px;
       z-index: 5;
+      max-width: min(280px, calc(100vw - 80px));
       background: rgba(255,255,255,0.96);
-      padding: 10px 14px;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 12px;
       line-height: 1.55;
       box-shadow: 0 1px 4px rgba(0,0,0,.15);
-      max-width: 280px;
     }
-    #legend b { font-size: 13px; }
+    #legend summary {
+      cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 13px;
+      min-height: var(--tap); display: flex; align-items: center; gap: 8px; list-style: none;
+    }
+    #legend summary::-webkit-details-marker { display: none; }
+    #legend summary::before { content: "▸"; }
+    #legend[open] summary::before { content: "▾"; }
+    #legend .body { padding: 0 12px 10px; }
     #legend a { color: var(--accent); font-weight: 700; text-decoration: none; }
-    #legend a:hover { text-decoration: underline; }
     .swatch {
       display: inline-block; width: 12px; height: 12px;
       border-radius: 50%; margin-right: 4px; vertical-align: -1px;
@@ -99,89 +162,141 @@
     .swatch.star { background: #e53e3e; border-radius: 2px; }
     .swatch.stay { background: #dd6b20; }
     .swatch.later { background: #2b6cb0; }
-    .swatch.visit {
-      background: transparent; border-color: #2c7a7b;
-      transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px;
-    }
+    .swatch.visit { background: transparent; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
     .swatch.home { background: #38a169; }
+    .swatch.search { background: #805ad5; }
     #directions-panel {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 5;
-      width: min(340px, 92vw);
-      max-height: calc(80vh - 40px);
+      z-index: 6;
+      left: 0; right: 0; bottom: 0;
+      max-height: 55%;
       overflow: auto;
-      background: rgba(255,255,255,0.97);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      background: rgba(255,255,255,0.98);
+      border-top: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.15);
       padding: 10px 12px;
-      font-size: 13px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      font-size: 14px;
       display: none;
     }
-    #directions-panel h2 {
-      margin: 0 0 8px; font-size: 14px;
+    #directions-panel.show { display: block; }
+    #directions-panel .head {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
     }
-    #directions-panel .meta { color: var(--muted); margin-bottom: 8px; }
-    #map-wrap { position: relative; }
-    #status {
-      font-size: 12px; color: var(--muted); min-height: 1.2em;
+    #directions-panel h2 { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+    #dir-close {
+      flex: 0 0 auto; width: var(--tap); height: var(--tap);
+      border: none; background: transparent; font-size: 22px; cursor: pointer; color: var(--muted);
     }
-    footer {
-      padding: 8px 14px;
-      font-size: 12px;
-      color: var(--muted);
-      background: var(--panel);
-      border-top: 1px solid var(--border);
+    #dir-route { color: var(--muted); margin: 4px 0 6px; overflow-wrap: anywhere; }
+    #dir-summary { font-size: 20px; font-weight: 700; margin: 4px 0 8px; }
+    #dir-summary:empty { display: none; }
+    #dir-error {
+      color: var(--err); background: var(--err-bg); border: 1px solid #feb2b2;
+      border-radius: 8px; padding: 8px 10px; margin: 6px 0 8px; font-weight: 600; overflow-wrap: anywhere;
+    }
+    #dir-error:empty { display: none; }
+    #dir-actions { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    #dir-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .iw { max-width: 240px; font-size: 14px; line-height: 1.4; }
+    .iw b { display: block; margin-bottom: 2px; }
+    .iw .sub { color: var(--muted); font-size: 12px; }
+    .iw .iw-actions { display: grid; gap: 6px; margin-top: 8px; }
+    .iw .iw-actions .ctrl { font-size: 14px; }
+    .pin {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; border: 3px solid; font-weight: 700; font-size: 12px; line-height: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,.35); cursor: pointer;
+    }
+    @media (min-width: 760px) {
+      header { padding: 10px 14px; }
+      #controls {
+        grid-template-columns: minmax(200px, 260px) minmax(220px, 1fr) auto;
+        align-items: center;
+      }
+      .btn-row { grid-template-columns: repeat(3, auto); }
+      #directions-panel {
+        left: auto; top: 12px; right: 12px; bottom: auto;
+        width: 360px; max-height: calc(100% - 24px);
+        border: 1px solid var(--border); border-radius: 10px;
+      }
+      #legend { bottom: 28px; left: 12px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <div>
+    <div class="title-row">
       <h1>Back to Boise — from Blue Mounds</h1>
-      <div class="subtitle">Spine + Black Hills day visits · Google Maps</div>
+      <a href="locations.html">Locations →</a>
     </div>
     <div id="controls">
-      <select id="origin-select" title="Directions origin" aria-label="Directions origin">
-        <option value="blue-mounds">Origin: Blue Mounds (CURRENT)</option>
-        <option value="geolocation">Origin: My location</option>
-        <option value="custom">Origin: Search box place</option>
+      <select id="origin-select" aria-label="Directions origin">
+        <option value="blue-mounds">From: Blue Mounds (CURRENT)</option>
+        <option value="geolocation">From: My location</option>
+        <option value="custom">From: Searched place</option>
       </select>
-      <input id="pac-input" type="text" placeholder="Search place or address for directions…" autocomplete="off" />
-      <button type="button" class="ctrl primary" id="btn-go">Directions</button>
-      <button type="button" class="ctrl" id="btn-clear">Clear route</button>
-      <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+      <div id="search-wrap" aria-label="Search a place">
+        <input id="search-fallback" type="text" disabled placeholder="Loading place search…" />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="ctrl primary" id="btn-go">Directions</button>
+        <button type="button" class="ctrl" id="btn-clear">Clear route</button>
+        <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+      </div>
     </div>
-    <div id="status"></div>
+    <div id="msg" role="status" aria-live="polite"></div>
   </header>
 
   <div id="map-wrap">
     <div id="map" role="application" aria-label="Trip map"></div>
-    <div id="legend">
-      <b>Back to Boise — from Blue Mounds</b><br>
-      <a href="locations.html">Full locations table →</a><br>
-      <span class="swatch star"></span> CURRENT sit<br>
-      <span class="swatch stay"></span> STAY overnight<br>
-      <span class="swatch later"></span> Later corridor stays<br>
-      <span class="swatch visit"></span> VISIT pass-through / day<br>
-      <span class="swatch home"></span> HOME Boise / Meridian<br>
-      <span style="color:#718096;">Click a marker or search a place for ad-hoc directions.</span>
-    </div>
-    <div id="directions-panel">
-      <h2>Directions</h2>
-      <div class="meta" id="dir-meta"></div>
-      <div id="dir-steps"></div>
+    <details id="legend" open>
+      <summary>Legend</summary>
+      <div class="body">
+        <a href="locations.html">Full locations table →</a><br>
+        <span class="swatch star"></span> CURRENT sit<br>
+        <span class="swatch stay"></span> STAY overnight<br>
+        <span class="swatch later"></span> Later corridor stays<br>
+        <span class="swatch visit"></span> VISIT pass-through / day<br>
+        <span class="swatch home"></span> HOME Boise / Meridian<br>
+        <span class="swatch search"></span> Searched place<br>
+        <span style="color:#718096;">Tap a marker → “Directions here”, or search a place.</span>
+      </div>
+    </details>
+    <div id="directions-panel" aria-live="polite">
+      <div class="head">
+        <h2 id="dir-title">Directions</h2>
+        <button type="button" id="dir-close" aria-label="Close directions">×</button>
+      </div>
+      <div id="dir-route"></div>
+      <div id="dir-summary"></div>
+      <div id="dir-error"></div>
+      <div id="dir-actions">
+        <a id="dir-gmaps" class="ctrl primary" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div id="dir-note"></div>
     </div>
   </div>
 
-  <footer>
-    Zoom and map type via Google controls · Spine polyline = overnight corridor · Hills visits hang off Black Hills base
-  </footer>
+  <script>
+    /* Google Maps JS dynamic library import (bootstrap loader). The key is intentional:
+       client-side Maps key, HTTP-referrer-restricted to sharpertool.github.io. */
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI",
+      v: "weekly",
+      loading: "async"
+    });
+  </script>
 
   <script>
 (function () {
+  "use strict";
+
+  const API_KEY = "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI";
+  const MAP_ID = "DEMO_MAP_ID";
+  const BLUE_MOUNDS = { lat: 43.718, lng: -96.193 };
+
   const SPINE = [
     { name: "CURRENT: Blue Mounds SP (Luverne MN)", lat: 43.718, lng: -96.193, kind: "current" },
     { name: "Mitchell Corn Palace (VISIT opt)", lat: 43.709, lng: -98.03, kind: "visit" },
@@ -207,287 +322,571 @@
   ];
 
   const KIND_STYLE = {
-    current: { fill: "#e53e3e", stroke: "#9b2c2c", scale: 12, label: "★" },
-    stay:    { fill: "#dd6b20", stroke: "#9c4221", scale: 9,  label: "" },
-    later:   { fill: "#2b6cb0", stroke: "#2c5282", scale: 9,  label: "" },
-    visit:   { fill: "#ffffff", stroke: "#2c7a7b", scale: 8,  label: "◇" },
-    home:    { fill: "#38a169", stroke: "#276749", scale: 11, label: "H" }
+    current: { fill: "#e53e3e", stroke: "#9b2c2c", size: 28, label: "★", text: "#fff", z: 1000 },
+    stay:    { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 200 },
+    later:   { fill: "#2b6cb0", stroke: "#2c5282", size: 22, label: "",  text: "#fff", z: 200 },
+    visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
+    home:    { fill: "#38a169", stroke: "#276749", size: 26, label: "H", text: "#fff", z: 900 },
+    search:  { fill: "#805ad5", stroke: "#553c9a", size: 26, label: "●", text: "#fff", z: 1100 },
+    me:      { fill: "#4299e1", stroke: "#ffffff", size: 18, label: "",  text: "#fff", z: 1200 }
+  };
+  const KIND_LABEL = {
+    current: "CURRENT", stay: "STAY", later: "STAY (later corridor)",
+    visit: "VISIT", home: "HOME", search: "Searched place"
   };
 
-  let map, directionsService, directionsRenderer, placesService, autocomplete;
-  let markers = [];
+  // ---------- state ----------
+  let gm = {};               // imported library classes
+  let map = null;
+  let infoWindow = null;
+  let useAdvanced = false;
   let geolocPos = null;
-  let searchPlace = null;
-  let spinePolyline = null;
+  let searchPlace = null;    // { name, address, lat, lng }
+  let searchMarker = null;
+  let meMarker = null;
+  let routeLines = [];
+  let lastDest = null;
+  let routesMode = "none";   // "js" | "rest"
+  let placesFailed = false;
 
-  const statusEl = () => document.getElementById("status");
-  const setStatus = (msg) => { statusEl().textContent = msg || ""; };
+  // ---------- small helpers ----------
+  const $ = (id) => document.getElementById(id);
 
-  function kindIcon(kind) {
+  function setMsg(text, isError) {
+    const el = $("msg");
+    el.textContent = text || "";
+    el.classList.toggle("error", !!(text && isError));
+  }
+
+  function fmtMiles(meters) {
+    const mi = meters / 1609.344;
+    return (mi >= 100 ? Math.round(mi).toLocaleString() : mi.toFixed(1)) + " mi";
+  }
+
+  function fmtDuration(ms) {
+    const totalMin = Math.round(ms / 60000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h === 0) return m + " min";
+    return h + " h " + m + " min";
+  }
+
+  function ll(p) {
+    if (!p) return null;
+    const lat = typeof p.lat === "function" ? p.lat() : p.lat;
+    const lng = typeof p.lng === "function" ? p.lng() : p.lng;
+    return { lat: Number(lat), lng: Number(lng) };
+  }
+
+  function coordStr(p) { return p.lat.toFixed(6) + "," + p.lng.toFixed(6); }
+
+  function gmapsUrl(origin, dest) {
+    let url = "https://www.google.com/maps/dir/?api=1";
+    if (origin) url += "&origin=" + coordStr(origin);
+    url += "&destination=" + coordStr(dest) + "&travelmode=driving";
+    return url;
+  }
+
+  function errText(e) {
+    if (!e) return "unknown error";
+    let s = e.message || e.code || String(e);
+    if (e.error && e.error.message) s = e.error.message;
+    return String(s).slice(0, 300);
+  }
+
+  function looksNotEnabled(s) {
+    return /not (been )?(used|enabled)|SERVICE_DISABLED|PERMISSION_DENIED|ApiNotActivated|disabled|not authorized|API_KEY_SERVICE_BLOCKED|REQUEST_DENIED|403/i.test(s);
+  }
+
+  // Key / referrer failures are reported by Maps JS through this global hook.
+  window.gm_authFailure = function () {
+    setMsg("Google Maps rejected the API key for this page (check the key's HTTP-referrer restriction and that Maps JavaScript API is enabled).", true);
+  };
+
+  // ---------- markers ----------
+  function pinElement(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    const el = document.createElement("div");
+    el.className = "pin";
+    el.style.width = s.size + "px";
+    el.style.height = s.size + "px";
+    el.style.background = s.fill;
+    el.style.borderColor = s.stroke;
+    el.style.color = s.text;
+    if (kind === "visit") { el.style.borderRadius = "4px"; el.style.transform = "rotate(45deg)"; }
+    if (s.label && kind !== "visit") el.textContent = s.label;
+    return el;
+  }
+
+  function classicIcon(kind) {
     const s = KIND_STYLE[kind] || KIND_STYLE.visit;
     return {
       path: google.maps.SymbolPath.CIRCLE,
-      fillColor: s.fill,
-      fillOpacity: kind === "visit" ? 0.15 : 1,
+      fillColor: s.fill.startsWith("rgba") ? "#ffffff" : s.fill,
+      fillOpacity: kind === "visit" ? 0.3 : 1,
       strokeColor: s.stroke,
       strokeWeight: 2.5,
-      scale: s.scale
+      scale: s.size / 2.4
     };
   }
 
-  function infoHtml(place) {
-    const kindLabel = ({
-      current: "CURRENT",
-      stay: "STAY",
-      later: "STAY (later corridor)",
-      visit: "VISIT",
-      home: "HOME"
-    })[place.kind] || place.kind;
-    return (
-      "<div style='max-width:260px;font-size:13px;line-height:1.4'>" +
-      "<b>" + place.name + "</b><br>" +
-      "<span style='color:#4a5568'>" + kindLabel + " · " +
-      place.lat.toFixed(3) + ", " + place.lng.toFixed(3) + "</span><br>" +
-      "<button type='button' style='margin-top:6px;padding:4px 8px;cursor:pointer' " +
-      "onclick=\"window.__btbDirectionsTo(" + place.lat + "," + place.lng + "," +
-      JSON.stringify(place.name) + ")\">Directions here</button>" +
-      "</div>"
-    );
-  }
-
-  function addMarker(place, mapObj) {
-    const marker = new google.maps.Marker({
-      position: { lat: place.lat, lng: place.lng },
-      map: mapObj,
-      title: place.name,
-      icon: kindIcon(place.kind),
-      label: KIND_STYLE[place.kind].label
-        ? { text: KIND_STYLE[place.kind].label, color: place.kind === "visit" ? "#2c7a7b" : "#fff", fontSize: "11px", fontWeight: "700" }
-        : undefined,
-      zIndex: place.kind === "current" ? 1000 : place.kind === "home" ? 900 : 100
-    });
-    const iw = new google.maps.InfoWindow({ content: infoHtml(place) });
-    marker.addListener("click", () => {
-      iw.open({ map: mapObj, anchor: marker });
-    });
-    marker.addListener("dblclick", () => {
-      routeTo(place.lat, place.lng, place.name);
-    });
-    markers.push(marker);
+  // Creates a marker (AdvancedMarkerElement if available, else classic Marker).
+  // onTap is wired with event listeners — no inline JS strings anywhere.
+  function makeMarker(pos, kind, title, onTap) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    let marker;
+    if (useAdvanced) {
+      marker = new gm.AdvancedMarkerElement({
+        map: map, position: pos, title: title, content: pinElement(kind),
+        zIndex: s.z, gmpClickable: true
+      });
+      if (onTap) marker.addEventListener("gmp-click", () => onTap(marker));
+    } else {
+      marker = new google.maps.Marker({
+        map: map, position: pos, title: title, icon: classicIcon(kind), zIndex: s.z,
+        label: s.label ? { text: s.label, color: kind === "visit" ? "#2c7a7b" : "#fff", fontSize: "11px", fontWeight: "700" } : undefined
+      });
+      if (onTap) marker.addListener("click", () => onTap(marker));
+    }
     return marker;
   }
 
-  function drawSpine(mapObj) {
-    const path = SPINE.map(p => ({ lat: p.lat, lng: p.lng }));
-    spinePolyline = new google.maps.Polyline({
-      path: path,
+  function removeMarker(m) {
+    if (!m) return;
+    if (useAdvanced) m.map = null; else m.setMap(null);
+  }
+
+  function infoContent(place) {
+    const root = document.createElement("div");
+    root.className = "iw";
+    const b = document.createElement("b");
+    b.textContent = place.name;
+    root.appendChild(b);
+    const sub = document.createElement("div");
+    sub.className = "sub";
+    sub.textContent = (KIND_LABEL[place.kind] || place.kind || "") +
+      (place.address ? " · " + place.address : "") +
+      " · " + place.lat.toFixed(3) + ", " + place.lng.toFixed(3);
+    root.appendChild(sub);
+
+    const actions = document.createElement("div");
+    actions.className = "iw-actions";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ctrl primary";
+    btn.textContent = "Directions here";
+    btn.dataset.lat = String(place.lat);
+    btn.dataset.lng = String(place.lng);
+    btn.dataset.name = place.name;
+    btn.addEventListener("click", (ev) => {
+      const d = ev.currentTarget.dataset;
+      infoWindow.close();
+      routeTo(Number(d.lat), Number(d.lng), d.name);
+    });
+    actions.appendChild(btn);
+
+    const link = document.createElement("a");
+    link.className = "ctrl";
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open in Google Maps";
+    link.href = gmapsUrl(knownOrigin(), { lat: place.lat, lng: place.lng });
+    actions.appendChild(link);
+    root.appendChild(actions);
+    return root;
+  }
+
+  function openInfo(place, marker) {
+    infoWindow.setContent(infoContent(place));
+    infoWindow.open({ map: map, anchor: marker });
+  }
+
+  function addTripMarker(place) {
+    const m = makeMarker({ lat: place.lat, lng: place.lng }, place.kind, place.name,
+      (mk) => openInfo(place, mk));
+    // Desktop convenience: double-click a classic marker routes straight there.
+    if (!useAdvanced) m.addListener("dblclick", () => routeTo(place.lat, place.lng, place.name));
+    return m;
+  }
+
+  // ---------- map ----------
+  function drawSpine() {
+    new google.maps.Polyline({
+      map: map,
+      path: SPINE.map(p => ({ lat: p.lat, lng: p.lng })),
       geodesic: true,
       strokeColor: "#2b6cb0",
       strokeOpacity: 0.85,
       strokeWeight: 4,
-      map: mapObj,
-      zIndex: 1
+      zIndex: 1,
+      clickable: false
     });
   }
 
   function fitTrip() {
     const bounds = new google.maps.LatLngBounds();
-    SPINE.forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
-    HILLS.forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
-    map.fitBounds(bounds, 48);
+    SPINE.concat(HILLS).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    map.fitBounds(bounds, 40);
   }
 
-  function resolveOrigin(cb) {
-    const mode = document.getElementById("origin-select").value;
-    if (mode === "blue-mounds") {
-      cb(null, { lat: 43.718, lng: -96.193 }, "Blue Mounds SP");
-      return;
-    }
-    if (mode === "geolocation") {
-      if (geolocPos) {
-        cb(null, geolocPos, "My location");
-        return;
-      }
-      if (!navigator.geolocation) {
-        cb(new Error("Geolocation not available"));
-        return;
-      }
-      setStatus("Getting your location…");
+  // ---------- origin ----------
+  function originMode() { return $("origin-select").value; }
+
+  // Origin we already know synchronously (for Google Maps links); null = let Google Maps use the device location.
+  function knownOrigin() {
+    const mode = originMode();
+    if (mode === "blue-mounds") return BLUE_MOUNDS;
+    if (mode === "geolocation") return geolocPos;
+    if (mode === "custom" && searchPlace) return { lat: searchPlace.lat, lng: searchPlace.lng };
+    return BLUE_MOUNDS;
+  }
+
+  function getGeolocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error("Location is not available in this browser.")); return; }
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          setStatus("");
-          cb(null, geolocPos, "My location");
+          showMe();
+          resolve(geolocPos);
         },
-        (err) => cb(err || new Error("Location denied")),
-        { enableHighAccuracy: true, timeout: 12000 }
+        (err) => reject(new Error("Couldn't get your location" + (err && err.message ? " (" + err.message + ")" : "") + ".")),
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 120000 }
       );
-      return;
-    }
-    if (mode === "custom") {
-      if (searchPlace && searchPlace.geometry && searchPlace.geometry.location) {
-        const loc = searchPlace.geometry.location;
-        cb(null, { lat: loc.lat(), lng: loc.lng() }, searchPlace.name || searchPlace.formatted_address || "Search origin");
-        return;
-      }
-      cb(new Error("Pick a place in the search box first (origin = search place)"));
-      return;
-    }
-    cb(new Error("Unknown origin mode"));
+    });
   }
 
-  function showDirectionsPanel(result, destName) {
-    const panel = document.getElementById("directions-panel");
-    const meta = document.getElementById("dir-meta");
-    const steps = document.getElementById("dir-steps");
-    const leg = result.routes[0].legs[0];
-    meta.innerHTML =
-      "<b>" + leg.start_address + "</b> → <b>" + (destName || leg.end_address) + "</b><br>" +
-      leg.distance.text + " · " + leg.duration.text;
-    let html = "<ol style='padding-left:18px;margin:0'>";
-    leg.steps.forEach((s) => {
-      html += "<li style='margin-bottom:4px'>" + s.instructions +
-        " <span style='color:#718096'>(" + s.distance.text + ")</span></li>";
-    });
-    html += "</ol>";
-    steps.innerHTML = html;
-    panel.style.display = "block";
+  function showMe() {
+    if (!map || !geolocPos) return;
+    removeMarker(meMarker);
+    meMarker = makeMarker(geolocPos, "me", "My location", null);
+  }
+
+  async function resolveOrigin() {
+    const mode = originMode();
+    if (mode === "blue-mounds") return { pos: BLUE_MOUNDS, name: "Blue Mounds SP" };
+    if (mode === "geolocation") {
+      if (geolocPos) return { pos: geolocPos, name: "My location" };
+      setMsg("Getting your location…");
+      const p = await getGeolocation();
+      return { pos: p, name: "My location" };
+    }
+    if (mode === "custom") {
+      if (searchPlace) return { pos: { lat: searchPlace.lat, lng: searchPlace.lng }, name: searchPlace.name };
+      throw new Error("Search for a place first (it will be the starting point), then tap a trip marker → Directions here.");
+    }
+    return { pos: BLUE_MOUNDS, name: "Blue Mounds SP" };
+  }
+
+  // ---------- directions panel ----------
+  function showPanel(originName, origin, dest) {
+    $("dir-title").textContent = "To " + dest.name;
+    $("dir-route").textContent = "From " + (originName || "your location") + " · driving";
+    $("dir-summary").textContent = "";
+    $("dir-error").textContent = "";
+    $("dir-note").textContent = "";
+    $("dir-gmaps").href = gmapsUrl(origin, dest);
+    $("directions-panel").classList.add("show");
+  }
+
+  function hidePanel() { $("directions-panel").classList.remove("show"); }
+
+  function clearRouteLines() {
+    routeLines.forEach(l => l.setMap(null));
+    routeLines = [];
   }
 
   function clearRoute() {
-    directionsRenderer.set("directions", null);
-    document.getElementById("directions-panel").style.display = "none";
-    document.getElementById("dir-steps").innerHTML = "";
-    document.getElementById("dir-meta").textContent = "";
-    setStatus("");
+    clearRouteLines();
+    hidePanel();
+    lastDest = null;
+    setMsg("");
   }
 
-  function routeTo(lat, lng, name) {
-    resolveOrigin((err, origin, originName) => {
-      if (err) {
-        setStatus(err.message || String(err));
-        return;
-      }
-      setStatus("Routing " + originName + " → " + (name || "destination") + "…");
-      directionsService.route(
-        {
-          origin: origin,
-          destination: { lat: lat, lng: lng },
-          travelMode: google.maps.TravelMode.DRIVING
-        },
-        (result, status) => {
-          if (status === "OK" && result) {
-            directionsRenderer.setDirections(result);
-            showDirectionsPanel(result, name);
-            setStatus("Route ready: " + originName + " → " + (name || "destination"));
-          } else {
-            setStatus("Directions failed: " + status);
-          }
-        }
-      );
+  // ---------- routing (Routes API) ----------
+  const ROUTE_STYLE = { strokeColor: "#c53030", strokeOpacity: 0.9, strokeWeight: 6, zIndex: 50 };
+
+  async function computeWithJs(origin, dest) {
+    const { routes } = await gm.Route.computeRoutes({
+      origin: origin,
+      destination: dest,
+      travelMode: "DRIVING",
+      fields: ["path", "distanceMeters", "durationMillis", "viewport"]
     });
+    if (!routes || !routes.length) throw new Error("No driving route found.");
+    const r = routes[0];
+    let lines = [];
+    if (typeof r.createPolylines === "function") {
+      lines = r.createPolylines({ polylineOptions: ROUTE_STYLE }) || [];
+      lines.forEach(l => { l.setOptions(ROUTE_STYLE); l.setMap(map); });
+    } else if (r.path) {
+      lines = [new google.maps.Polyline(Object.assign({ map: map, path: r.path.map(ll) }, ROUTE_STYLE))];
+    }
+    return { lines: lines, meters: r.distanceMeters, ms: r.durationMillis, viewport: r.viewport, path: r.path ? r.path.map(ll) : null };
   }
 
-  window.__btbDirectionsTo = routeTo;
+  async function computeWithRest(origin, dest) {
+    const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": API_KEY,
+        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline"
+      },
+      body: JSON.stringify({
+        origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+        destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
+        travelMode: "DRIVE",
+        units: "IMPERIAL"
+      })
+    });
+    let data = null;
+    try { data = await res.json(); } catch (_) { /* ignore */ }
+    if (!res.ok) {
+      const m = (data && data.error && (data.error.status + ": " + data.error.message)) || ("HTTP " + res.status);
+      throw new Error(m);
+    }
+    if (!data || !data.routes || !data.routes.length) throw new Error("No driving route found.");
+    const r = data.routes[0];
+    if (!gm.encoding) {
+      const geo = await google.maps.importLibrary("geometry");
+      gm.encoding = geo.encoding;
+    }
+    const path = gm.encoding.decodePath(r.polyline.encodedPolyline);
+    const line = new google.maps.Polyline(Object.assign({ map: map, path: path }, ROUTE_STYLE));
+    const secs = parseFloat(String(r.duration || "0").replace("s", "")) || 0;
+    return { lines: [line], meters: r.distanceMeters || 0, ms: secs * 1000, viewport: null, path: path.map(ll) };
+  }
+
+  async function routeTo(lat, lng, name) {
+    const dest = { lat: Number(lat), lng: Number(lng), name: name || "Destination" };
+    lastDest = dest;
+    clearRouteLines();
+
+    let origin, originName;
+    // Show the panel + Google Maps link right away so it works even if the APIs fail.
+    showPanel(originMode() === "geolocation" ? "My location" : (originMode() === "custom" && searchPlace ? searchPlace.name : "Blue Mounds SP"),
+      knownOrigin(), dest);
+    try {
+      const o = await resolveOrigin();
+      origin = o.pos; originName = o.name;
+    } catch (e) {
+      $("dir-error").textContent = errText(e);
+      setMsg(errText(e), true);
+      return;
+    }
+    if (lastDest !== dest) return; // superseded
+    showPanel(originName, origin, dest);
+    $("dir-summary").textContent = "Routing…";
+    setMsg("Routing " + originName + " → " + dest.name + "…");
+
+    let result = null, jsErr = null, restErr = null;
+    if (routesMode === "js") {
+      try { result = await computeWithJs(origin, dest); } catch (e) { jsErr = e; console.warn("Route.computeRoutes failed:", e); }
+    }
+    if (!result) {
+      try { result = await computeWithRest(origin, dest); } catch (e) { restErr = e; console.warn("Routes REST failed:", e); }
+    }
+    if (lastDest !== dest) { if (result) result.lines.forEach(l => l.setMap(null)); return; }
+
+    if (!result) {
+      const detail = [jsErr && ("JS: " + errText(jsErr)), restErr && ("REST: " + errText(restErr))].filter(Boolean).join(" | ");
+      const notEnabled = looksNotEnabled(detail);
+      const head = notEnabled ? "Routes API not enabled (or key not allowed to use it)." : "Routes API request failed.";
+      $("dir-summary").textContent = "";
+      $("dir-error").textContent = head + " " + detail;
+      $("dir-note").textContent = "“Open in Google Maps” above still works.";
+      setMsg(head + " Enable “Routes API” in Google Cloud for this key.", true);
+      return;
+    }
+
+    routeLines = result.lines;
+    $("dir-summary").textContent = fmtMiles(result.meters || 0) + " · " + fmtDuration(result.ms || 0);
+    $("dir-note").textContent = "Car drive time from Google Routes API — towing will run longer.";
+    setMsg("Route ready: " + originName + " → " + dest.name);
+
+    // Keep the route clear of the bottom sheet on phones.
+    const panelH = window.innerWidth < 760 ? $("directions-panel").offsetHeight : 0;
+    const pad = { top: 40, left: 30, right: window.innerWidth < 760 ? 30 : 390, bottom: 30 + panelH };
+    if (result.viewport && typeof result.viewport.getNorthEast === "function") {
+      map.fitBounds(result.viewport, pad);
+    } else if (result.path && result.path.length) {
+      const b = new google.maps.LatLngBounds();
+      result.path.forEach(p => b.extend(p));
+      map.fitBounds(b, pad);
+    }
+  }
+
+  // ---------- search (Places API (New)) ----------
+  function placesError(detail) {
+    placesFailed = true;
+    const msg = "Places API (New) not enabled (or key not allowed to use it) — place search unavailable." + (detail ? " " + detail : "");
+    setMsg(msg, true);
+  }
+
+  async function onPlaceSelected(ev) {
+    const pred = ev.placePrediction || (ev.detail && ev.detail.placePrediction);
+    if (!pred) { setMsg("No place details returned.", true); return; }
+    let place;
+    try {
+      place = pred.toPlace();
+      await place.fetchFields({ fields: ["displayName", "location", "formattedAddress"] });
+    } catch (e) {
+      console.warn("Place fetchFields failed:", e);
+      placesError(errText(e));
+      return;
+    }
+    const loc = ll(place.location);
+    if (!loc || isNaN(loc.lat)) { setMsg("That place has no location.", true); return; }
+    searchPlace = {
+      name: place.displayName || place.formattedAddress || "Searched place",
+      address: place.formattedAddress || "",
+      lat: loc.lat, lng: loc.lng, kind: "search"
+    };
+    removeMarker(searchMarker);
+    searchMarker = makeMarker(loc, "search", searchPlace.name, (mk) => openInfo(searchPlace, mk));
+    map.panTo(loc);
+    if (map.getZoom() < 9) map.setZoom(10);
+
+    if (originMode() === "custom") {
+      setMsg("Start set to " + searchPlace.name + ". Tap a trip marker → Directions here.");
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    } else {
+      setMsg("Selected: " + searchPlace.name);
+      routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+    }
+  }
+
+  function setupSearch() {
+    const wrap = $("search-wrap");
+    if (!gm.PlaceAutocompleteElement) {
+      wrap.innerHTML = "";
+      const f = document.createElement("input");
+      f.id = "search-fallback"; f.disabled = true;
+      f.placeholder = "Place search unavailable";
+      wrap.appendChild(f);
+      placesError("(PlaceAutocompleteElement not available.)");
+      return;
+    }
+    const pac = new gm.PlaceAutocompleteElement({ includedRegionCodes: ["us", "ca"] });
+    pac.id = "pac";
+    pac.setAttribute("placeholder", "Search a place or address…");
+    try { pac.placeholder = "Search a place or address…"; } catch (_) { /* older builds */ }
+    try {
+      pac.locationBias = { center: { lat: 43.6, lng: -104.5 }, radius: 50000 };
+    } catch (_) { /* optional */ }
+    wrap.innerHTML = "";
+    wrap.appendChild(pac);
+    pac.addEventListener("gmp-select", onPlaceSelected);
+    const onErr = (e) => { console.warn("PlaceAutocompleteElement error:", e); placesError(errText(e && (e.error || e.detail || e))); };
+    pac.addEventListener("gmp-error", onErr);
+    pac.addEventListener("gmp-requesterror", onErr);
+  }
 
   function routeToSearchPlace() {
-    if (!searchPlace || !searchPlace.geometry || !searchPlace.geometry.location) {
-      setStatus("Choose a place from the search suggestions first.");
+    if (!searchPlace) {
+      setMsg(placesFailed ? "Place search is unavailable (Places API (New) not enabled). Tap a trip marker instead." : "Search for a place first, or tap a trip marker.", placesFailed);
       return;
     }
-    const loc = searchPlace.geometry.location;
-    const name = searchPlace.name || searchPlace.formatted_address || "Search result";
-    // If origin mode is "custom", search place is the origin — need a destination.
-    // Default: treat search as destination when origin is blue-mounds or geolocation.
-    const mode = document.getElementById("origin-select").value;
-    if (mode === "custom") {
-      setStatus("Origin is the search place — click a trip marker (or dbl-click) for destination.");
+    if (originMode() === "custom") {
+      setMsg("The searched place is the start. Tap a trip marker → Directions here for the destination.");
       return;
     }
-    routeTo(loc.lat(), loc.lng(), name);
+    routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
   }
 
-  function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
+  // ---------- init ----------
+  async function init() {
+    if (window.innerWidth < 760) $("legend").removeAttribute("open");
+
+    $("btn-go").addEventListener("click", routeToSearchPlace);
+    $("btn-clear").addEventListener("click", clearRoute);
+    $("btn-fit").addEventListener("click", () => { clearRoute(); fitTrip(); });
+    $("dir-close").addEventListener("click", hidePanel);
+    $("origin-select").addEventListener("change", () => {
+      if (originMode() === "geolocation" && !geolocPos) {
+        getGeolocation().then(() => setMsg("Using your location as the start.")).catch(e => setMsg(errText(e), true));
+      }
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    });
+
+    let mapsLib;
+    try {
+      mapsLib = await google.maps.importLibrary("maps");
+    } catch (e) {
+      setMsg("Google Maps failed to load: " + errText(e), true);
+      return;
+    }
+    gm.Map = mapsLib.Map;
+    gm.InfoWindow = mapsLib.InfoWindow;
+
+    try {
+      const markerLib = await google.maps.importLibrary("marker");
+      gm.AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
+      useAdvanced = !!gm.AdvancedMarkerElement;
+    } catch (e) {
+      console.warn("marker library unavailable, using classic Marker", e);
+      useAdvanced = false;
+    }
+
+    map = new gm.Map($("map"), {
       center: { lat: 43.5, lng: -106.5 },
       zoom: 6,
+      mapId: useAdvanced ? MAP_ID : undefined,
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         position: google.maps.ControlPosition.TOP_LEFT
       },
       zoomControl: true,
-      zoomControlOptions: { position: google.maps.ControlPosition.LEFT_CENTER },
       streetViewControl: false,
-      fullscreenControl: true,
+      fullscreenControl: false,
+      cameraControl: false,
       scaleControl: true,
+      clickableIcons: false,
       gestureHandling: "greedy"
     });
+    infoWindow = new gm.InfoWindow({ maxWidth: 260 });
 
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer({
-      map: map,
-      suppressMarkers: false,
-      polylineOptions: {
-        strokeColor: "#c53030",
-        strokeOpacity: 0.9,
-        strokeWeight: 5,
-        zIndex: 50
-      }
-    });
-    placesService = new google.maps.places.PlacesService(map);
-
-    SPINE.forEach(p => addMarker(p, map));
-    HILLS.forEach(p => addMarker(p, map));
-    drawSpine(map);
+    SPINE.forEach(addTripMarker);
+    HILLS.forEach(addTripMarker);
+    drawSpine();
     fitTrip();
 
-    const input = document.getElementById("pac-input");
-    autocomplete = new google.maps.places.Autocomplete(input, {
-      fields: ["geometry", "name", "formatted_address", "place_id"],
-      componentRestrictions: { country: ["us", "ca"] }
-    });
-    autocomplete.bindTo("bounds", map);
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-      if (!place.geometry || !place.geometry.location) {
-        setStatus("No details for that place.");
-        return;
-      }
-      searchPlace = place;
-      map.panTo(place.geometry.location);
-      if (map.getZoom() < 10) map.setZoom(11);
-      setStatus("Selected: " + (place.name || place.formatted_address));
-      const mode = document.getElementById("origin-select").value;
-      if (mode !== "custom") {
-        routeToSearchPlace();
-      }
-    });
-
-    document.getElementById("btn-go").addEventListener("click", routeToSearchPlace);
-    document.getElementById("btn-clear").addEventListener("click", clearRoute);
-    document.getElementById("btn-fit").addEventListener("click", () => {
-      clearRoute();
-      fitTrip();
-    });
-
-    // Soft geolocation prefetch (optional)
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        },
-        () => {},
-        { timeout: 8000 }
-      );
+    // Places API (New)
+    try {
+      const placesLib = await google.maps.importLibrary("places");
+      gm.PlaceAutocompleteElement = placesLib.PlaceAutocompleteElement;
+    } catch (e) {
+      console.warn("places library failed", e);
     }
+    setupSearch();
+
+    // Routes API — prefer Maps JS Route class, else REST.
+    try {
+      const routesLib = await google.maps.importLibrary("routes");
+      if (routesLib && routesLib.Route && typeof routesLib.Route.computeRoutes === "function") {
+        gm.Route = routesLib.Route;
+        routesMode = "js";
+      } else {
+        routesMode = "rest";
+      }
+    } catch (e) {
+      console.warn("routes library failed; using REST", e);
+      routesMode = "rest";
+    }
+
+    // Soft geolocation prefetch only if permission already granted (avoids a prompt on load).
+    try {
+      if (navigator.permissions && navigator.geolocation) {
+        const st = await navigator.permissions.query({ name: "geolocation" });
+        if (st.state === "granted") getGeolocation().catch(() => {});
+      }
+    } catch (_) { /* ignore */ }
   }
 
-  window.initMap = initMap;
+  init();
 })();
-  </script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI&libraries=places&callback=initMap">
   </script>
 </body>
 </html>
