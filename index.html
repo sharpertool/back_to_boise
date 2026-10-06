@@ -1,1582 +1,493 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    
-    <style>
-      html, body { width:100%; height:100%; min-height:100vh; margin:0; padding:0; overflow:hidden; }
-      .folium-map { height: 80vh !important; min-height: 600px; width: 100%; }
-    </style>
-    <script>
-      window.addEventListener('load', function(){
-        setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 100);
-      });
-    </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_3d8c9dff8b70feb578f47454d5b4961e {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.3.0/leaflet-dvf.markers.min.js"></script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI"></script>
-    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Back to Boise — Blue Mounds → Meridian</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #ffffff;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --accent: #2b6cb0;
+      --border: #cbd5e0;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: #e2e8f0;
+    }
+    header {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+      padding: 10px 14px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+    header h1 {
+      margin: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap;
+    }
+    header .subtitle {
+      font-size: 0.85rem; color: var(--muted);
+    }
+    #controls {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1 1 320px;
+    }
+    #pac-input {
+      flex: 1 1 220px;
+      min-width: 180px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    #origin-select {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      background: #fff;
+    }
+    button.ctrl {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #edf2f7;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.ctrl:hover { background: #e2e8f0; }
+    button.ctrl.primary {
+      background: var(--accent);
+      border-color: #2c5282;
+      color: #fff;
+    }
+    button.ctrl.primary:hover { background: #2c5282; }
+    #map {
+      width: 100%;
+      height: 80vh;
+      min-height: 560px;
+    }
+    #legend {
+      position: absolute;
+      bottom: 28px;
+      left: 14px;
+      z-index: 5;
+      background: rgba(255,255,255,0.96);
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.55;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+      max-width: 280px;
+    }
+    #legend b { font-size: 13px; }
+    #legend a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    #legend a:hover { text-decoration: underline; }
+    .swatch {
+      display: inline-block; width: 12px; height: 12px;
+      border-radius: 50%; margin-right: 4px; vertical-align: -1px;
+      border: 2px solid transparent;
+    }
+    .swatch.star { background: #e53e3e; border-radius: 2px; }
+    .swatch.stay { background: #dd6b20; }
+    .swatch.later { background: #2b6cb0; }
+    .swatch.visit {
+      background: transparent; border-color: #2c7a7b;
+      transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px;
+    }
+    .swatch.home { background: #38a169; }
+    #directions-panel {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 5;
+      width: min(340px, 92vw);
+      max-height: calc(80vh - 40px);
+      overflow: auto;
+      background: rgba(255,255,255,0.97);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      padding: 10px 12px;
+      font-size: 13px;
+      display: none;
+    }
+    #directions-panel h2 {
+      margin: 0 0 8px; font-size: 14px;
+    }
+    #directions-panel .meta { color: var(--muted); margin-bottom: 8px; }
+    #map-wrap { position: relative; }
+    #status {
+      font-size: 12px; color: var(--muted); min-height: 1.2em;
+    }
+    footer {
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+    }
+  </style>
 </head>
 <body>
-    
-    
-    <div style="position:fixed;bottom:24px;left:24px;z-index:9999;
-    background:white;padding:10px 14px;border:1px solid #ccc;border-radius:6px;
-    font-size:12px;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.15);">
-    <b>Back to Boise — from Blue Mounds</b><br>
-    <a href="locations.html" style="color:#2b6cb0;font-weight:700;">Full locations table →</a><br>
-    <span style="color:#e53e3e;">★</span> CURRENT sit<br>
-    <span style="color:#dd6b20;">●</span> STAY overnight<br>
-    <span style="color:#2c7a7b;">◇</span> VISIT pass-through / day<br>
-    <span style="color:#2b6cb0;">●</span> Later corridor stays<br>
-    <span style="color:#276749;">●</span> Home<br>
-    <span style="color:#7c2d12;font-weight:700;">N.N h</span> leg labels = hours @ ~70 mph tow
+  <header>
+    <div>
+      <h1>Back to Boise — from Blue Mounds</h1>
+      <div class="subtitle">Spine + Black Hills day visits · Google Maps</div>
     </div>
-    
-    
-            <div class="folium-map" id="map_3d8c9dff8b70feb578f47454d5b4961e" ></div>
-        
-</body>
-<script>
-    
-    
-            var map_3d8c9dff8b70feb578f47454d5b4961e = L.map(
-                "map_3d8c9dff8b70feb578f47454d5b4961e",
-                {
-                    center: [43.6, -106.5],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 5,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
+    <div id="controls">
+      <select id="origin-select" title="Directions origin" aria-label="Directions origin">
+        <option value="blue-mounds">Origin: Blue Mounds (CURRENT)</option>
+        <option value="geolocation">Origin: My location</option>
+        <option value="custom">Origin: Search box place</option>
+      </select>
+      <input id="pac-input" type="text" placeholder="Search place or address for directions…" autocomplete="off" />
+      <button type="button" class="ctrl primary" id="btn-go">Directions</button>
+      <button type="button" class="ctrl" id="btn-clear">Clear route</button>
+      <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+    </div>
+    <div id="status"></div>
+  </header>
 
-                }
-            );
+  <div id="map-wrap">
+    <div id="map" role="application" aria-label="Trip map"></div>
+    <div id="legend">
+      <b>Back to Boise — from Blue Mounds</b><br>
+      <a href="locations.html">Full locations table →</a><br>
+      <span class="swatch star"></span> CURRENT sit<br>
+      <span class="swatch stay"></span> STAY overnight<br>
+      <span class="swatch later"></span> Later corridor stays<br>
+      <span class="swatch visit"></span> VISIT pass-through / day<br>
+      <span class="swatch home"></span> HOME Boise / Meridian<br>
+      <span style="color:#718096;">Click a marker or search a place for ad-hoc directions.</span>
+    </div>
+    <div id="directions-panel">
+      <h2>Directions</h2>
+      <div class="meta" id="dir-meta"></div>
+      <div id="dir-steps"></div>
+    </div>
+  </div>
 
-            
+  <footer>
+    Zoom and map type via Google controls · Spine polyline = overnight corridor · Hills visits hang off Black Hills base
+  </footer>
 
-        
-    
-            var poly_line_ded12dec668da1a0a0b4e820ea442f68 = L.polyline(
-                [[43.718, -96.193], [43.709, -98.03], [43.805, -99.33], [43.746, -101.948], [43.993, -102.242], [43.97, -103.476], [44.671, -103.852], [44.59, -104.715], [42.867, -106.313], [41.587, -109.203], [42.619, -112.012], [43.612, -116.392]],
-                {"bubblingMouseEvents": true, "color": "#c45c26", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#c45c26", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_ae302ab346fb1f2197e728f8962df17d = L.marker(
-                [43.7135, -97.1115],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_3697defcf63b88645befe690555d56dd = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e1.4 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_ae302ab346fb1f2197e728f8962df17d.setIcon(div_icon_3697defcf63b88645befe690555d56dd);
-            
-    
-            var marker_e4327e55b5900efde035f754a2d09d22 = L.marker(
-                [43.757000000000005, -98.68],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_a7277a700cd4cdd3f53165e2cf04124e = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e1.0 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_e4327e55b5900efde035f754a2d09d22.setIcon(div_icon_a7277a700cd4cdd3f53165e2cf04124e);
-            
-    
-            var marker_7cfa818ad7ff5a9ad508bd703ab72616 = L.marker(
-                [43.7755, -100.639],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_cc6cefd2d472594996487c3686fb0fd9 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e2.0 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_7cfa818ad7ff5a9ad508bd703ab72616.setIcon(div_icon_cc6cefd2d472594996487c3686fb0fd9);
-            
-    
-            var marker_1666ad85a7fd30ffc465621f279aec52 = L.marker(
-                [43.8695, -102.095],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_3225254452d964f70517fbc8696ffa7f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.4 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_1666ad85a7fd30ffc465621f279aec52.setIcon(div_icon_3225254452d964f70517fbc8696ffa7f);
-            
-    
-            var marker_66db36651124cabb9b1ac2c9dfdaa259 = L.marker(
-                [43.9815, -102.85900000000001],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_f54ab7331169c065180ed388611f087f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e1.1 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_66db36651124cabb9b1ac2c9dfdaa259.setIcon(div_icon_f54ab7331169c065180ed388611f087f);
-            
-    
-            var marker_4b92496ae6ba7683a515cda13b912582 = L.marker(
-                [44.320499999999996, -103.664],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_5ef174cf54b8a71dc5f2c0a17ae161c6 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.9 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_4b92496ae6ba7683a515cda13b912582.setIcon(div_icon_5ef174cf54b8a71dc5f2c0a17ae161c6);
-            
-    
-            var marker_9d232df9dc07b1c4356e53f12eb3a196 = L.marker(
-                [44.6305, -104.2835],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_f721564ada2f4d8af28b2c20bd42f3ab = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.8 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_9d232df9dc07b1c4356e53f12eb3a196.setIcon(div_icon_f721564ada2f4d8af28b2c20bd42f3ab);
-            
-    
-            var marker_170fd1f8233ee337e8a3e428ca5af100 = L.marker(
-                [43.7285, -105.51400000000001],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_4419561f6897f9bb50bbf8ffdd9e8824 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e2.5 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_170fd1f8233ee337e8a3e428ca5af100.setIcon(div_icon_4419561f6897f9bb50bbf8ffdd9e8824);
-            
-    
-            var marker_5e8c7c20f72db8c0fe2af3622c45fe2c = L.marker(
-                [42.227000000000004, -107.75800000000001],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_48d32a1a32fa5567b554c8da7361a434 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e3.3 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_5e8c7c20f72db8c0fe2af3622c45fe2c.setIcon(div_icon_48d32a1a32fa5567b554c8da7361a434);
-            
-    
-            var marker_5c0aba15466f8fa3b8cd5df80bfd39a6 = L.marker(
-                [42.103, -110.6075],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_f57a47bea71cf8216d1ed1a7e90ce1fe = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e3.0 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_5c0aba15466f8fa3b8cd5df80bfd39a6.setIcon(div_icon_f57a47bea71cf8216d1ed1a7e90ce1fe);
-            
-    
-            var marker_40496731fbd85b6d45285e74571206e6 = L.marker(
-                [43.1155, -114.202],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_71509392ffda41bc0e1bce0324024dc5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#7c2d12;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e4.0 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_40496731fbd85b6d45285e74571206e6.setIcon(div_icon_71509392ffda41bc0e1bce0324024dc5);
-            
-    
-            var poly_line_1648b6f29b43adb363e7a90f314c0097 = L.polyline(
-                [[43.97, -103.476], [43.879, -103.459]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_24e1d827fe1f4bc5f9157a6dd4a5e5f5 = L.marker(
-                [43.924499999999995, -103.4675],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_8b5d3ddeb04b5acc976da3c548bef236 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.2 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_24e1d827fe1f4bc5f9157a6dd4a5e5f5.setIcon(div_icon_8b5d3ddeb04b5acc976da3c548bef236);
-            
-    
-            var poly_line_378cb1495c4b32729b70147b56596f96 = L.polyline(
-                [[43.97, -103.476], [43.837, -103.623]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_eb2a91dc1029b71429489dea7e688bb6 = L.marker(
-                [43.9035, -103.5495],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_529b5c66f3852c3e6ec69ae3adbb78b1 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.3 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_eb2a91dc1029b71429489dea7e688bb6.setIcon(div_icon_529b5c66f3852c3e6ec69ae3adbb78b1);
-            
-    
-            var poly_line_034a5dd7a10313ff2e1328b7a07aad47 = L.polyline(
-                [[43.97, -103.476], [43.77, -103.37]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_cac4af742e2f82d67cf3626d049058e1 = L.marker(
-                [43.870000000000005, -103.423],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_087275c3d4ba8460cec7436f9b69bc38 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.4 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_cac4af742e2f82d67cf3626d049058e1.setIcon(div_icon_087275c3d4ba8460cec7436f9b69bc38);
-            
-    
-            var poly_line_dd9ad8941600c30730a3dbcbe105de02 = L.polyline(
-                [[43.97, -103.476], [44.377, -103.73]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_fa1502f9f8925898fa103b1a491af858 = L.marker(
-                [44.173500000000004, -103.60300000000001],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_ebe7b623380ec1826596a0fcd66244a1 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.5 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_fa1502f9f8925898fa103b1a491af858.setIcon(div_icon_ebe7b623380ec1826596a0fcd66244a1);
-            
-    
-            var poly_line_38dada78c62d5b8e9d6672017805c964 = L.polyline(
-                [[43.97, -103.476], [44.47, -103.86]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_4b9a2c462fd771bcd1d514199ec2e0c3 = L.marker(
-                [44.22, -103.668],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_389b6bf1c7eb1bbea0348372f6094938 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.8 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_4b9a2c462fd771bcd1d514199ec2e0c3.setIcon(div_icon_389b6bf1c7eb1bbea0348372f6094938);
-            
-    
-            var poly_line_3d7e3b437f8af062b4f761c4c69d3859 = L.polyline(
-                [[43.97, -103.476], [43.84, -103.53]],
-                {"bubblingMouseEvents": true, "color": "#718096", "dashArray": "6 6", "dashOffset": null, "fill": false, "fillColor": "#718096", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.55, "smoothFactor": 1.0, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_86587b581fa733e947a343679c7d310a = L.marker(
-                [43.905, -103.503],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_b0c4af0a8cd860202efb6c1c0fdde6f5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#2d3748;white-space:nowrap;background:rgba(255,255,255,0.95);padding:1px 4px;border-radius:3px;border:1px solid #ccc;box-shadow:0 1px 2px rgba(0,0,0,.12);\"\u003e0.3 h\u003c/div\u003e",
-  "iconSize": [48, 20],
-  "iconAnchor": [24, 10],
-  "className": "empty",
-});
-        
-    
-                marker_86587b581fa733e947a343679c7d310a.setIcon(div_icon_b0c4af0a8cd860202efb6c1c0fdde6f5);
-            
-    
-            var marker_6796a7d06c2d8b2b8b0e433133bcb240 = L.marker(
-                [43.718, -96.193],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var icon_9948bc36f6134205f016fef12cb74b55 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "star",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_59908c752c1af0af4d5fcefb7089f9a9 = L.popup({
-  "maxWidth": "100%",
-});
+  <script>
+(function () {
+  const SPINE = [
+    { name: "CURRENT: Blue Mounds SP (Luverne MN)", lat: 43.718, lng: -96.193, kind: "current" },
+    { name: "Mitchell Corn Palace (VISIT opt)", lat: 43.709, lng: -98.03, kind: "visit" },
+    { name: "Chamberlain Dignity (VISIT/short STAY opt)", lat: 43.805, lng: -99.33, kind: "visit" },
+    { name: "STAY: Badlands Cedar Pass", lat: 43.746, lng: -101.948, kind: "stay" },
+    { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
+    { name: "STAY: Black Hills base (Sheridan Lake / Rafter J / Game Lodge)", lat: 43.970, lng: -103.476, kind: "stay" },
+    { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
+    { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay" },
+    { name: "STAY: Casper WY", lat: 42.867, lng: -106.313, kind: "later" },
+    { name: "STAY: Rock Springs WY", lat: 41.587, lng: -109.203, kind: "later" },
+    { name: "STAY: Lava Hot Springs ID", lat: 42.619, lng: -112.012, kind: "later" },
+    { name: "HOME: Boise / Meridian ID", lat: 43.612, lng: -116.392, kind: "home" }
+  ];
 
-        
-            
-                var html_7381519c40021f0cea29d872eb254593 = $(`<div id="html_7381519c40021f0cea29d872eb254593" style="width: 100.0%; height: 100.0%;">CURRENT: Blue Mounds SP (Luverne MN)</div>`)[0];
-                popup_59908c752c1af0af4d5fcefb7089f9a9.setContent(html_7381519c40021f0cea29d872eb254593);
-            
-        
+  const HILLS = [
+    { name: "Rushmore (VISIT)", lat: 43.879, lng: -103.459, kind: "visit" },
+    { name: "Crazy Horse (VISIT opt)", lat: 43.837, lng: -103.623, kind: "visit" },
+    { name: "Custer Wildlife Loop (VISIT)", lat: 43.77, lng: -103.37, kind: "visit" },
+    { name: "Deadwood (VISIT / truck day)", lat: 44.377, lng: -103.73, kind: "visit" },
+    { name: "Spearfish Canyon (VISIT opt)", lat: 44.47, lng: -103.86, kind: "visit" },
+    { name: "Needles / Iron Mtn — truck only", lat: 43.84, lng: -103.53, kind: "visit" }
+  ];
 
-        marker_6796a7d06c2d8b2b8b0e433133bcb240.bindPopup(popup_59908c752c1af0af4d5fcefb7089f9a9)
-        ;
+  const KIND_STYLE = {
+    current: { fill: "#e53e3e", stroke: "#9b2c2c", scale: 12, label: "★" },
+    stay:    { fill: "#dd6b20", stroke: "#9c4221", scale: 9,  label: "" },
+    later:   { fill: "#2b6cb0", stroke: "#2c5282", scale: 9,  label: "" },
+    visit:   { fill: "#ffffff", stroke: "#2c7a7b", scale: 8,  label: "◇" },
+    home:    { fill: "#38a169", stroke: "#276749", scale: 11, label: "H" }
+  };
 
-        
-    
-    
-            marker_6796a7d06c2d8b2b8b0e433133bcb240.bindTooltip(
-                `<div>
-                     CURRENT: Blue Mounds SP (Luverne MN)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-                marker_6796a7d06c2d8b2b8b0e433133bcb240.setIcon(icon_9948bc36f6134205f016fef12cb74b55);
-            
-    
-            var circle_marker_769904d5221e2a032ce724de00dc40dd = L.circleMarker(
-                [43.718, -96.193],
-                {"bubblingMouseEvents": true, "color": "#9b2c2c", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e53e3e", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 3}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var marker_a495f32c7a8315ff146089691767a10d = L.marker(
-                [43.718, -96.193],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_e835846db2140278f282dae67ecc44de = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:13px;font-weight:800;color:#9b2c2c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eCURRENT: Blue Mounds SP (Luverne MN)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_a495f32c7a8315ff146089691767a10d.setIcon(div_icon_e835846db2140278f282dae67ecc44de);
-            
-    
-            var regular_polygon_marker_1cdda54d371bea7710da0e70ec8496fb = new L.RegularPolygonMarker(
-                [43.709, -98.03],
-                {
-  "stroke": true,
-  "color": "#2c7a7b",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 8,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_f88e570ff4d93acdda74b90bd718e310 = L.popup({
-  "maxWidth": "100%",
-});
+  let map, directionsService, directionsRenderer, placesService, autocomplete;
+  let markers = [];
+  let geolocPos = null;
+  let searchPlace = null;
+  let spinePolyline = null;
 
-        
-            
-                var html_1a83beb2ced32fda715a2faf9cbde236 = $(`<div id="html_1a83beb2ced32fda715a2faf9cbde236" style="width: 100.0%; height: 100.0%;">Mitchell Corn Palace (VISIT opt)</div>`)[0];
-                popup_f88e570ff4d93acdda74b90bd718e310.setContent(html_1a83beb2ced32fda715a2faf9cbde236);
-            
-        
+  const statusEl = () => document.getElementById("status");
+  const setStatus = (msg) => { statusEl().textContent = msg || ""; };
 
-        regular_polygon_marker_1cdda54d371bea7710da0e70ec8496fb.bindPopup(popup_f88e570ff4d93acdda74b90bd718e310)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_1cdda54d371bea7710da0e70ec8496fb.bindTooltip(
-                `<div>
-                     Mitchell Corn Palace (VISIT opt)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_578be0f73e831733469f33ed0e2de401 = L.marker(
-                [43.709, -98.03],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_48daeadb1d26a8e207eb68dfddb20884 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#234e52;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eMitchell Corn Palace (VISIT opt)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_578be0f73e831733469f33ed0e2de401.setIcon(div_icon_48daeadb1d26a8e207eb68dfddb20884);
-            
-    
-            var regular_polygon_marker_bcb4d9e2e63e2309f8da5007f3f67d1b = new L.RegularPolygonMarker(
-                [43.805, -99.33],
-                {
-  "stroke": true,
-  "color": "#2c7a7b",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 8,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_9bee46eff1b52611c975fd4b240c5fa6 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_92ccd3d2a9bb7d61adb375a1474282bf = $(`<div id="html_92ccd3d2a9bb7d61adb375a1474282bf" style="width: 100.0%; height: 100.0%;">Chamberlain Dignity (VISIT/short STAY opt)</div>`)[0];
-                popup_9bee46eff1b52611c975fd4b240c5fa6.setContent(html_92ccd3d2a9bb7d61adb375a1474282bf);
-            
-        
-
-        regular_polygon_marker_bcb4d9e2e63e2309f8da5007f3f67d1b.bindPopup(popup_9bee46eff1b52611c975fd4b240c5fa6)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_bcb4d9e2e63e2309f8da5007f3f67d1b.bindTooltip(
-                `<div>
-                     Chamberlain Dignity (VISIT/short STAY opt)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_a10e1e0b126d6fd42de383e7bb75008c = L.marker(
-                [43.805, -99.33],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_4c1850b52a6d01ef89d3160ef9f33630 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#234e52;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eChamberlain Dignity (VISIT/short STAY opt)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_a10e1e0b126d6fd42de383e7bb75008c.setIcon(div_icon_4c1850b52a6d01ef89d3160ef9f33630);
-            
-    
-            var circle_marker_618e022b06bd198465cd246f0ed2fe3b = L.circleMarker(
-                [43.746, -101.948],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dd6b20", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_9fbab0133e3c3a90b8468d49a4fcdd40 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_2c179589ade1a50d1d6ff3c3465a89dd = $(`<div id="html_2c179589ade1a50d1d6ff3c3465a89dd" style="width: 100.0%; height: 100.0%;">STAY: Badlands Cedar Pass</div>`)[0];
-                popup_9fbab0133e3c3a90b8468d49a4fcdd40.setContent(html_2c179589ade1a50d1d6ff3c3465a89dd);
-            
-        
-
-        circle_marker_618e022b06bd198465cd246f0ed2fe3b.bindPopup(popup_9fbab0133e3c3a90b8468d49a4fcdd40)
-        ;
-
-        
-    
-    
-            circle_marker_618e022b06bd198465cd246f0ed2fe3b.bindTooltip(
-                `<div>
-                     STAY: Badlands Cedar Pass
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_4d4888d7cd3ea823e10a3ba0a4dad93a = L.marker(
-                [43.746, -101.948],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_3157d868cd6f77805c98a7c53fa6df2f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Badlands Cedar Pass\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_4d4888d7cd3ea823e10a3ba0a4dad93a.setIcon(div_icon_3157d868cd6f77805c98a7c53fa6df2f);
-            
-    
-            var regular_polygon_marker_2b9ed1541dcd4d0294f2210c0d3238b2 = new L.RegularPolygonMarker(
-                [43.993, -102.242],
-                {
-  "stroke": true,
-  "color": "#2c7a7b",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 8,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_50efb96bae0ec954c32695b9a3a032d8 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_28bf7aa6193c9dd3b3cb45208835bc88 = $(`<div id="html_28bf7aa6193c9dd3b3cb45208835bc88" style="width: 100.0%; height: 100.0%;">Wall Drug / Minuteman (VISIT opt)</div>`)[0];
-                popup_50efb96bae0ec954c32695b9a3a032d8.setContent(html_28bf7aa6193c9dd3b3cb45208835bc88);
-            
-        
-
-        regular_polygon_marker_2b9ed1541dcd4d0294f2210c0d3238b2.bindPopup(popup_50efb96bae0ec954c32695b9a3a032d8)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_2b9ed1541dcd4d0294f2210c0d3238b2.bindTooltip(
-                `<div>
-                     Wall Drug / Minuteman (VISIT opt)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_b72692d04433a4d99bf25a13856b8e3b = L.marker(
-                [43.993, -102.242],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_0ceb804fa55594045375c8be25c7a3d2 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#234e52;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eWall Drug / Minuteman (VISIT opt)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_b72692d04433a4d99bf25a13856b8e3b.setIcon(div_icon_0ceb804fa55594045375c8be25c7a3d2);
-            
-    
-            var circle_marker_06eace08ddc405bd3944bf27ba7e377e = L.circleMarker(
-                [43.97, -103.476],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dd6b20", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_f5d619a93a3c8c1d0e8abafc32a7f152 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_aaa0f71df20d0b81d0cfb9423955bcbf = $(`<div id="html_aaa0f71df20d0b81d0cfb9423955bcbf" style="width: 100.0%; height: 100.0%;">STAY: Black Hills base (Sheridan Lake / Rafter J / Game Lodge)</div>`)[0];
-                popup_f5d619a93a3c8c1d0e8abafc32a7f152.setContent(html_aaa0f71df20d0b81d0cfb9423955bcbf);
-            
-        
-
-        circle_marker_06eace08ddc405bd3944bf27ba7e377e.bindPopup(popup_f5d619a93a3c8c1d0e8abafc32a7f152)
-        ;
-
-        
-    
-    
-            circle_marker_06eace08ddc405bd3944bf27ba7e377e.bindTooltip(
-                `<div>
-                     STAY: Black Hills base (Sheridan Lake / Rafter J / Game Lodge)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_25b909b607e3fa47b12342050f03e523 = L.marker(
-                [43.97, -103.476],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_33b624d6a44031186ef167a0f08d0f08 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Black Hills base (Sheridan Lake / Rafter J / Game Lodge)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_25b909b607e3fa47b12342050f03e523.setIcon(div_icon_33b624d6a44031186ef167a0f08d0f08);
-            
-    
-            var regular_polygon_marker_09435c28ff7dd0d0c593e3897ea9b01a = new L.RegularPolygonMarker(
-                [44.671, -103.852],
-                {
-  "stroke": true,
-  "color": "#2c7a7b",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 8,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_8381e0cd681c065461d17673f3a0354d = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_84c581a54f4dd6c25f9a66a711d6d139 = $(`<div id="html_84c581a54f4dd6c25f9a66a711d6d139" style="width: 100.0%; height: 100.0%;">Belle Fourche (opt approach)</div>`)[0];
-                popup_8381e0cd681c065461d17673f3a0354d.setContent(html_84c581a54f4dd6c25f9a66a711d6d139);
-            
-        
-
-        regular_polygon_marker_09435c28ff7dd0d0c593e3897ea9b01a.bindPopup(popup_8381e0cd681c065461d17673f3a0354d)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_09435c28ff7dd0d0c593e3897ea9b01a.bindTooltip(
-                `<div>
-                     Belle Fourche (opt approach)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_106f4155f4921a43af8d65d8db19b04f = L.marker(
-                [44.671, -103.852],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_c2e404c73e0fd56b45bce32e63898dad = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#234e52;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eBelle Fourche (opt approach)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_106f4155f4921a43af8d65d8db19b04f.setIcon(div_icon_c2e404c73e0fd56b45bce32e63898dad);
-            
-    
-            var circle_marker_26b7fe0656f8409e0970a6efd86ec957 = L.circleMarker(
-                [44.59, -104.715],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dd6b20", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_8c9440c51f8f1d05a062b80611add592 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_6e848816029002be69278cc194bd62e2 = $(`<div id="html_6e848816029002be69278cc194bd62e2" style="width: 100.0%; height: 100.0%;">STAY: Devils Tower WY</div>`)[0];
-                popup_8c9440c51f8f1d05a062b80611add592.setContent(html_6e848816029002be69278cc194bd62e2);
-            
-        
-
-        circle_marker_26b7fe0656f8409e0970a6efd86ec957.bindPopup(popup_8c9440c51f8f1d05a062b80611add592)
-        ;
-
-        
-    
-    
-            circle_marker_26b7fe0656f8409e0970a6efd86ec957.bindTooltip(
-                `<div>
-                     STAY: Devils Tower WY
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_852f914548269977fe9c2566d94c9326 = L.marker(
-                [44.59, -104.715],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_7ea61880b83b2121d02a292d8243aa46 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Devils Tower WY\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_852f914548269977fe9c2566d94c9326.setIcon(div_icon_7ea61880b83b2121d02a292d8243aa46);
-            
-    
-            var circle_marker_981cc0087024c4fe3bca55579954406e = L.circleMarker(
-                [42.867, -106.313],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2b6cb0", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_fcdb8e283afa92e692c4e571a85d19cc = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_26098072b6e3f48540f8e8811eedd4b5 = $(`<div id="html_26098072b6e3f48540f8e8811eedd4b5" style="width: 100.0%; height: 100.0%;">STAY: Casper WY</div>`)[0];
-                popup_fcdb8e283afa92e692c4e571a85d19cc.setContent(html_26098072b6e3f48540f8e8811eedd4b5);
-            
-        
-
-        circle_marker_981cc0087024c4fe3bca55579954406e.bindPopup(popup_fcdb8e283afa92e692c4e571a85d19cc)
-        ;
-
-        
-    
-    
-            circle_marker_981cc0087024c4fe3bca55579954406e.bindTooltip(
-                `<div>
-                     STAY: Casper WY
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9d842e6f0d23de0880024501987ec4db = L.marker(
-                [42.867, -106.313],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_721b288fe6121677a8aa5c83e3cb9aaa = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Casper WY\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_9d842e6f0d23de0880024501987ec4db.setIcon(div_icon_721b288fe6121677a8aa5c83e3cb9aaa);
-            
-    
-            var circle_marker_26133bafb06a18ffc5db8997c398dbf6 = L.circleMarker(
-                [41.587, -109.203],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2b6cb0", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_501cbe64b9a0ca46864548bfd8c1b014 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_d4605712bae40476980b5156bd601a54 = $(`<div id="html_d4605712bae40476980b5156bd601a54" style="width: 100.0%; height: 100.0%;">STAY: Rock Springs WY</div>`)[0];
-                popup_501cbe64b9a0ca46864548bfd8c1b014.setContent(html_d4605712bae40476980b5156bd601a54);
-            
-        
-
-        circle_marker_26133bafb06a18ffc5db8997c398dbf6.bindPopup(popup_501cbe64b9a0ca46864548bfd8c1b014)
-        ;
-
-        
-    
-    
-            circle_marker_26133bafb06a18ffc5db8997c398dbf6.bindTooltip(
-                `<div>
-                     STAY: Rock Springs WY
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_2e825190f40787330660e8c10c20de76 = L.marker(
-                [41.587, -109.203],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_bb656be127e451ef2b1c460f7c2c800f = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Rock Springs WY\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_2e825190f40787330660e8c10c20de76.setIcon(div_icon_bb656be127e451ef2b1c460f7c2c800f);
-            
-    
-            var circle_marker_091a0ca01b1670e21f943fd8d8b172c9 = L.circleMarker(
-                [42.619, -112.012],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2b6cb0", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_8fc4420332a70f736b18fa7a9ad41736 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_03252f87599e5803b1b47771e3fc2a40 = $(`<div id="html_03252f87599e5803b1b47771e3fc2a40" style="width: 100.0%; height: 100.0%;">STAY: Lava Hot Springs ID</div>`)[0];
-                popup_8fc4420332a70f736b18fa7a9ad41736.setContent(html_03252f87599e5803b1b47771e3fc2a40);
-            
-        
-
-        circle_marker_091a0ca01b1670e21f943fd8d8b172c9.bindPopup(popup_8fc4420332a70f736b18fa7a9ad41736)
-        ;
-
-        
-    
-    
-            circle_marker_091a0ca01b1670e21f943fd8d8b172c9.bindTooltip(
-                `<div>
-                     STAY: Lava Hot Springs ID
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_cf330ac296977ddcb8b0389998dace87 = L.marker(
-                [42.619, -112.012],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_aed7d740b3ee33020982521823189091 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSTAY: Lava Hot Springs ID\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_cf330ac296977ddcb8b0389998dace87.setIcon(div_icon_aed7d740b3ee33020982521823189091);
-            
-    
-            var circle_marker_a8003e8f4319ee81f4e83faa73cd3806 = L.circleMarker(
-                [43.612, -116.392],
-                {"bubblingMouseEvents": true, "color": "#1a365d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#276749", "fillOpacity": 0.95, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_e080b9a02b2bd2239d0c28caec32a61d = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_2c6783a20c2e6db4a07aa4f41e75658f = $(`<div id="html_2c6783a20c2e6db4a07aa4f41e75658f" style="width: 100.0%; height: 100.0%;">HOME: Boise / Meridian ID</div>`)[0];
-                popup_e080b9a02b2bd2239d0c28caec32a61d.setContent(html_2c6783a20c2e6db4a07aa4f41e75658f);
-            
-        
-
-        circle_marker_a8003e8f4319ee81f4e83faa73cd3806.bindPopup(popup_e080b9a02b2bd2239d0c28caec32a61d)
-        ;
-
-        
-    
-    
-            circle_marker_a8003e8f4319ee81f4e83faa73cd3806.bindTooltip(
-                `<div>
-                     HOME: Boise / Meridian ID
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_be4bee55791310f83370dc9ba94ae499 = L.marker(
-                [43.612, -116.392],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_7d9db81936b55f82239611ca880698f5 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:11px;font-weight:700;color:#1a202c;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eHOME: Boise / Meridian ID\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_be4bee55791310f83370dc9ba94ae499.setIcon(div_icon_7d9db81936b55f82239611ca880698f5);
-            
-    
-            var regular_polygon_marker_fe6c9974a0439a7416463487aeed2777 = new L.RegularPolygonMarker(
-                [43.879, -103.459],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_fcf8715763a8472734e079a543e4ad02 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_4f5a930188fac66fdbd706181708d9bf = $(`<div id="html_4f5a930188fac66fdbd706181708d9bf" style="width: 100.0%; height: 100.0%;">Rushmore (VISIT)</div>`)[0];
-                popup_fcf8715763a8472734e079a543e4ad02.setContent(html_4f5a930188fac66fdbd706181708d9bf);
-            
-        
-
-        regular_polygon_marker_fe6c9974a0439a7416463487aeed2777.bindPopup(popup_fcf8715763a8472734e079a543e4ad02)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_fe6c9974a0439a7416463487aeed2777.bindTooltip(
-                `<div>
-                     Rushmore (VISIT)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_18a46556f92ec9b149c22d5a0010458a = L.marker(
-                [43.879, -103.459],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_96c3053ac7d58145c944a77d4d1b33b2 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eRushmore (VISIT)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_18a46556f92ec9b149c22d5a0010458a.setIcon(div_icon_96c3053ac7d58145c944a77d4d1b33b2);
-            
-    
-            var regular_polygon_marker_2b2daf84fabd9c00eb2d41a306f2c6e0 = new L.RegularPolygonMarker(
-                [43.837, -103.623],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_71144ff6b63c613497b8e6d84e1377aa = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_b798ae3f609d9f5406176f0075db3324 = $(`<div id="html_b798ae3f609d9f5406176f0075db3324" style="width: 100.0%; height: 100.0%;">Crazy Horse (VISIT opt)</div>`)[0];
-                popup_71144ff6b63c613497b8e6d84e1377aa.setContent(html_b798ae3f609d9f5406176f0075db3324);
-            
-        
-
-        regular_polygon_marker_2b2daf84fabd9c00eb2d41a306f2c6e0.bindPopup(popup_71144ff6b63c613497b8e6d84e1377aa)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_2b2daf84fabd9c00eb2d41a306f2c6e0.bindTooltip(
-                `<div>
-                     Crazy Horse (VISIT opt)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_62d448b7e38884be8a7e9abf1f17a228 = L.marker(
-                [43.837, -103.623],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_c394726afdb55a1b8720ced27b043584 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eCrazy Horse (VISIT opt)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_62d448b7e38884be8a7e9abf1f17a228.setIcon(div_icon_c394726afdb55a1b8720ced27b043584);
-            
-    
-            var regular_polygon_marker_223c64d445449fa8cc53ef1154414aa8 = new L.RegularPolygonMarker(
-                [43.77, -103.37],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_bcb596172dfafa2ab4390db093c4196c = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_bbea79c8e3d942fcc70f2a6582c03b9b = $(`<div id="html_bbea79c8e3d942fcc70f2a6582c03b9b" style="width: 100.0%; height: 100.0%;">Custer Wildlife Loop (VISIT)</div>`)[0];
-                popup_bcb596172dfafa2ab4390db093c4196c.setContent(html_bbea79c8e3d942fcc70f2a6582c03b9b);
-            
-        
-
-        regular_polygon_marker_223c64d445449fa8cc53ef1154414aa8.bindPopup(popup_bcb596172dfafa2ab4390db093c4196c)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_223c64d445449fa8cc53ef1154414aa8.bindTooltip(
-                `<div>
-                     Custer Wildlife Loop (VISIT)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_9c83ee5f26e803b9552cd0f557595b8c = L.marker(
-                [43.77, -103.37],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_5c9fde1d2f5f0648a04233a571a03523 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eCuster Wildlife Loop (VISIT)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_9c83ee5f26e803b9552cd0f557595b8c.setIcon(div_icon_5c9fde1d2f5f0648a04233a571a03523);
-            
-    
-            var regular_polygon_marker_db619becf358a0caecc06e5ea17d0865 = new L.RegularPolygonMarker(
-                [44.377, -103.73],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_79152a00bda93d0fba88b968461e2a5f = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_de9175de12e2017d3f7b6b6376f9e6d3 = $(`<div id="html_de9175de12e2017d3f7b6b6376f9e6d3" style="width: 100.0%; height: 100.0%;">Deadwood (VISIT / truck day)</div>`)[0];
-                popup_79152a00bda93d0fba88b968461e2a5f.setContent(html_de9175de12e2017d3f7b6b6376f9e6d3);
-            
-        
-
-        regular_polygon_marker_db619becf358a0caecc06e5ea17d0865.bindPopup(popup_79152a00bda93d0fba88b968461e2a5f)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_db619becf358a0caecc06e5ea17d0865.bindTooltip(
-                `<div>
-                     Deadwood (VISIT / truck day)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_cb4c4c41d89e27680c53db7f317ededb = L.marker(
-                [44.377, -103.73],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_e072a07efbdd919a7d5ce6888f1a1ff1 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eDeadwood (VISIT / truck day)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_cb4c4c41d89e27680c53db7f317ededb.setIcon(div_icon_e072a07efbdd919a7d5ce6888f1a1ff1);
-            
-    
-            var regular_polygon_marker_e8d6c8b62ed3ad828753acec31655f80 = new L.RegularPolygonMarker(
-                [44.47, -103.86],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_1385461bfdeb35710943503e29d0cbe9 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_40bd460b14a4bc6744486f45c63009c1 = $(`<div id="html_40bd460b14a4bc6744486f45c63009c1" style="width: 100.0%; height: 100.0%;">Spearfish Canyon (VISIT opt)</div>`)[0];
-                popup_1385461bfdeb35710943503e29d0cbe9.setContent(html_40bd460b14a4bc6744486f45c63009c1);
-            
-        
-
-        regular_polygon_marker_e8d6c8b62ed3ad828753acec31655f80.bindPopup(popup_1385461bfdeb35710943503e29d0cbe9)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_e8d6c8b62ed3ad828753acec31655f80.bindTooltip(
-                `<div>
-                     Spearfish Canyon (VISIT opt)
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_cdbccb96cb3674572b4df89b9dfeeadb = L.marker(
-                [44.47, -103.86],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_a929d81b4c5ab02814e494b7a2394318 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eSpearfish Canyon (VISIT opt)\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_cdbccb96cb3674572b4df89b9dfeeadb.setIcon(div_icon_a929d81b4c5ab02814e494b7a2394318);
-            
-    
-            var regular_polygon_marker_cc62ee1b30ea19a2c0eac3429a1597cd = new L.RegularPolygonMarker(
-                [43.84, -103.53],
-                {
-  "stroke": true,
-  "color": "#276749",
-  "weight": 2,
-  "opacity": 1.0,
-  "lineCap": "round",
-  "lineJoin": "round",
-  "dashArray": null,
-  "dashOffset": null,
-  "fill": true,
-  "fillColor": "#ffffff",
-  "fillOpacity": 0.95,
-  "fillRule": "evenodd",
-  "bubblingMouseEvents": true,
-  "radius": 7,
-  "numberOfSides": 4,
-  "rotation": 45,
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-        var popup_5c1139687dd67d00d0028043e5678094 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_63bffc5c8c9f94b11e6ddc4f83426ac5 = $(`<div id="html_63bffc5c8c9f94b11e6ddc4f83426ac5" style="width: 100.0%; height: 100.0%;">Needles / Iron Mtn — truck only</div>`)[0];
-                popup_5c1139687dd67d00d0028043e5678094.setContent(html_63bffc5c8c9f94b11e6ddc4f83426ac5);
-            
-        
-
-        regular_polygon_marker_cc62ee1b30ea19a2c0eac3429a1597cd.bindPopup(popup_5c1139687dd67d00d0028043e5678094)
-        ;
-
-        
-    
-    
-            regular_polygon_marker_cc62ee1b30ea19a2c0eac3429a1597cd.bindTooltip(
-                `<div>
-                     Needles / Iron Mtn — truck only
-                 </div>`,
-                {
-  "sticky": true,
-}
-            );
-        
-    
-            var marker_ba792df1f021635099994363f8c5aa15 = L.marker(
-                [43.84, -103.53],
-                {
-}
-            ).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
-        
-    
-            var div_icon_63871548e793adb34623fae1de338599 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size:10px;font-weight:600;color:#276749;white-space:nowrap;background:rgba(255,255,255,0.92);padding:2px 5px;border-radius:3px;border:1px solid #bbb;\"\u003eNeedles / Iron Mtn \u2014 truck only\u003c/div\u003e",
-  "iconSize": [340, 26],
-  "iconAnchor": [-8, 10],
-  "className": "empty",
-});
-        
-    
-                marker_ba792df1f021635099994363f8c5aa15.setIcon(div_icon_63871548e793adb34623fae1de338599);
-            
-    
-            map_3d8c9dff8b70feb578f47454d5b4961e.fitBounds(
-                [[43.718, -96.193], [43.709, -98.03], [43.805, -99.33], [43.746, -101.948], [43.993, -102.242], [43.97, -103.476], [44.671, -103.852], [44.59, -104.715], [42.867, -106.313], [41.587, -109.203], [42.619, -112.012], [43.612, -116.392], [43.879, -103.459], [43.837, -103.623], [43.77, -103.37], [44.377, -103.73], [44.47, -103.86], [43.84, -103.53]],
-                {"padding": [40, 40]}
-            );
-        
-</script>
-</html>
-
-<script>
-(function tryAdd(){
-  if (typeof L === 'undefined' || !L.gridLayer || !L.gridLayer.googleMutant || typeof map_3d8c9dff8b70feb578f47454d5b4961e === 'undefined') {
-    return setTimeout(tryAdd, 50);
+  function kindIcon(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: s.fill,
+      fillOpacity: kind === "visit" ? 0.15 : 1,
+      strokeColor: s.stroke,
+      strokeWeight: 2.5,
+      scale: s.scale
+    };
   }
-  L.gridLayer.googleMutant({ type: 'roadmap', maxZoom: 21 }).addTo(map_3d8c9dff8b70feb578f47454d5b4961e);
+
+  function infoHtml(place) {
+    const kindLabel = ({
+      current: "CURRENT",
+      stay: "STAY",
+      later: "STAY (later corridor)",
+      visit: "VISIT",
+      home: "HOME"
+    })[place.kind] || place.kind;
+    return (
+      "<div style='max-width:260px;font-size:13px;line-height:1.4'>" +
+      "<b>" + place.name + "</b><br>" +
+      "<span style='color:#4a5568'>" + kindLabel + " · " +
+      place.lat.toFixed(3) + ", " + place.lng.toFixed(3) + "</span><br>" +
+      "<button type='button' style='margin-top:6px;padding:4px 8px;cursor:pointer' " +
+      "onclick=\"window.__btbDirectionsTo(" + place.lat + "," + place.lng + "," +
+      JSON.stringify(place.name) + ")\">Directions here</button>" +
+      "</div>"
+    );
+  }
+
+  function addMarker(place, mapObj) {
+    const marker = new google.maps.Marker({
+      position: { lat: place.lat, lng: place.lng },
+      map: mapObj,
+      title: place.name,
+      icon: kindIcon(place.kind),
+      label: KIND_STYLE[place.kind].label
+        ? { text: KIND_STYLE[place.kind].label, color: place.kind === "visit" ? "#2c7a7b" : "#fff", fontSize: "11px", fontWeight: "700" }
+        : undefined,
+      zIndex: place.kind === "current" ? 1000 : place.kind === "home" ? 900 : 100
+    });
+    const iw = new google.maps.InfoWindow({ content: infoHtml(place) });
+    marker.addListener("click", () => {
+      iw.open({ map: mapObj, anchor: marker });
+    });
+    marker.addListener("dblclick", () => {
+      routeTo(place.lat, place.lng, place.name);
+    });
+    markers.push(marker);
+    return marker;
+  }
+
+  function drawSpine(mapObj) {
+    const path = SPINE.map(p => ({ lat: p.lat, lng: p.lng }));
+    spinePolyline = new google.maps.Polyline({
+      path: path,
+      geodesic: true,
+      strokeColor: "#2b6cb0",
+      strokeOpacity: 0.85,
+      strokeWeight: 4,
+      map: mapObj,
+      zIndex: 1
+    });
+  }
+
+  function fitTrip() {
+    const bounds = new google.maps.LatLngBounds();
+    SPINE.forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    HILLS.forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    map.fitBounds(bounds, 48);
+  }
+
+  function resolveOrigin(cb) {
+    const mode = document.getElementById("origin-select").value;
+    if (mode === "blue-mounds") {
+      cb(null, { lat: 43.718, lng: -96.193 }, "Blue Mounds SP");
+      return;
+    }
+    if (mode === "geolocation") {
+      if (geolocPos) {
+        cb(null, geolocPos, "My location");
+        return;
+      }
+      if (!navigator.geolocation) {
+        cb(new Error("Geolocation not available"));
+        return;
+      }
+      setStatus("Getting your location…");
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setStatus("");
+          cb(null, geolocPos, "My location");
+        },
+        (err) => cb(err || new Error("Location denied")),
+        { enableHighAccuracy: true, timeout: 12000 }
+      );
+      return;
+    }
+    if (mode === "custom") {
+      if (searchPlace && searchPlace.geometry && searchPlace.geometry.location) {
+        const loc = searchPlace.geometry.location;
+        cb(null, { lat: loc.lat(), lng: loc.lng() }, searchPlace.name || searchPlace.formatted_address || "Search origin");
+        return;
+      }
+      cb(new Error("Pick a place in the search box first (origin = search place)"));
+      return;
+    }
+    cb(new Error("Unknown origin mode"));
+  }
+
+  function showDirectionsPanel(result, destName) {
+    const panel = document.getElementById("directions-panel");
+    const meta = document.getElementById("dir-meta");
+    const steps = document.getElementById("dir-steps");
+    const leg = result.routes[0].legs[0];
+    meta.innerHTML =
+      "<b>" + leg.start_address + "</b> → <b>" + (destName || leg.end_address) + "</b><br>" +
+      leg.distance.text + " · " + leg.duration.text;
+    let html = "<ol style='padding-left:18px;margin:0'>";
+    leg.steps.forEach((s) => {
+      html += "<li style='margin-bottom:4px'>" + s.instructions +
+        " <span style='color:#718096'>(" + s.distance.text + ")</span></li>";
+    });
+    html += "</ol>";
+    steps.innerHTML = html;
+    panel.style.display = "block";
+  }
+
+  function clearRoute() {
+    directionsRenderer.set("directions", null);
+    document.getElementById("directions-panel").style.display = "none";
+    document.getElementById("dir-steps").innerHTML = "";
+    document.getElementById("dir-meta").textContent = "";
+    setStatus("");
+  }
+
+  function routeTo(lat, lng, name) {
+    resolveOrigin((err, origin, originName) => {
+      if (err) {
+        setStatus(err.message || String(err));
+        return;
+      }
+      setStatus("Routing " + originName + " → " + (name || "destination") + "…");
+      directionsService.route(
+        {
+          origin: origin,
+          destination: { lat: lat, lng: lng },
+          travelMode: google.maps.TravelMode.DRIVING
+        },
+        (result, status) => {
+          if (status === "OK" && result) {
+            directionsRenderer.setDirections(result);
+            showDirectionsPanel(result, name);
+            setStatus("Route ready: " + originName + " → " + (name || "destination"));
+          } else {
+            setStatus("Directions failed: " + status);
+          }
+        }
+      );
+    });
+  }
+
+  window.__btbDirectionsTo = routeTo;
+
+  function routeToSearchPlace() {
+    if (!searchPlace || !searchPlace.geometry || !searchPlace.geometry.location) {
+      setStatus("Choose a place from the search suggestions first.");
+      return;
+    }
+    const loc = searchPlace.geometry.location;
+    const name = searchPlace.name || searchPlace.formatted_address || "Search result";
+    // If origin mode is "custom", search place is the origin — need a destination.
+    // Default: treat search as destination when origin is blue-mounds or geolocation.
+    const mode = document.getElementById("origin-select").value;
+    if (mode === "custom") {
+      setStatus("Origin is the search place — click a trip marker (or dbl-click) for destination.");
+      return;
+    }
+    routeTo(loc.lat(), loc.lng(), name);
+  }
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: 43.5, lng: -106.5 },
+      zoom: 6,
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+        position: google.maps.ControlPosition.TOP_LEFT
+      },
+      zoomControl: true,
+      zoomControlOptions: { position: google.maps.ControlPosition.LEFT_CENTER },
+      streetViewControl: false,
+      fullscreenControl: true,
+      scaleControl: true,
+      gestureHandling: "greedy"
+    });
+
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+      map: map,
+      suppressMarkers: false,
+      polylineOptions: {
+        strokeColor: "#c53030",
+        strokeOpacity: 0.9,
+        strokeWeight: 5,
+        zIndex: 50
+      }
+    });
+    placesService = new google.maps.places.PlacesService(map);
+
+    SPINE.forEach(p => addMarker(p, map));
+    HILLS.forEach(p => addMarker(p, map));
+    drawSpine(map);
+    fitTrip();
+
+    const input = document.getElementById("pac-input");
+    autocomplete = new google.maps.places.Autocomplete(input, {
+      fields: ["geometry", "name", "formatted_address", "place_id"],
+      componentRestrictions: { country: ["us", "ca"] }
+    });
+    autocomplete.bindTo("bounds", map);
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) {
+        setStatus("No details for that place.");
+        return;
+      }
+      searchPlace = place;
+      map.panTo(place.geometry.location);
+      if (map.getZoom() < 10) map.setZoom(11);
+      setStatus("Selected: " + (place.name || place.formatted_address));
+      const mode = document.getElementById("origin-select").value;
+      if (mode !== "custom") {
+        routeToSearchPlace();
+      }
+    });
+
+    document.getElementById("btn-go").addEventListener("click", routeToSearchPlace);
+    document.getElementById("btn-clear").addEventListener("click", clearRoute);
+    document.getElementById("btn-fit").addEventListener("click", () => {
+      clearRoute();
+      fitTrip();
+    });
+
+    // Soft geolocation prefetch (optional)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        },
+        () => {},
+        { timeout: 8000 }
+      );
+    }
+  }
+
+  window.initMap = initMap;
 })();
-</script>
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI&libraries=places&callback=initMap">
+  </script>
+</body>
+</html>
