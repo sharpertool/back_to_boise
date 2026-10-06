@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Back to Boise — from Blue Mounds</title>
 
 <style>
 html, body {
@@ -114,8 +115,6 @@ html, body {
 
                 }
             );
-            window._btbMap = map_7545b75f6d1b0348077cbc58d1f14ac2;
-            setTimeout(function(){ try { map_7545b75f6d1b0348077cbc58d1f14ac2.invalidateSize(true); } catch(e){} }, 100);
 
 
             
@@ -123,8 +122,9 @@ html, body {
         
     
             var tile_layer_093a67049ba3edcbf30cb2e9bd66412e = L.tileLayer(
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
                 {
+                "subdomains": "abcd",
   "minZoom": 0,
   "maxZoom": 19,
   "maxNativeZoom": 19,
@@ -1604,66 +1604,6 @@ html, body {
                 {"padding": [40, 40]}
             );
         
-</script>
-
-<script>
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    try {
-      var ids = Object.keys(window).filter(function(k){ return k.indexOf('map_')===0 && window[k] && window[k].invalidateSize; });
-      // Folium maps are local vars; query leaflet container instead
-      document.querySelectorAll('.folium-map, .leaflet-container').forEach(function(el) {
-        if (el._leaflet_id != null && window.L) {
-          var map = el._leaflet || null;
-        }
-      });
-      var containers = document.querySelectorAll('.leaflet-container');
-      containers.forEach(function(c) {
-        // find map via Leaflet internal
-      });
-      // Prefer direct: Folium stores map in var — call via L.Map instances
-      for (var id in L.Map.prototype ? {} : {}) {}
-      if (window.L && L.DomUtil) {
-        document.querySelectorAll('.folium-map').forEach(function(div) {
-          // Leaflet attaches map to element
-          if (div._leaflet_id !== undefined) {
-            // walk maps
-          }
-        });
-      }
-      // Robust: trigger resize which Leaflet listens to
-      window.dispatchEvent(new Event('resize'));
-      setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 250);
-    } catch (e) { console.warn('map resize', e); }
-  }, 100);
-});
-</script>
-
-
-<script>
-(function() {
-  function fixMap() {
-    try {
-      var el = document.getElementById('map_7545b75f6d1b0348077cbc58d1f14ac2');
-      if (!el) return;
-      el.style.height = Math.max(window.innerHeight, 600) + 'px';
-      el.style.width = '100%';
-      // Leaflet stores id on element
-      if (window.L) {
-        // Find map instance: Folium leaves it in local scope; use _leaflet_id
-        for (var key in window) {
-          if (key.indexOf('map_') === 0 && window[key] && typeof window[key].invalidateSize === 'function') {
-            window[key].invalidateSize(true);
-          }
-        }
-        window.dispatchEvent(new Event('resize'));
-      }
-    } catch (e) { console.error(e); }
-  }
-  if (document.readyState === 'complete') setTimeout(fixMap, 50);
-  else window.addEventListener('load', function() { setTimeout(fixMap, 50); setTimeout(fixMap, 300); });
-  window.addEventListener('resize', fixMap);
-})();
 </script>
 
 </html>
