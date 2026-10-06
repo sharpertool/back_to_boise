@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<style>
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  min-height: 100vh; overflow: hidden; background: #e8eef5;
+}
+#map_7545b75f6d1b0348077cbc58d1f14ac2, .folium-map {
+  display: block !important;
+  position: absolute !important;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100% !important;
+  height: 80vh !important;
+  min-height: 600px !important;
+  z-index: 1;
+  background: #d0d8e0;
+}
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 600px !important;
+}
+</style>
+
     
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
@@ -18,20 +41,23 @@
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
                 #map_7545b75f6d1b0348077cbc58d1f14ac2 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
+                    position: absolute !important;
+                    top: 0; right: 0; bottom: 0; left: 0;
+                    width: 100% !important;
+                    height: 100vh !important;
+                    min-height: 600px;
+                    z-index: 0;
                 }
-                .leaflet-container { font-size: 1rem; }
+                .leaflet-container { font-size: 1rem; width: 100% !important; height: 100% !important; }
             </style>
 
             <style>html, body {
                 width: 100%;
                 height: 100%;
+                min-height: 100vh;
                 margin: 0;
                 padding: 0;
+                overflow: hidden;
             }
             </style>
 
@@ -69,7 +95,7 @@
     </div>
     
     
-            <div class="folium-map" id="map_7545b75f6d1b0348077cbc58d1f14ac2" ></div>
+            <div class="folium-map" id="map_7545b75f6d1b0348077cbc58d1f14ac2"  style="width:100% !important; height:80vh !important; min-height:600px !important; position:absolute; top:0; left:0; right:0; z-index:1;"></div>
         
 </body>
 <script>
@@ -88,6 +114,9 @@
 
                 }
             );
+            window._btbMap = map_7545b75f6d1b0348077cbc58d1f14ac2;
+            setTimeout(function(){ try { map_7545b75f6d1b0348077cbc58d1f14ac2.invalidateSize(true); } catch(e){} }, 100);
+
 
             
 
@@ -1576,4 +1605,65 @@
             );
         
 </script>
+
+<script>
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    try {
+      var ids = Object.keys(window).filter(function(k){ return k.indexOf('map_')===0 && window[k] && window[k].invalidateSize; });
+      // Folium maps are local vars; query leaflet container instead
+      document.querySelectorAll('.folium-map, .leaflet-container').forEach(function(el) {
+        if (el._leaflet_id != null && window.L) {
+          var map = el._leaflet || null;
+        }
+      });
+      var containers = document.querySelectorAll('.leaflet-container');
+      containers.forEach(function(c) {
+        // find map via Leaflet internal
+      });
+      // Prefer direct: Folium stores map in var — call via L.Map instances
+      for (var id in L.Map.prototype ? {} : {}) {}
+      if (window.L && L.DomUtil) {
+        document.querySelectorAll('.folium-map').forEach(function(div) {
+          // Leaflet attaches map to element
+          if (div._leaflet_id !== undefined) {
+            // walk maps
+          }
+        });
+      }
+      // Robust: trigger resize which Leaflet listens to
+      window.dispatchEvent(new Event('resize'));
+      setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 250);
+    } catch (e) { console.warn('map resize', e); }
+  }, 100);
+});
+</script>
+
+
+<script>
+(function() {
+  function fixMap() {
+    try {
+      var el = document.getElementById('map_7545b75f6d1b0348077cbc58d1f14ac2');
+      if (!el) return;
+      el.style.height = Math.max(window.innerHeight, 600) + 'px';
+      el.style.width = '100%';
+      // Leaflet stores id on element
+      if (window.L) {
+        // Find map instance: Folium leaves it in local scope; use _leaflet_id
+        for (var key in window) {
+          if (key.indexOf('map_') === 0 && window[key] && typeof window[key].invalidateSize === 'function') {
+            window[key].invalidateSize(true);
+          }
+        }
+        window.dispatchEvent(new Event('resize'));
+      }
+    } catch (e) { console.error(e); }
+  }
+  if (document.readyState === 'complete') setTimeout(fixMap, 50);
+  else window.addEventListener('load', function() { setTimeout(fixMap, 50); setTimeout(fixMap, 300); });
+  window.addEventListener('resize', fixMap);
+})();
+</script>
+
 </html>
