@@ -37,4 +37,4 @@ Once this repo is published (`sharpertool/back_to_boise`):
 python make_return_map.py
 ```
 
-Cedar Pass is **LOCKED** as the next overnight (departed Luverne Sat Oct 10 2026). Do not email Vicki.
+Status: Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17.
