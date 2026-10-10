@@ -3,23 +3,16 @@
 Interactive Folium map + locations table for Ed Henderson’s mid-October return:
 **Blue Mounds MN → SD → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian**.
 
-## Live pages
+## Live pages (after GitHub Pages / CDN)
 
-Primary (GitHub Pages — deploy from branch `main`, folder `/`):
+Once this repo is published (`sharpertool/back_to_boise`):
 
-| Page | URL |
-|---|---|
-| **Map** | https://sharpertool.github.io/back_to_boise/ |
-| **Locations** (water/closes) | https://sharpertool.github.io/back_to_boise/locations.html |
+| Page | GitHub Pages (preferred) | jsDelivr fallback |
+|---|---|---|
+| **Map** | https://sharpertool.github.io/back_to_boise/ | https://cdn.jsdelivr.net/gh/sharpertool/back_to_boise@main/index.html |
+| **Locations** (water/closes) | https://sharpertool.github.io/back_to_boise/locations.html | https://cdn.jsdelivr.net/gh/sharpertool/back_to_boise@main/locations.html |
 
-Interim, until Pages is enabled (renders the raw HTML):
-
-| Page | URL |
-|---|---|
-| **Map** | https://htmlpreview.github.io/?https://raw.githubusercontent.com/sharpertool/back_to_boise/main/index.html |
-| **Locations** | https://htmlpreview.github.io/?https://raw.githubusercontent.com/sharpertool/back_to_boise/main/locations.html |
-
-jsDelivr is not a substitute for these pages. It serves the HTML as `text/plain`, so browsers show source instead of the map or table.
+> Placeholder until Pages is enabled. Prefer Pages URLs once `gh api .../pages` succeeds; otherwise use jsDelivr.
 
 ## Files
 
@@ -44,4 +37,4 @@ jsDelivr is not a substitute for these pages. It serves the HTML as `text/plain`
 python make_return_map.py
 ```
 
-Cedar Pass remains **PROVISIONAL**. Do not email Vicki.
+Cedar Pass is **LOCKED** as the next overnight (departed Luverne Sat Oct 10 2026). Do not email Vicki.

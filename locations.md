@@ -2,9 +2,10 @@
 
 **America the Beautiful Senior Pass.** Prefers legal dispersed (OnX). Harvest Hosts backup. Service CG fine. Water useful; no electrical needed. Solar OK. No black tank.
 
-**Cedar Pass = PROVISIONAL ONLY — NOT LOCKED.**
+**Cedar Pass = LOCKED — next overnight, departing Luverne Sat Oct 10 2026.** Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
 
 **Generated:** Tue Oct 6, 2026 ~3:10 PM CT  
+**Updated:** Sat Oct 10, 2026 — departed Blue Mounds; next = Cedar Pass (LOCKED)  
 **Corridor:** Blue Mounds MN → SD stays/visits → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian.
 
 **OnX links:** `https://webmap.onxmaps.com/?lat=LAT&lng=LON&zoom=13` (opens OnX web map centered on coords). If web map fails, paste coords into the OnX app.
@@ -20,7 +21,7 @@
 | BHNF developed CGs | **Drinking water OFF from Oct 1** (off-season). Many loops close Oct 1; some loops stay open FCFS, no water. | USFS BHNF Off-Season page updated Sept 15, 2026 |
 | Sheridan Lake South | Woodsy Loop open off-season from **Oct 1**; other loops closed; **no drinking water** Oct 1–~May 15 | USFS / recreation.gov |
 | Roubaix Lake | C Loop open from **Oct 1**; other loops closed; **no drinking water** off-season | USFS BHNF Off-Season |
-| Cedar Pass CG (**PROVISIONAL**) | Season inventory on rec.gov shows sites through **2026-10-19**; Nov = unavailable. Lodge seasonal **Apr 15–Oct 15** (staybadlands.com). Conflict with some blogs saying Oct 11 — **rec.gov calendar does NOT support Oct 11 close**. VERIFY water/kiosk after lodge closes ~Oct 15. | recreation.gov API inventory Oct 2026; staybadlands.com |
+| Cedar Pass CG (**LOCKED — next overnight, Sat Oct 10**) | Season inventory on rec.gov shows sites through **2026-10-19**; Nov = unavailable. Lodge seasonal **Apr 15–Oct 15** (staybadlands.com). Conflict with some blogs saying Oct 11 — **rec.gov calendar does NOT support Oct 11 close**. VERIFY water/kiosk after lodge closes ~Oct 15. | recreation.gov API inventory Oct 2026; staybadlands.com |
 | Game Lodge (CSP) | Full facilities **May 1–Nov 1**; Nov 2–Apr 30: comfort station closed, **vault + water hydrant** still listed | gfp.sd.gov/csp-campgrounds |
 | Rocky Point RA | Year-round camping; **Oct 1–Apr 30** showers/flush/**water systems may be closed** — call | gfp.sd.gov Rocky Point |
 | Devils Tower Belle Fourche CG | Open ~**May 15–mid Oct**; NPS lists off-season **Oct 15–May 15** closed. Water with season. | nps.gov/deto campgrounds |
@@ -61,14 +62,18 @@
 
 ---
 
-## Cedar Pass provisional (NOT LOCKED)
+## Cedar Pass — LOCKED — next overnight, departing Luverne Sat Oct 10 2026
 
 **2026 CG season (best evidence):** recreation.gov inventory lists site nights through **Oct 19, 2026**; November nights all unavailable. Official rec.gov blurb: “late March through mid-October.” National Park Traveler previously listed **Mar 27 – Oct 19, 2026**. **The Dyrt “Oct 11” close is NOT supported by the live rec.gov calendar.**
 
 **Lodge / restaurant:** staybadlands.com (Explor Badlands) seasonal dates **April 15 – October 15** — VERIFY whether CG potable water / dump / kiosk remain after lodge closes ~Oct 15.
 
-**Pros:** ≤55 ft listed; electric optional; dump Group Loop; open prairie solar; Senior Pass entry; ~290–310 mi from Blue Mounds via I-90 exit 131.  
-**Cons:** High wind; fees; mid-Oct shoulder services; **PROVISIONAL — do not lock.**
+**Pros:** ≤55 ft listed; electric optional; dump Group Loop; open prairie solar; Senior Pass entry; ~290–320 mi (~4.5–5 h) from Luverne via I-90 exit 131.  
+**Cons:** High wind; fees; mid-Oct shoulder services. **LOCKED — next overnight (Sat Oct 10 2026).**
+
+**Drive:** ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
+
+**Facilities:** developed CG; potable water; flush toilets; Group Loop dump ($1); pay showers; electric sites optional — non-electric **$37** / electric **$47** (Senior Pass ~50% off); rec.gov inventory through **2026-10-19**.
 
 **Badlands dispersed backups:** Nomad View / The Wall `43.893099, -102.238540`; Conata Basin `43.99249, -102.24155` (Buffalo Gap NG).
 
@@ -94,10 +99,10 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 
 | Location | Google Maps | OnX | Camping type | Water | Gas nearby | Food nearby | Water available until / closes (2026) | Notes | Phone | Website |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Blue Mounds SP (current) | https://www.google.com/maps?q=43.718,-96.193 | https://webmap.onxmaps.com/?lat=43.718&lng=-96.193&zoom=13 | developed CG | Park potable / dump (seasonal VERIFY) | Luverne ~4–5 mi | Luverne grocery | Park open year-round; **CG water/showers: VERIFY** — park **not** listed on MN DNR winter-camping page → expect frost shutoff. Call before relying on fill. | MN SP; bison; Senior Pass N/A (state) | 507-283-6050; res 866-857-2757 | https://www.dnr.state.mn.us/state_parks/park.html?id=spk00121 |
+| Blue Mounds SP (departed Oct 10 → next = Cedar Pass) | https://www.google.com/maps?q=43.718,-96.193 | https://webmap.onxmaps.com/?lat=43.718&lng=-96.193&zoom=13 | developed CG | Park potable / dump (seasonal VERIFY) | Luverne ~4–5 mi | Luverne grocery | Park open year-round; **CG water/showers: VERIFY** — park **not** listed on MN DNR winter-camping page → expect frost shutoff. Call before relying on fill. | MN SP; bison; Senior Pass N/A (state) | 507-283-6050; res 866-857-2757 | https://www.dnr.state.mn.us/state_parks/park.html?id=spk00121 |
 | Mitchell Corn Palace | https://www.google.com/maps?q=43.714644,-98.026019 | https://webmap.onxmaps.com/?lat=43.714644&lng=-98.026019&zoom=13 | visit-only | N/A | Mitchell I-90 | Mitchell | N/A (day stop) | Quick I-90 stop | 605-995-8430 | https://www.cornpalace.com/ |
 | Dignity of Earth & Sky (Chamberlain) | https://www.google.com/maps?q=43.786875,-99.338286 | https://webmap.onxmaps.com/?lat=43.786875&lng=-99.338286&zoom=13 | visit-only | Rest-area seasonal | Chamberlain / I-90 | Chamberlain | Welcome Center facilities typically mid-May–Oct — **VERIFY** mid-Oct restroom/water | I-90 mm 264.4; statue year-round | SD Hall of Fame 605-234-4216 | https://www.travelsouthdakota.com/trip-ideas/article/dignity-earth-and-sky |
-| Cedar Pass CG (**PROVISIONAL**) | https://www.google.com/maps?q=43.746409,-101.946614 | https://webmap.onxmaps.com/?lat=43.746409&lng=-101.946614&zoom=13 | developed CG | Potable + Group Loop dump | Interior limited; Wall ~30–40 mi | Lodge restaurant (to ~Oct 15); Wall grocery | **CG season ~late Mar–mid Oct; rec.gov inventory through 2026-10-19.** Lodge **Apr 15–Oct 15** (staybadlands). Oct 11 blog close = unsupported. Water after ~Oct 15 lodge close: **VERIFY**. **NOT LOCKED.** | ≤55 ft; windy; solar excellent; ~290–310 mi from Blue Mounds via I-90 exit 131 | CG 605-433-5460 / 605-910-9246; NPS 605-433-5361 | https://www.recreation.gov/camping/campgrounds/10288228 |
+| Cedar Pass CG (**LOCKED — next overnight**) | https://www.google.com/maps?q=43.746409,-101.946614 | https://webmap.onxmaps.com/?lat=43.746409&lng=-101.946614&zoom=13 | developed CG | Potable; flush toilets; pay showers; Group Loop dump ($1) | Interior limited; Wall ~30–40 mi | Lodge restaurant (to ~Oct 15); Wall grocery | **CG season ~late Mar–mid Oct; rec.gov inventory through 2026-10-19.** Lodge **Apr 15–Oct 15** (staybadlands). Oct 11 blog close = unsupported. Water after ~Oct 15 lodge close: **VERIFY**. **LOCKED — next overnight, departing Luverne Sat Oct 10 2026.** | ≤55 ft; windy; solar excellent; electric optional (non-elec $37 / elec $47; Senior Pass ~50% off); ~290–320 mi / ~4.5–5 h from Luverne via I-90 exit 131 | CG 605-433-5460 / 605-910-9246; NPS 605-433-5361 | https://www.recreation.gov/camping/campgrounds/10288228 |
 | Nomad View / The Wall (Buffalo Gap) | https://www.google.com/maps?q=43.893099,-102.238540 | https://webmap.onxmaps.com/?lat=43.893099&lng=-102.238540&zoom=13 | dispersed | None on-site; Wall / jug fill VERIFY | Wall ~6 mi | Wall Food Center; Wall Drug | No formal close; frost/wind year-round; wet roads impassable | BGNG MVUM roads; 14-day; big-rig OK; Cedar Pass backup | Wall RD 605-279-2125 | https://www.fs.usda.gov/r02/nebraska/recreation/buffalo-gap-national-grassland |
 | Conata Basin (Buffalo Gap backup) | https://www.google.com/maps?q=43.99249,-102.24155 | https://webmap.onxmaps.com/?lat=43.99249&lng=-102.24155&zoom=13 | dispersed | None — Wall | Wall ~12+ mi gravel | Wall | No formal close; wet = impassable | Prairie pullouts; cattle; OnX public land | Wall RD 605-279-2125 | https://www.fs.usda.gov/r02/nebraska/recreation/buffalo-gap-national-grassland |
 | Wall Drug | https://www.google.com/maps?q=43.9936,-102.2415 | https://webmap.onxmaps.com/?lat=43.9936&lng=-102.2415&zoom=13 | visit-only | Town | Wall stations | Wall Drug + Food Center | Town year-round | Resupply | 605-279-2175 | https://www.walldrug.com/ |
@@ -143,7 +148,7 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 ## Do-not
 
 - Do **not** email Vicki
-- Do **not** lock / reserve Cedar Pass unless Ed explicitly says so
+- Cedar Pass is **LOCKED** as the next overnight (Ed confirmed; departing Luverne Sat Oct 10 2026)
 
 ## Sources (date research)
 
