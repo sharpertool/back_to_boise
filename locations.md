@@ -77,13 +77,59 @@
 
 **Badlands dispersed backups:** Nomad View / The Wall `43.893099, -102.238540`; Conata Basin `43.782492,-102.240161` (Buffalo Gap NG).
 
+### Points of interest: Corn Palace to Cedar Pass
+
+Corn Palace to Cedar Pass: ~210 mi, ~3 h 15 min driving at 65 mph (~222 mi / ~3 h 50 min touching every stop, plus visit time). Badlands is on Mountain time, 1 h behind: clocks go back west of Murdo. Leaving 4:40 PM CT puts you at Cedar Pass ~6:55 PM MT; sunset there ~6:15 PM MT. Listed in driving order, not ranked.
+
+- **POI: Corn Palace, Mitchell** — `43.714706, -98.025077`  
+  Crop-art murals redone every year; free admission and parking (no overnights).  
+  Drive: Start: Mitchell (I-90 exit 332) · Visit: 20–30 min  
+  Hours: Daily 8 AM–5 PM CT, open year-round (cornpalace.com). Closes 5 PM CT today.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.714706,-98.025077,14/overview) · [Google Maps](https://www.google.com/maps?q=43.714706,-98.025077)
+- **POI: Dignity: of Earth and Sky (Chamberlain rest area)** — `43.786875, -99.338286`  
+  50-ft steel statue with a star quilt above the Missouri River; rest area at I-90 MM 264, both directions.  
+  Drive: 69 mi / ~1 h 5 min from Corn Palace · Visit: 15–20 min  
+  Hours: Statue open 24 h; welcome center mid-May–Oct. Sunset ~7:00 PM CT.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.786875,-99.338286,14/overview) · [Google Maps](https://www.google.com/maps?q=43.786875,-99.338286)
+- **POI: 1880 Town (I-90 exit 170, Midland)** — **Skipped (optional)** — `43.883124, -101.140974`  
+  Old West town of relocated buildings, 22 mi west of Murdo; Conoco gas at the exit.  
+  Drive: 95 mi / ~1 h 30 min from Dignity (now on Mountain time) · Visit: 1–1.5 h  
+  Hours: Open to Oct 31: 8 AM–5 PM MT, last ticket 4 PM MT; gas to 7 PM MT (1880town.com). Closed when you pass tonight.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.883124,-101.140974,14/overview) · [Google Maps](https://www.google.com/maps?q=43.883124,-101.140974)
+- **POI: Minuteman Missile NHS Visitor Center (exit 131)** — **Skipped (optional)** — `43.844507, -101.901274`  
+  Cold War ICBM exhibits and film; ¼ mi north of the exit you take for Cedar Pass.  
+  Drive: 39 mi / ~36 min from 1880 Town · Visit: 45 min–1 h  
+  Hours: Winter hours: Tue–Sat 8 AM–4 PM MT; closed Sun and Mon (NPS). Closed tonight and Sun Oct 11.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.844507,-101.901274,14/overview) · [Google Maps](https://www.google.com/maps?q=43.844507,-101.901274)
+- **POI: Big Badlands Overlook** — **Sun AM loop** — `43.7860, -101.9016`  
+  First big view of the Badlands Wall, just inside the Northeast Entrance; short walk from the lot.  
+  Drive: ~4 mi / ~7 min from exit 131 (SD-240 south, park road) · Visit: 10–15 min  
+  Hours: Open 24 h; best at sunrise. Sunset ~6:15 PM MT.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7860,-101.9016,14/overview) · [Google Maps](https://www.google.com/maps?q=43.7860,-101.9016)
+- **POI: Door / Window / Notch trailheads (shared lot)** — **Sun AM loop** — `43.761903, -101.927224`  
+  Door: ~1 mi RT (boardwalk start). Window: short boardwalk. Notch: ladder route.  
+  Drive: ~2 mi / ~5 min from Big Badlands Overlook · Visit: Door + Window 30–45 min  
+  Hours: Open 24 h. Notch Trail CLOSED for ladder repairs (NPS alert, Oct 2026).  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.761903,-101.927224,14/overview) · [Google Maps](https://www.google.com/maps?q=43.761903,-101.927224)
+- **POI: Ben Reifel Visitor Center** — `43.749350, -101.941970`  
+  Park film, exhibits, rangers, passport stamp; next to Cedar Pass Lodge and the campground.  
+  Drive: ~2 mi / ~6 min from Door/Window/Notch · Visit: 30–45 min  
+  Hours: 9 AM–4 PM MT daily (winter hours, NPS). Closed by arrival tonight; open Sun.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.749350,-101.941970,14/overview) · [Google Maps](https://www.google.com/maps?q=43.749350,-101.941970)
+- **POI: Fossil Exhibit Trail** — **Sun AM loop** — `43.77225, -102.00322`  
+  ¼-mi accessible boardwalk with touchable fossil replicas; restrooms, bus/RV parking (NPS).  
+  Drive: ~5 mi / ~12 min west of Ben Reifel (~5 mi past camp, on Loop Rd toward Wall) · Visit: 20–30 min  
+  Hours: Open 24 h.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.77225,-102.00322,14/overview) · [Google Maps](https://www.google.com/maps?q=43.77225,-102.00322)
+
+
 ---
 
 ## Black Hills sit: Sun Oct 11 - Sat Oct 17 2026 (base Hill City / Custer)
 
 Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). Base camp candidates: see Game Lodge / Rafter J / Sheridan Lake South / BHNF dispersed (Taylor Ranch, Calumet, North Pole, Mt Roosevelt) in the table below.
 
-- **Sun Oct 11 (move, both):** Cedar Pass → Hill City ~1.5–2 h (I-90 → Rapid City → US-16). Hill City Main St; optional Rushmore after dark (lit sunset–9 pm).
+- **Sun Oct 11 (move, both):** Morning: Cedar Pass loop in Badlands (Big Badlands Overlook, Door/Window, Fossil Exhibit Trail as time allows; Notch Trail closed for ladder repairs), then drive to the Black Hills. Cedar Pass → Hill City ~110 mi / ~2 h towing (I-90 → Rapid City → US-16); Custer ~125 mi / ~2.5 h; via Loop Rd west to Wall ~120 mi / ~2 h 45 min. Hill City Main St; optional Rushmore after dark (lit sunset–9 pm).
 - **Mon Oct 12:** Vicki AM Crazy Horse (open daily; fall $12 one / $24 two). 2 pm both: US-16A through CSP (non-stop, no license) → Iron Mountain Rd northbound → Rushmore through sunset. **Evening Lighting Program ended Sept 30, 2026**; sculpture lit sunset–9 pm Oct 1–Mar 9. Parking concession (~$10; Senior Pass not valid).
 - **Tue Oct 13:** Vicki AM Jewel Cave (tours Tue–Sat through Oct 17; Scenic ~$16; book rec.gov by noon prior day). 2 pm both: buy CSP 7-day license (**$25/vehicle**; Senior Pass N/A) → Sylvan Lake → Needles Hwy SD-87.
 - **Wed Oct 14:** Vicki AM (optional) Wind Cave (Garden of Eden $7 / Fairgrounds $8 age 62+). 2 pm both: CSP Wildlife Loop (bison, burros; 4–6 pm best).
