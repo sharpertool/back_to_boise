@@ -30,6 +30,14 @@ footer { padding:1.5rem; color:var(--muted); font-size:.85rem; }
 .onx-list li{margin:8px 0;padding:10px;border:1px solid #ccc;border-radius:8px;background:#f7faf5}
 .onx-btn{display:inline-block;margin-top:6px;padding:10px 14px;background:#2e6b30;color:#fff!important;border-radius:6px;text-decoration:none;font-weight:bold}
 .onx-coords{font-family:monospace;color:#444}
+.sit{margin:12px 0;padding:12px;border:2px solid #2e6b30;border-radius:10px;background:#fff}
+.sit.today{background:#eef7ea;border-width:3px}
+.sit h3{margin:0 0 4px 0}
+.sit .when{color:#555;font-size:.95em}
+.sit .badge{display:inline-block;background:#c0392b;color:#fff;border-radius:4px;padding:1px 6px;font-size:.8em;margin-left:6px}
+.sit ul{list-style:none;padding:0;margin:6px 0 0 0}
+.sit li{margin:6px 0}
+.g-btn{display:inline-block;margin:4px 0 0 6px;padding:10px 12px;background:#1a73e8;color:#fff!important;border-radius:6px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -54,6 +62,30 @@ footer { padding:1.5rem; color:var(--muted); font-size:.85rem; }
 
 <hr/>
 
+<h2 id="bysit">By sit: today first</h2>
+<p id="today-line" style="color:#555"></p>
+<div id="sits"></div>
+<details id="past-sits" style="margin:10px 0"><summary>Past sits</summary><div id="past"></div></details>
+<script>
+(function(){
+var SITS=[{"name": "Badlands: Cedar Pass Campground", "start": "2026-10-10", "end": "2026-10-10", "approx": false, "note": "Developed NPS campground: water, flush toilets, $1 dump. Moving to the Black Hills Sun Oct 11.", "spots": [{"n": "Cedar Pass Campground", "la": "43.746409", "lo": "-101.946614", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.746409,-101.946614,13/overview", "g": "https://www.google.com/maps?q=43.746409,-101.946614"}, {"n": "Nomad View dispersed (backup)", "la": "43.893099", "lo": "-102.238540", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,13/overview", "g": "https://www.google.com/maps?q=43.893099,-102.238540"}, {"n": "Conata Basin dispersed (backup)", "la": "43.99249", "lo": "-102.24155", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.99249,-102.24155,13/overview", "g": "https://www.google.com/maps?q=43.99249,-102.24155"}]}, {"name": "Black Hills (base Hill City / Custer)", "start": "2026-10-11", "end": "2026-10-16", "approx": false, "note": "Sun Oct 11 move from Cedar Pass (~1.5\u20132 h). Weekdays: Ed works until about 2 pm MT, so Vicki takes the truck. Needles Hwy and Iron Mountain Rd are truck only; skip Needles Eye tunnel. SD Black Hills NF: Stage 1, no open fires. Developed options: Custer SP Game Lodge and Blue Bell campgrounds (water and dump to about Nov 1).", "spots": [{"n": "Taylor Ranch Rd meadow", "la": "44.002914", "lo": "-103.454769", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,13/overview", "g": "https://www.google.com/maps?q=44.002914,-103.454769"}, {"n": "Calumet Rd / Cosmos", "la": "43.940199", "lo": "-103.452105", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,13/overview", "g": "https://www.google.com/maps?q=43.940199,-103.452105"}, {"n": "North Pole Rd, NFSR 287", "la": "43.75103", "lo": "-103.73341", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,13/overview", "g": "https://www.google.com/maps?q=43.75103,-103.73341"}, {"n": "Bear Mountain Lookout Rd, FDR 293", "la": "43.863490", "lo": "-103.760022", "onx": "https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,13/overview", "g": "https://www.google.com/maps?q=43.863490,-103.760022"}, {"n": "Top of Mountain / Mt Roosevelt Rd", "la": "44.388218", "lo": "-103.759036", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,13/overview", "g": "https://www.google.com/maps?q=44.388218,-103.759036"}, {"n": "Mt Roosevelt corridor pullouts", "la": "44.395722", "lo": "-103.745491", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,13/overview", "g": "https://www.google.com/maps?q=44.395722,-103.745491"}]}, {"name": "Devils Tower", "start": "2026-10-17", "end": "2026-10-17", "approx": false, "note": "Sat Oct 17, ~130 mi / ~2.5 h from the Hills. The Tower campground closes Oct 15, so stay at the reservoir (Plan A) or Warren Peak in Wyoming (Plan B).", "spots": [{"n": "Belle Fourche Reservoir / Susie Peak (Plan A)", "la": "44.7307", "lo": "-103.7292", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.7307,-103.7292,13/overview", "g": "https://www.google.com/maps?q=44.7307,-103.7292"}, {"n": "Warren Peak Rd FR 838, Sundance (Plan B)", "la": "44.451206", "lo": "-104.432024", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.451206,-104.432024,13/overview", "g": "https://www.google.com/maps?q=44.451206,-104.432024"}, {"n": "Devils Tower NM", "la": "44.5906", "lo": "-104.6982", "onx": "https://webmap.onxmaps.com/offroad/map/query/44.5906,-104.6982,13/overview", "g": "https://www.google.com/maps?q=44.5906,-104.6982"}]}, {"name": "Casper, WY area", "start": "2026-10-18", "end": "2026-10-18", "approx": true, "note": "BLM dispersed: Willow Creek, Pathfinder, or Bolton Creek. Backup: Muddy Mountain CG ($7, half with Senior Pass). Exact pin TBD.", "spots": [{"n": "Casper area (general)", "la": "42.867", "lo": "-106.313", "onx": "https://webmap.onxmaps.com/offroad/map/query/42.867,-106.313,13/overview", "g": "https://www.google.com/maps?q=42.867,-106.313"}]}, {"name": "Rock Springs, WY / I-80", "start": "2026-10-19", "end": "2026-10-19", "approx": true, "note": "BLM dispersed. Firehole Canyon CG is closed; skip it.", "spots": [{"n": "Middle Baxter Rd BLM", "la": "41.540071", "lo": "-109.107774", "onx": "https://webmap.onxmaps.com/offroad/map/query/41.540071,-109.107774,13/overview", "g": "https://www.google.com/maps?q=41.540071,-109.107774"}, {"n": "Wild Horse Facility pullout (backup)", "la": "41.630", "lo": "-109.220", "onx": "https://webmap.onxmaps.com/offroad/map/query/41.630,-109.220,13/overview", "g": "https://www.google.com/maps?q=41.630,-109.220"}]}, {"name": "Lava Hot Springs, ID", "start": "2026-10-20", "end": "2026-10-20", "approx": true, "note": "Lower Portneuf IDFG: 8 free sites. Portneuf Bend: private, open year-round, has water.", "spots": [{"n": "Lower Portneuf (IDFG)", "la": "42.642188", "lo": "-112.004568", "onx": "https://webmap.onxmaps.com/offroad/map/query/42.642188,-112.004568,13/overview", "g": "https://www.google.com/maps?q=42.642188,-112.004568"}, {"n": "Portneuf Bend CG", "la": "42.619", "lo": "-112.012", "onx": "https://webmap.onxmaps.com/offroad/map/query/42.619,-112.012,13/overview", "g": "https://www.google.com/maps?q=42.619,-112.012"}]}, {"name": "Home: Boise / Meridian", "start": "2026-10-21", "end": "2026-10-21", "approx": true, "note": "Home.", "spots": []}];
+function today(){var d=new Date();var p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);return p;}
+function fmt(s){var d=new Date(s+'T12:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+var t=today();document.getElementById('today-line').textContent='Today (Mountain time): '+fmt(t)+'. Updates on its own each day.';
+var cur=document.getElementById('sits'),past=document.getElementById('past'),np=0;
+SITS.forEach(function(s){
+ var isToday=(t>=s.start&&t<=s.end);
+ var div=document.createElement('div');div.className='sit'+(isToday?' today':'');
+ var when=fmt(s.start)+(s.end!==s.start?' – '+fmt(s.end):'')+(s.approx?' (approx.)':'');
+ var h='<h3>'+s.name+(isToday?'<span class="badge">TODAY</span>':'')+'</h3><div class="when">'+when+'</div><p>'+s.note+'</p><ul>';
+ s.spots.forEach(function(p){h+='<li><strong>'+p.n+'</strong> <span class="onx-coords">'+p.la+', '+p.lo+'</span><br/><a class="onx-btn" href="'+p.onx+'" target="_blank" rel="noopener">onX Offroad</a><a class="g-btn" href="'+p.g+'" target="_blank" rel="noopener">Google Maps</a></li>';});
+ h+='</ul>';div.innerHTML=h;
+ if(s.end<t){past.appendChild(div);np++;}else{cur.appendChild(div);}
+});
+if(!np)document.getElementById('past-sits').style.display='none';
+})();
+</script>
+<hr/>
 <h2 id="onx">onX Offroad links: dispersed spots</h2>
 <p>Tap a button to open that spot in the onX Offroad web map. On a phone, you can also copy the coordinates into Search &gt; Location in the onX Offroad app.</p>
 <ul class="onx-list">
