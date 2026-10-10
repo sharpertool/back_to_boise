@@ -164,6 +164,7 @@
     .swatch.later { background: #2b6cb0; }
     .swatch.visit { background: transparent; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
     .swatch.home { background: #38a169; }
+    .swatch.dispersed { background: #2f855a; }
     .swatch.search { background: #805ad5; }
     #directions-panel {
       position: absolute;
@@ -202,6 +203,8 @@
     .iw { max-width: 240px; font-size: 14px; line-height: 1.4; }
     .iw b { display: block; margin-bottom: 2px; }
     .iw .sub { color: var(--muted); font-size: 12px; }
+    .iw .note { font-size: 12px; margin-top: 4px; }
+    .iw .iw-links { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
     .iw .iw-actions { display: grid; gap: 6px; margin-top: 8px; }
     .iw .iw-actions .ctrl { font-size: 14px; }
     .pin {
@@ -258,6 +261,7 @@
         <span class="swatch star"></span> CURRENT sit<br>
         <span class="swatch stay"></span> STAY overnight<br>
         <span class="swatch later"></span> Later corridor stays<br>
+        <span class="swatch dispersed"></span> Dispersed (free, no services): Nomad View, Conata Basin<br>
         <span class="swatch visit"></span> VISIT pass-through / day<br>
         <span class="swatch home"></span> HOME Boise / Meridian<br>
         <span class="swatch search"></span> Searched place<br>
@@ -301,7 +305,12 @@
     { name: "CURRENT: Blue Mounds SP (Luverne MN)", lat: 43.718, lng: -96.193, kind: "current" },
     { name: "Mitchell Corn Palace (VISIT opt)", lat: 43.709, lng: -98.03, kind: "visit" },
     { name: "Chamberlain Dignity (VISIT/short STAY opt)", lat: 43.805, lng: -99.33, kind: "visit" },
-    { name: "STAY: Badlands Cedar Pass", lat: 43.746, lng: -101.948, kind: "stay" },
+    { name: "STAY: Badlands Cedar Pass", lat: 43.746, lng: -101.948, kind: "stay",
+      note: "Sun AM: Badlands Loop Road (SD-240) west to I-90 exit 110 at Wall, ~30 mi, ~1 h straight or 2–3 h with stops. Trailer: use the big pull-outs. Notch Trail closed.",
+      links: [
+        { label: "Loop Rd route (Google Maps)", href: "https://www.google.com/maps/dir/?api=1&origin=43.7493,-101.9419&destination=Wall,SD&waypoints=43.7860,-101.9016%7C43.7722,-102.0032&travelmode=driving" },
+        { label: "NPS scenic drives", href: "https://www.nps.gov/badl/planyourvisit/scenic-drives.htm" }
+      ] },
     { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
     { name: "STAY: Black Hills base (Sheridan Lake / Rafter J / Game Lodge)", lat: 43.970, lng: -103.476, kind: "stay" },
     { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
@@ -321,18 +330,35 @@
     { name: "Needles / Iron Mtn — truck only", lat: 43.84, lng: -103.53, kind: "visit" }
   ];
 
+  // Dispersed camping backups near Badlands (not on the spine line).
+  const DISPERSED = [
+    { name: "Nomad View dispersed (Buffalo Gap NG)", lat: 43.893099, lng: -102.238540, kind: "dispersed",
+      note: "~7 mi S of Wall on SD-240 by the radio towers; use the second entrance past the towers. Free, no services.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.893099,-102.238540" }
+      ] },
+    { name: "Conata Basin dispersed (Buffalo Gap NG)", lat: 43.782492, lng: -102.240161, kind: "dispersed",
+      note: "Off SD-240. Free, no services.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.782492,-102.240161" }
+      ] }
+  ];
+
   const KIND_STYLE = {
     current: { fill: "#e53e3e", stroke: "#9b2c2c", size: 28, label: "★", text: "#fff", z: 1000 },
     stay:    { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 200 },
     later:   { fill: "#2b6cb0", stroke: "#2c5282", size: 22, label: "",  text: "#fff", z: 200 },
     visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
+    dispersed: { fill: "#2f855a", stroke: "#22543d", size: 22, label: "",  text: "#fff", z: 200 },
     home:    { fill: "#38a169", stroke: "#276749", size: 26, label: "H", text: "#fff", z: 900 },
     search:  { fill: "#805ad5", stroke: "#553c9a", size: 26, label: "●", text: "#fff", z: 1100 },
     me:      { fill: "#4299e1", stroke: "#ffffff", size: 18, label: "",  text: "#fff", z: 1200 }
   };
   const KIND_LABEL = {
     current: "CURRENT", stay: "STAY", later: "STAY (later corridor)",
-    visit: "VISIT", home: "HOME", search: "Searched place"
+    visit: "VISIT", home: "HOME", search: "Searched place", dispersed: "DISPERSED (free)"
   };
 
   // ---------- state ----------
@@ -468,6 +494,26 @@
       (place.address ? " · " + place.address : "") +
       " · " + place.lat.toFixed(3) + ", " + place.lng.toFixed(3);
     root.appendChild(sub);
+    if (place.note) {
+      const n = document.createElement("div");
+      n.className = "note";
+      n.textContent = place.note;
+      root.appendChild(n);
+    }
+    if (place.links && place.links.length) {
+      const lk = document.createElement("div");
+      lk.className = "iw-links";
+      place.links.forEach((L) => {
+        const a = document.createElement("a");
+        a.className = "ctrl";
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = L.label;
+        a.href = L.href;
+        lk.appendChild(a);
+      });
+      root.appendChild(lk);
+    }
 
     const actions = document.createElement("div");
     actions.className = "iw-actions";
@@ -850,6 +896,7 @@
 
     SPINE.forEach(addTripMarker);
     HILLS.forEach(addTripMarker);
+    DISPERSED.forEach(addTripMarker);
     drawSpine();
     fitTrip();
 
