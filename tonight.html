@@ -20,15 +20,16 @@ var SITS=[{"name": "Badlands: Cedar Pass Campground", "start": "2026-10-10", "en
 function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
 function fmt(s){return new Date(s+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
 function todayIdx(){var t=today();for(var i=0;i<SITS.length;i++){if(t<=SITS[i].end)return i;}return SITS.length-1;}
+function dateFor(off){var d=new Date();d.setUTCDate(d.getUTCDate()+off);return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);}
+function idxFor(t){for(var i=0;i<SITS.length;i++){if(t<=SITS[i].end)return i;}return SITS.length-1;}
 function render(){
- var ti=todayIdx();var h=location.hash.match(/n=(\d+)/);var i=h?Math.min(+h[1],SITS.length-1):ti;
- var s=SITS[i],t=today(),isNow=(t>=s.start&&t<=s.end);
+ var OFF=0;var t=dateFor(OFF);var i=idxFor(t);var s=SITS[i];
  var when=fmt(s.start)+(s.end!==s.start?' – '+fmt(s.end):'')+(s.approx?' (approx.)':'');
- var o='<div class="when">'+when+(isNow?' <span class="badge">TONIGHT</span>':'')+'</div><h1>'+s.name+'</h1><div class="note">'+s.note+'</div>';
+ var o='<div class="when"><span class="badge">TONIGHT</span> '+fmt(t)+' &middot; this stop: '+when+'</div><h1>'+s.name+'</h1><div class="note">'+s.note+'</div>';
  s.spots.forEach(function(p){o+='<div class="spot"><strong>'+p.n+'</strong><br><span class="coords">'+p.la+', '+p.lo+'</span><br><a class="btn onx" href="'+p.onx+'" target="_blank" rel="noopener">onX Offroad</a><a class="btn g" href="'+p.g+'" target="_blank" rel="noopener">Google Maps</a></div>';});
- o+='<div class="nav">'+(i>0?'<a href="#n='+(i-1)+'">&larr; Previous</a>':'<span></span>')+(i!==ti?'<a href="#">Tonight</a>':'')+(i<SITS.length-1?'<a href="#n='+(i+1)+'">Next &rarr;</a>':'<span></span>')+'</div>';
+ o+='<div class="nav"><span></span><a href="tomorrow.html">Tomorrow &rarr;</a></div>';
  o+='<div class="foot"><a href="locations.html">Full locations page</a> &middot; <a href="./">Trip map</a></div>';
- document.getElementById('app').innerHTML=o;window.scrollTo(0,0);
+ document.getElementById('app').innerHTML=o;
 }
-window.addEventListener('hashchange',render);render();
+render();
 </script></body></html>
