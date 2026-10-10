@@ -83,7 +83,7 @@
 
 Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Senior Pass where federal fees apply.
 
-1. **Devils Tower NM** — day visit + optional Belle Fourche River CG (≤35 ft pull-throughs; FCFS). CG closes ~**mid-Oct / Oct 15**.
+1. **Devils Tower NM** — **1 night planned (Ed asked Oct 10).** Belle Fourche River CG closes ~Oct 15 and arrival is ~Oct 16–17 after Cedar Pass (2–3 n) + Sheridan Lake South (3–4 n), so do the Tower as a day visit and overnight at Belle Fourche Reservoir / Susie Peak dispersed (fuel/water/groceries in Belle Fourche town). If arrival is before Oct 15, Belle Fourche River CG is fine for the 1 night. ≤35 ft pull-throughs; FCFS.
 2. **Casper area** — BLM Willow Creek / Pathfinder / Bolton Creek dispersed; Muddy Mountain Lodgepole/Rim CG backup ($7; Senior half) while road open (~through late Nov).
 3. **Rock Springs / I-80** — Middle Baxter Rd BLM dispersed (~`41.540, -109.108`) or Wild Horse Facility pullout (~`41.630, -109.220`). Firehole Canyon CG **closed by mid-Oct** — skip as overnight.
 4. **Lava Hot Springs ID (candidate final-leg stop)** — town ~`42.619, -112.012`. Options:
