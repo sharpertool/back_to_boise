@@ -165,6 +165,7 @@
     .swatch.visit { background: transparent; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
     .swatch.home { background: #38a169; }
     .swatch.dispersed { background: #2f855a; }
+    .swatch.keystop { background: #7b3fa0; border-color: #4a235f; }
     .swatch.possible { background: #7ec8ff; border-color: #1c5d99; }
     .swatch.search { background: #805ad5; }
     .swatch.route { width: 18px; height: 4px; border-radius: 2px; background: #2b6cb0; border: 0; vertical-align: 3px; }
@@ -260,6 +261,7 @@
       <summary>Legend</summary>
       <div class="body">
         <span class="swatch stay"></span> Planned sit (on the route)<br>
+        <span class="swatch keystop"></span> Key stop: Devils Tower<br>
         <span class="swatch possible"></span> Possible (not yet confirmed)<br>
         <span class="swatch route"></span> Route<br>
         <span style="color:#718096;font-size:12px;">All camp options with onX/Google buttons: <a href="tomorrow.html">Tomorrow page</a> / <a href="locations.html">Locations page</a></span>
@@ -311,7 +313,7 @@
     { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
     { name: "STAY: Black Hills base (Hill City / Custer area)", lat: 43.970, lng: -103.476, kind: "stay" },
     { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
-    { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay" },
+    { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay", key: true },
     { name: "STAY: Casper WY", lat: 42.867, lng: -106.313, kind: "later",
       note: "Casper area (general): BLM Willow Creek / Pathfinder / Bolton Creek dispersed; Muddy Mountain CG backup ($7, Senior half). Exact pin TBD.",
       links: [
@@ -355,6 +357,7 @@
     stay:    { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 200 },
     later:   { fill: "#2b6cb0", stroke: "#2c5282", size: 22, label: "",  text: "#fff", z: 200 },
     visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
+    keystop: { fill: "#7b3fa0", stroke: "#4a235f", size: 32, label: "★", text: "#fff", z: 1100 },
     possible: { fill: "#7ec8ff", stroke: "#1c5d99", size: 26, label: "?",  text: "#0b3d6b", z: 1050 },
     campground: { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 210 },
     dispersed: { fill: "#2f855a", stroke: "#22543d", size: 22, label: "",  text: "#fff", z: 200 },
@@ -902,7 +905,7 @@
 
     // Route sits only (visit/pass-through points stay on the route line but get no marker).
     // All sit pins use the orange "Planned sit" style; info window keeps the original label.
-    SPINE.filter(p => p.kind !== "visit").forEach(p => addTripMarker(Object.assign({}, p, { pinKind: "stay" })));
+    SPINE.filter(p => p.kind !== "visit").forEach(p => addTripMarker(Object.assign({}, p, { pinKind: p.key ? "keystop" : "stay" })));
     POSSIBLE.forEach(addTripMarker);
     drawSpine();
     fitTrip();
