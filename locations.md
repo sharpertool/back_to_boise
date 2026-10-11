@@ -2,10 +2,10 @@
 
 **America the Beautiful Senior Pass.** Prefers legal dispersed (OnX). Harvest Hosts backup. Service CG fine. Water useful; no electrical needed. Solar OK. No black tank.
 
-**Status: Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17.** Cedar Pass LOCKED for Sat Oct 10 2026 (departed Luverne). Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
+**Status: Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17.** Cedar Pass LOCKED for Sat Oct 10 2026 (departed Luverne). Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
 
 **Generated:** Tue Oct 6, 2026 ~3:10 PM CT  
-**Updated:** Sat Oct 10, 2026 — Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17  
+**Updated:** Sat Oct 10, 2026 — Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17  
 **Corridor:** Blue Mounds MN → SD stays/visits → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian.
 
 **OnX links:** `https://webmap.onxmaps.com/offroad/map/query/LAT,LON,13/overview` (opens the onX Offroad web map at the coords). If web map fails, paste coords into the OnX app.
@@ -21,7 +21,7 @@
 | BHNF developed CGs | **Drinking water OFF from Oct 1** (off-season). Many loops close Oct 1; some loops stay open FCFS, no water. | USFS BHNF Off-Season page updated Sept 15, 2026 |
 | Sheridan Lake South | Woodsy Loop open off-season from **Oct 1**; other loops closed; **no drinking water** Oct 1–~May 15 | USFS / recreation.gov |
 | Roubaix Lake | C Loop open from **Oct 1**; other loops closed; **no drinking water** off-season | USFS BHNF Off-Season |
-| Cedar Pass CG (**LOCKED — Sat Oct 10**; Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17) | Season inventory on rec.gov shows sites through **2026-10-19**; Nov = unavailable. Lodge seasonal **Apr 15–Oct 15** (staybadlands.com). Conflict with some blogs saying Oct 11 — **rec.gov calendar does NOT support Oct 11 close**. VERIFY water/kiosk after lodge closes ~Oct 15. | recreation.gov API inventory Oct 2026; staybadlands.com |
+| Cedar Pass CG (**LOCKED — Sat Oct 10**; Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17) | Season inventory on rec.gov shows sites through **2026-10-19**; Nov = unavailable. Lodge seasonal **Apr 15–Oct 15** (staybadlands.com). Conflict with some blogs saying Oct 11 — **rec.gov calendar does NOT support Oct 11 close**. VERIFY water/kiosk after lodge closes ~Oct 15. | recreation.gov API inventory Oct 2026; staybadlands.com |
 | Game Lodge (CSP) | Full facilities **May 1–Nov 1**; Nov 2–Apr 30: comfort station closed, **vault + water hydrant** still listed | gfp.sd.gov/csp-campgrounds |
 | Rocky Point RA | Year-round camping; **Oct 1–Apr 30** showers/flush/**water systems may be closed** — call | gfp.sd.gov Rocky Point |
 | Devils Tower Belle Fourche CG | Open ~**May 15–mid Oct**; NPS lists off-season **Oct 15–May 15** closed. Water with season. | nps.gov/deto campgrounds |
@@ -62,14 +62,14 @@
 
 ---
 
-## Cedar Pass — LOCKED — Sat Oct 10 2026 (Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17)
+## Cedar Pass — LOCKED — Sat Oct 10 2026 (Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17)
 
 **2026 CG season (best evidence):** recreation.gov inventory lists site nights through **Oct 19, 2026**; November nights all unavailable. Official rec.gov blurb: “late March through mid-October.” National Park Traveler previously listed **Mar 27 – Oct 19, 2026**. **The Dyrt “Oct 11” close is NOT supported by the live rec.gov calendar.**
 
 **Lodge / restaurant:** staybadlands.com (Explor Badlands) seasonal dates **April 15 – October 15** — VERIFY whether CG potable water / dump / kiosk remain after lodge closes ~Oct 15.
 
 **Pros:** ≤55 ft listed; electric optional; dump Group Loop; open prairie solar; Senior Pass entry; ~290–320 mi (~4.5–5 h) from Luverne via I-90 exit 131.  
-**Cons:** High wind; fees; mid-Oct shoulder services. **LOCKED — Sat Oct 10 2026; then Black Hills Oct 11–17 → Devils Tower Oct 17.**
+**Cons:** High wind; fees; mid-Oct shoulder services. **LOCKED — Sat Oct 10 2026; then Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17.**
 
 **Drive:** ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
 
@@ -130,17 +130,17 @@ Corn Palace to Cedar Pass: ~210 mi, ~3 h 15 min driving at 65 mph (~222 mi / ~3 
 
 ---
 
-## Black Hills: base Custer, SD — Sun Oct 11 - Sat Oct 17 2026
+## Black Hills: base Blue Bell CG (Custer SP) — Sun Oct 11 or Mon Oct 12 to Sat Oct 17, 2026
 
-Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). Base camp candidates: see Game Lodge / Rafter J / Sheridan Lake South / BHNF dispersed (Taylor Ranch, Calumet, North Pole, Mt Roosevelt) in the table below.
+Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). **Base: Blue Bell CG (Custer SP)**, $34/night with electric, water fill + dump, no sewer; last night Oct 16, depart Sat Oct 17. Alternatives: Game Lodge CG (Custer SP), Sheridan Lake South (no water), BHNF dispersed (North Pole, Bear Mountain, Wabash Spring, Stagg Rd) in the table below.
 
-- **Sun Oct 11 (move, both):** Morning: Cedar Pass loop in Badlands (Big Badlands Overlook, Door/Window, Fossil Exhibit Trail as time allows; Notch Trail closed for ladder repairs), then drive to the Black Hills. Cedar Pass → Hill City ~110 mi / ~2 h towing (I-90 → Rapid City → US-16); Custer ~125 mi / ~2.5 h; via Loop Rd west to Wall ~120 mi / ~2 h 45 min. Hill City Main St; optional Rushmore after dark (lit sunset–9 pm).
+- **Sun Oct 11 or Mon Oct 12 (move, both):** Morning: Cedar Pass loop in Badlands (Big Badlands Overlook, Door/Window, Fossil Exhibit Trail as time allows; Notch Trail closed for ladder repairs), then drive to **Blue Bell CG**: Wall → Blue Bell ~93 mi / ~2–2.5 h towing (I-90 W to exit 61 Elk Vale Rd → SD-79 S → SD-36 W through Hermosa → US-16A W → SD-87 S); Cedar Pass → Blue Bell via I-90 ~122 mi / ~2.5–3 h. Avoid Needles Hwy / Iron Mountain Rd with the trailer. Buy the $25 CSP 7-day license on arrival (expires 6 PM day 7; covers through the Oct 17 departure). Optional Rushmore after dark (lit sunset–9 pm).
 - **Mon Oct 12:** Vicki AM Crazy Horse (open daily; fall $12 one / $24 two). 2 pm both: US-16A through CSP (non-stop, no license) → Iron Mountain Rd northbound → Rushmore through sunset. **Evening Lighting Program ended Sept 30, 2026**; sculpture lit sunset–9 pm Oct 1–Mar 9. Parking concession (~$10; Senior Pass not valid).
-- **Tue Oct 13:** Vicki AM Jewel Cave (tours Tue–Sat through Oct 17; Scenic ~$16; book rec.gov by noon prior day). 2 pm both: buy CSP 7-day license (**$25/vehicle**; Senior Pass N/A) → Sylvan Lake → Needles Hwy SD-87.
+- **Tue Oct 13:** Vicki AM Jewel Cave (tours Tue–Sat through Oct 17; Scenic ~$16; book rec.gov by noon prior day). 2 pm both: CSP 7-day license already bought at Blue Bell (**$25/vehicle**; Senior Pass N/A) → Sylvan Lake → Needles Hwy SD-87.
 - **Wed Oct 14:** Vicki AM (optional) Wind Cave (Garden of Eden $7 / Fairgrounds $8 age 62+). 2 pm both: CSP Wildlife Loop (bison, burros; 4–6 pm best).
 - **Thu Oct 15:** Vicki long day north: Mount Moriah ($2 cash; seasonal hours to ~mid-Oct VERIFY), Deadwood Main St, Black Hills Mining Museum Lead (Mon–Sat 9–5 through Oct 17), Spearfish Canyon 14A (Bridal Veil / Roughlock Falls). US-14A Deadwood–Lead one-lane flagging daytime through ~Oct 16.
 - **Fri Oct 16:** Flex / weather make-up. Vicki AM: 1880 Train (mid-Oct times VERIFY 605-574-2222) or Reptile Gardens (9–5) / Bear Country USA (9–3). Fill water, dump, pack.
-- **Sat Oct 17 -> Devils Tower (~130 mi / ~2.5 h), 1 night, Belle Fourche Reservoir dispersed (CG closed after Oct 15).** WY alternates: Warren Peak Rd FR 838 dispersed / Tower Valley RV Park Hulett (see corridor section).
+- **Sat Oct 17: depart Blue Bell → Devils Tower (~120 mi / ~2.5–3 h towing), 1 night, Belle Fourche Reservoir dispersed (CG closed after Oct 15).** WY alternates: Warren Peak Rd FR 838 dispersed / Tower Valley RV Park Hulett (see corridor section).
 - **Road flags (Oct 2026):** US-16A in Keystone closed at SD-40 for bridge replacement Oct 5, 2026 → ~Apr 2027 (signed detour; 12 ft width / 50 ft length limits). Needles/Iron Mountain can close for snow/ice — check sd511.org day-of.
 - Sources: nps.gov/moru hours; gfp.sd.gov/pel; crazyhorsememorial.org; nps.gov/jeca & /wica; 1880train.com; blackhillsminingmuseum.com; cityofdeadwood.com; SDDOT / KOTA Oct 5, 2026.
 
@@ -149,14 +149,14 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
 
 **Near Custer**
 
-- **Custer, SD (base town)** — `43.7666, -103.5988`  
-  Base town: fuel, groceries, water  
+- **Blue Bell Campground (Custer SP)** — **BASE** — `43.716916, -103.482236`  
+  BASE. Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge. $34/night with electric; water (fill + dump on site), no sewer hookup; open to Nov 1; ~20 min to Custer. $25 7-day Custer SP license (expires 6 PM on day 7; covers an Oct 11 or 12 arrival through Oct 17); Senior Pass NOT valid. Book campsd.com / 1-800-710-2267.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
+- **Custer, SD (town, ~20 min)** — `43.7666, -103.5988`  
+  Nearest town: fuel, groceries, water  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7666,-103.5988,13/overview) · [Google Maps](https://www.google.com/maps?q=43.7666,-103.5988)
 - **Bear Mountain Lookout Rd, FDR 293** — `43.863490, -103.760022`  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,13/overview) · [Google Maps](https://www.google.com/maps?q=43.863490,-103.760022)
-- **Blue Bell Campground (Custer SP)** — `43.716916, -103.482236`  
-  Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
 - **Cold Springs School Rd, Pringle: search area (scout in onX)** — `43.60, -103.51`  
   SEARCH AREA ~17 mi / 27 min S of Custer near Wind Cave. Wide smooth gravel, ~4 sites (some back-in), big open site to the north; highway noise; SOS-only cell (The Dyrt). Confirm MVUM dots.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.60,-103.51,13/overview) · [Google Maps](https://www.google.com/maps?q=43.60,-103.51)
@@ -272,10 +272,10 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 
 | Location | Google Maps | OnX | Camping type | Water | Gas nearby | Food nearby | Water available until / closes (2026) | Notes | Phone | Website |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Blue Mounds SP (departed Oct 10 → Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17) | https://www.google.com/maps?q=43.718,-96.193 | https://webmap.onxmaps.com/offroad/map/query/43.718,-96.193,13/overview | developed CG | Park potable / dump (seasonal VERIFY) | Luverne ~4–5 mi | Luverne grocery | Park open year-round; **CG water/showers: VERIFY** — park **not** listed on MN DNR winter-camping page → expect frost shutoff. Call before relying on fill. | MN SP; bison; Senior Pass N/A (state) | 507-283-6050; res 866-857-2757 | https://www.dnr.state.mn.us/state_parks/park.html?id=spk00121 |
+| Blue Mounds SP (departed Oct 10 → Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17) | https://www.google.com/maps?q=43.718,-96.193 | https://webmap.onxmaps.com/offroad/map/query/43.718,-96.193,13/overview | developed CG | Park potable / dump (seasonal VERIFY) | Luverne ~4–5 mi | Luverne grocery | Park open year-round; **CG water/showers: VERIFY** — park **not** listed on MN DNR winter-camping page → expect frost shutoff. Call before relying on fill. | MN SP; bison; Senior Pass N/A (state) | 507-283-6050; res 866-857-2757 | https://www.dnr.state.mn.us/state_parks/park.html?id=spk00121 |
 | Mitchell Corn Palace | https://www.google.com/maps?q=43.714644,-98.026019 | https://webmap.onxmaps.com/offroad/map/query/43.714644,-98.026019,13/overview | visit-only | N/A | Mitchell I-90 | Mitchell | N/A (day stop) | Quick I-90 stop | 605-995-8430 | https://www.cornpalace.com/ |
 | Dignity of Earth & Sky (Chamberlain) | https://www.google.com/maps?q=43.786875,-99.338286 | https://webmap.onxmaps.com/offroad/map/query/43.786875,-99.338286,13/overview | visit-only | Rest-area seasonal | Chamberlain / I-90 | Chamberlain | Welcome Center facilities typically mid-May–Oct — **VERIFY** mid-Oct restroom/water | I-90 mm 264.4; statue year-round | SD Hall of Fame 605-234-4216 | https://www.travelsouthdakota.com/trip-ideas/article/dignity-earth-and-sky |
-| Cedar Pass CG (**LOCKED — Sat Oct 10**) | https://www.google.com/maps?q=43.746409,-101.946614 | https://webmap.onxmaps.com/offroad/map/query/43.746409,-101.946614,13/overview | developed CG | Potable; flush toilets; pay showers; Group Loop dump ($1) | Interior limited; Wall ~30–40 mi | Lodge restaurant (to ~Oct 15); Wall grocery | **CG season ~late Mar–mid Oct; rec.gov inventory through 2026-10-19.** Lodge **Apr 15–Oct 15** (staybadlands). Oct 11 blog close = unsupported. Water after ~Oct 15 lodge close: **VERIFY**. **LOCKED — Sat Oct 10 2026; Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17.** | ≤55 ft; windy; solar excellent; electric optional (non-elec $37 / elec $47; Senior Pass ~50% off); ~290–320 mi / ~4.5–5 h from Luverne via I-90 exit 131 | CG 605-433-5460 / 605-910-9246; NPS 605-433-5361 | https://www.recreation.gov/camping/campgrounds/10288228 |
+| Cedar Pass CG (**LOCKED — Sat Oct 10**) | https://www.google.com/maps?q=43.746409,-101.946614 | https://webmap.onxmaps.com/offroad/map/query/43.746409,-101.946614,13/overview | developed CG | Potable; flush toilets; pay showers; Group Loop dump ($1) | Interior limited; Wall ~30–40 mi | Lodge restaurant (to ~Oct 15); Wall grocery | **CG season ~late Mar–mid Oct; rec.gov inventory through 2026-10-19.** Lodge **Apr 15–Oct 15** (staybadlands). Oct 11 blog close = unsupported. Water after ~Oct 15 lodge close: **VERIFY**. **LOCKED — Sat Oct 10 2026; Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17.** | ≤55 ft; windy; solar excellent; electric optional (non-elec $37 / elec $47; Senior Pass ~50% off); ~290–320 mi / ~4.5–5 h from Luverne via I-90 exit 131 | CG 605-433-5460 / 605-910-9246; NPS 605-433-5361 | https://www.recreation.gov/camping/campgrounds/10288228 |
 | Nomad View / The Wall (Buffalo Gap) | https://www.google.com/maps?q=43.893099,-102.238540 | https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,13/overview | dispersed | None on-site; Wall / jug fill VERIFY | Wall ~6 mi | Wall Food Center; Wall Drug | No formal close; frost/wind year-round; wet roads impassable | BGNG MVUM roads; 14-day; big-rig OK; Cedar Pass backup | Wall RD 605-279-2125 | https://www.fs.usda.gov/r02/nebraska/recreation/buffalo-gap-national-grassland |
 | Conata Basin (Buffalo Gap backup) | https://www.google.com/maps?q=43.782492,-102.240161 | https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,13/overview | dispersed | None — Wall | Wall ~12+ mi gravel | Wall | No formal close; wet = impassable | Prairie pullouts; cattle; OnX public land | Wall RD 605-279-2125 | https://www.fs.usda.gov/r02/nebraska/recreation/buffalo-gap-national-grassland |
 | Wall Drug | https://www.google.com/maps?q=43.9936,-102.2415 | https://webmap.onxmaps.com/offroad/map/query/43.9936,-102.2415,13/overview | visit-only | Town | Wall stations | Wall Drug + Food Center | Town year-round | Resupply | 605-279-2175 | https://www.walldrug.com/ |
@@ -325,7 +325,7 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 
 ## Do-not
 
-- Cedar Pass is **LOCKED** for Sat Oct 10 2026 (Ed confirmed); status: Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17
+- Cedar Pass is **LOCKED** for Sat Oct 10 2026 (Ed confirmed); status: Cedar Pass Sat Oct 10 → Black Hills (Blue Bell CG) Oct 11/12–17 → Devils Tower Oct 17
 
 ## Sources (date research)
 
