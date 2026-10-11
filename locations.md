@@ -130,7 +130,7 @@ Corn Palace to Cedar Pass: ~210 mi, ~3 h 15 min driving at 65 mph (~222 mi / ~3 
 
 ---
 
-## Black Hills sit: Sun Oct 11 - Sat Oct 17 2026 (base Hill City / Custer)
+## Black Hills: base Custer, SD — Sun Oct 11 - Sat Oct 17 2026
 
 Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). Base camp candidates: see Game Lodge / Rafter J / Sheridan Lake South / BHNF dispersed (Taylor Ranch, Calumet, North Pole, Mt Roosevelt) in the table below.
 
@@ -143,6 +143,68 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
 - **Sat Oct 17 -> Devils Tower (~130 mi / ~2.5 h), 1 night, Belle Fourche Reservoir dispersed (CG closed after Oct 15).** WY alternates: Warren Peak Rd FR 838 dispersed / Tower Valley RV Park Hulett (see corridor section).
 - **Road flags (Oct 2026):** US-16A in Keystone closed at SD-40 for bridge replacement Oct 5, 2026 → ~Apr 2027 (signed detour; 12 ft width / 50 ft length limits). Needles/Iron Mountain can close for snow/ice — check sd511.org day-of.
 - Sources: nps.gov/moru hours; gfp.sd.gov/pel; crazyhorsememorial.org; nps.gov/jeca & /wica; 1880train.com; blackhillsminingmuseum.com; cityofdeadwood.com; SDDOT / KOTA Oct 5, 2026.
+
+### Spots by area (same as the Tonight/Tomorrow pages)
+
+
+**Near Custer**
+
+- **Custer, SD (base town)** — `43.7666, -103.5988`  
+  Base town: fuel, groceries, water  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7666,-103.5988,13/overview) · [Google Maps](https://www.google.com/maps?q=43.7666,-103.5988)
+- **Bear Mountain Lookout Rd, FDR 293** — `43.863490, -103.760022`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,13/overview) · [Google Maps](https://www.google.com/maps?q=43.863490,-103.760022)
+- **Blue Bell Campground (Custer SP)** — `43.716916, -103.482236`  
+  Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
+- **Cold Springs School Rd, Pringle: search area (scout in onX)** — `43.60, -103.51`  
+  SEARCH AREA ~17 mi / 27 min S of Custer near Wind Cave. Wide smooth gravel, ~4 sites (some back-in), big open site to the north; highway noise; SOS-only cell (The Dyrt). Confirm MVUM dots.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.60,-103.51,13/overview) · [Google Maps](https://www.google.com/maps?q=43.60,-103.51)
+- **Game Lodge Campground (Custer SP)** — `43.760650, -103.371203`  
+  Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,13/overview) · [Google Maps](https://www.google.com/maps?q=43.760650,-103.371203)
+- **North Pole Rd, NFSR 287** — `43.75103, -103.73341`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,13/overview) · [Google Maps](https://www.google.com/maps?q=43.75103,-103.73341)
+- **RD 356 off SD-244 (Palmer Gulch): search area (scout in onX)** — `43.90, -103.52`  
+  SEARCH AREA ~15 mi / 24 min N of Custer. 30 ft trailer at 2nd site (Sep 2026); stay near the entrance, high clearance and a steep hill farther in; muddy after rain. Keep 1/2 mi from Willow Creek Horse Camp/KOA. Confirm MVUM dots.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.90,-103.52,13/overview) · [Google Maps](https://www.google.com/maps?q=43.90,-103.52)
+- **Stagg Rd / Spar Spring (FR 653.1C): search area (scout in onX)** — `43.73, -103.63`  
+  SEARCH AREA ~5 mi / 10 min SE of Custer by the airport. Stagg Rd good gravel (29 ft reported 2025), dirt spurs need a truck; FR 653.1C single big MVUM-marked site, soggy when wet, aircraft noise; cattle.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.73,-103.63,13/overview) · [Google Maps](https://www.google.com/maps?q=43.73,-103.63)
+- **Wabash Spring Rd (FR 781): search area (scout in onX)** — `43.75, -103.66`  
+  SEARCH AREA ~4 mi / 8 min NW of Custer. MVUM-marked for dispersed camping (Campendium, Boondocker's Bible); 38 ft rig reported Jul 2026; rougher/washed out farther north; many side roads closed to vehicles; cattle, ATVs.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,13/overview) · [Google Maps](https://www.google.com/maps?q=43.75,-103.66)
+
+**Elsewhere in the Hills**
+
+- **Calumet Rd / Cosmos** — `43.940199, -103.452105`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,13/overview) · [Google Maps](https://www.google.com/maps?q=43.940199,-103.452105)
+- **Deerfield Lake area: search area (scout in onX)** — `44.019, -103.799`  
+  SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,13/overview) · [Google Maps](https://www.google.com/maps?q=44.019,-103.799)
+- **Mt Roosevelt corridor pullouts** — `44.395722, -103.745491`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,13/overview) · [Google Maps](https://www.google.com/maps?q=44.395722,-103.745491)
+- **Pactola Reservoir area: search area (scout in onX)** — `44.075, -103.507`  
+  SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,13/overview) · [Google Maps](https://www.google.com/maps?q=44.075,-103.507)
+- **Rafter J Bar Ranch (private, Hill City)** — `43.891558, -103.592484`  
+  Full hookups. Likely CLOSED for the season (RV Life: May 8–Sep 23; AAA: through Oct 1); call 605-574-2527. In season $75–125/night, 2-night minimum, no Senior Pass discount.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,13/overview) · [Google Maps](https://www.google.com/maps?q=43.891558,-103.592484)
+- **Roubaix Lake Campground (USFS, Deadwood backup)** — `44.233, -103.67`  
+  Off-season from Oct 1: C Loop only, NO drinking water; ~25–46 ft depending on loop. Forest 605-673-9200.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,13/overview) · [Google Maps](https://www.google.com/maps?q=44.233,-103.67)
+- **Sheridan Lake South Campground (USFS)** — `43.970262, -103.475686`  
+  Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview) · [Google Maps](https://www.google.com/maps?q=43.970262,-103.475686)
+- **Spearfish Canyon FR 222 (caution)** — `44.49082, -103.85937`  
+  Marginal: ABORT with the trailer unless truck-scouted; creek ice/mud mid-Oct. Canyon is a truck day-drive.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,13/overview) · [Google Maps](https://www.google.com/maps?q=44.49082,-103.85937)
+- **Taylor Ranch Rd meadow** — `44.002914, -103.454769`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,13/overview) · [Google Maps](https://www.google.com/maps?q=44.002914,-103.454769)
+- **Top of Mountain / Mt Roosevelt Rd** — `44.388218, -103.759036`  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,13/overview) · [Google Maps](https://www.google.com/maps?q=44.388218,-103.759036)
+
+**Water fill near Custer:** no verified public spigot in town. Verified fills: Game Lodge CG dump-station loop (separate potable lane; free with the $25 7-day Custer SP license, Senior Pass not valid; ~28 min) and Blue Bell CG (drinking water + dump, open to Nov 1; ~22 min). Echo Valley Park (private, ~3.5 mi N) lists water/dump: call first. Harvest Hosts near Custer: none verified.
 
 ### Black Hills developed campgrounds (alphabetical, not ranked)
 
@@ -161,7 +223,7 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
 
 ### Possible (not yet confirmed): verified Oct 11, 2026
 
-- **Blue Bell Campground (Custer SP), possible** — `43.716916, -103.482236`  
+- **Blue Bell Campground (Custer SP)** — `43.716916, -103.482236`  
   Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
 - **Deerfield Lake area: search area (scout in onX)** — `44.019, -103.799`  
