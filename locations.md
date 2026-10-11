@@ -152,9 +152,18 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
 - **Rafter J Bar Ranch (private, Hill City)** — `43.891558, -103.592484`  
   Full hookups. Likely CLOSED for the season (RV Life: May 8–Sep 23; AAA: through Oct 1); call 605-574-2527. In season $75–125/night, 2-night minimum, no Senior Pass discount.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,13/overview) · [Google Maps](https://www.google.com/maps?q=43.891558,-103.592484)
+- **Roubaix Lake Campground (USFS, Deadwood backup)** — `44.233, -103.67`  
+  Off-season from Oct 1: C Loop only, NO drinking water; ~25–46 ft depending on loop. Forest 605-673-9200.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,13/overview) · [Google Maps](https://www.google.com/maps?q=44.233,-103.67)
 - **Sheridan Lake South Campground (USFS)** — `43.970262, -103.475686`  
   Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview) · [Google Maps](https://www.google.com/maps?q=43.970262,-103.475686)
+
+### Also in the Black Hills spots list (caution)
+
+- **Spearfish Canyon FR 222 (caution)** — `44.49082, -103.85937`  
+  Marginal: ABORT with the trailer unless truck-scouted; creek ice/mud mid-Oct. Canyon is a truck day-drive.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,13/overview) · [Google Maps](https://www.google.com/maps?q=44.49082,-103.85937)
 
 ---
 
