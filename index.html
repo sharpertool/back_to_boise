@@ -167,6 +167,7 @@
     .swatch.dispersed { background: #2f855a; }
     .swatch.possible { background: #7ec8ff; border-color: #1c5d99; }
     .swatch.search { background: #805ad5; }
+    .swatch.route { width: 18px; height: 4px; border-radius: 2px; background: #2b6cb0; border: 0; vertical-align: 3px; }
     #directions-panel {
       position: absolute;
       z-index: 6;
@@ -258,16 +259,10 @@
     <details id="legend" open>
       <summary>Legend</summary>
       <div class="body">
-        <a href="locations.html">Full locations table →</a><br>
-        <span class="swatch star"></span> CURRENT sit<br>
-        <span class="swatch stay"></span> STAY overnight / developed campground (Black Hills, WY, Lava Hot Springs)<br>
-        <span class="swatch later"></span> Later corridor stays<br>
-        <span class="swatch possible"></span> Possible (not yet confirmed): Blue Bell CG, Deerfield &amp; Pactola search areas<br>
-        <span class="swatch dispersed"></span> Dispersed (free, no services): Badlands, Black Hills, Devils Tower, Rock Springs<br>
-        <span class="swatch visit"></span> VISIT pass-through / day<br>
-        <span class="swatch home"></span> HOME Boise / Meridian<br>
-        <span class="swatch search"></span> Searched place<br>
-        <span style="color:#718096;">Tap a marker → “Directions here”, or search a place.</span>
+        <span class="swatch stay"></span> Planned sit (on the route)<br>
+        <span class="swatch possible"></span> Possible (not yet confirmed)<br>
+        <span class="swatch route"></span> Route<br>
+        <span style="color:#718096;font-size:12px;">All camp options with onX/Google buttons: <a href="tomorrow.html">Tomorrow page</a> / <a href="locations.html">Locations page</a></span>
       </div>
     </details>
     <div id="directions-panel" aria-live="polite">
@@ -314,7 +309,7 @@
         { label: "NPS scenic drives", href: "https://www.nps.gov/thingstodo/badl-loop-road.htm" }
       ] },
     { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
-    { name: "STAY: Black Hills base (Hill City / Custer area; see campground pins)", lat: 43.970, lng: -103.476, kind: "stay" },
+    { name: "STAY: Black Hills base (Hill City / Custer area)", lat: 43.970, lng: -103.476, kind: "stay" },
     { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
     { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay" },
     { name: "STAY: Casper WY", lat: 42.867, lng: -106.313, kind: "later",
@@ -331,173 +326,6 @@
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.619,-112.012" }
       ] },
     { name: "HOME: Boise / Meridian ID", lat: 43.612, lng: -116.392, kind: "home" }
-  ];
-
-  const HILLS = [
-    { name: "Rushmore (VISIT)", lat: 43.879, lng: -103.459, kind: "visit" },
-    { name: "Crazy Horse (VISIT opt)", lat: 43.837, lng: -103.623, kind: "visit" },
-    { name: "Custer Wildlife Loop (VISIT)", lat: 43.77, lng: -103.37, kind: "visit" },
-    { name: "Deadwood (VISIT / truck day)", lat: 44.377, lng: -103.73, kind: "visit" },
-    { name: "Spearfish Canyon (VISIT opt)", lat: 44.47, lng: -103.86, kind: "visit" },
-    { name: "Needles / Iron Mtn — truck only", lat: 43.84, lng: -103.53, kind: "visit" }
-  ];
-
-  // Dispersed camping backups near Badlands (not on the spine line).
-  const DISPERSED = [
-    { name: "Nomad View dispersed (Buffalo Gap NG)", lat: 43.893099, lng: -102.238540, kind: "dispersed",
-      note: "~7 mi S of Wall on SD-240 by the radio towers; use the second entrance past the towers. Free, no services.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.893099,-102.238540" }
-      ] },
-    { name: "Conata Basin dispersed (Buffalo Gap NG)", lat: 43.782492, lng: -102.240161, kind: "dispersed",
-      note: "Off SD-240. Free, no services.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.782492,-102.240161" }
-      ] }
-  ];
-
-  // Developed campgrounds for the Black Hills sit (alphabetical, not ranked).
-  const CAMPGROUNDS = [
-    { name: "Game Lodge Campground (Custer SP)", lat: 43.760650, lng: -103.371203, kind: "campground",
-      note: "Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.760650,-103.371203" }
-      ] },
-    { name: "Rafter J Bar Ranch (private, Hill City)", lat: 43.891558, lng: -103.592484, kind: "campground",
-      note: "Full hookups. Likely CLOSED for the season (RV Life: May 8–Sep 23; AAA: through Oct 1); call 605-574-2527. In season $75–125/night, 2-night minimum, no Senior Pass discount.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.891558,-103.592484" }
-      ] },
-    { name: "Sheridan Lake South Campground (USFS)", lat: 43.970262, lng: -103.475686, kind: "campground",
-      note: "Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.970262,-103.475686" }
-      ] }
-  ];
-
-  // All other camp / dispersed / stay locations from locations.md (added Oct 10).
-  const MORE_DISPERSED = [
-    { name: "Bear Mountain Lookout Rd, FDR 293 (BHNF)", lat: 43.863490, lng: -103.760022, kind: "dispersed",
-      note: "Elev ~7k; scout the pad for ~47 ft hitched; early snow possible. Water/dump in Custer.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.863490,-103.760022" }
-      ] },
-    { name: "Calumet Rd / Cosmos (BHNF)", lat: 43.940199, lng: -103.452105, kind: "dispersed",
-      note: "Near Rushmore; mud when wet. Water/dump Hill City or Three Forks.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.940199,-103.452105" }
-      ] },
-    { name: "Mt Roosevelt corridor pullouts (BHNF)", lat: 44.395722, lng: -103.745491, kind: "dispersed",
-      note: "Northern Hills near Deadwood; better pads take ~35 ft. Vault at Friendship Tower TH; fill in Spearfish.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.395722,-103.745491" }
-      ] },
-    { name: "North Pole Rd, NFSR 287 (BHNF)", lat: 43.75103, lng: -103.73341, kind: "dispersed",
-      note: "Hell Canyon RD; firm gravel; base for Custer SP / Crazy Horse. Water in Custer.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75103,-103.73341" }
-      ] },
-    { name: "Taylor Ranch Rd meadow (BHNF)", lat: 44.002914, lng: -103.454769, kind: "dispersed",
-      note: "Mystic RD meadow; big-rig capable, short rough dirt; mud after freeze-thaw. Three Forks / Rapid dump+fill.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.002914,-103.454769" }
-      ] },
-    { name: "Top of Mountain / Mt Roosevelt Rd (BHNF)", lat: 44.388218, lng: -103.759036, kind: "dispersed",
-      note: "Good gravel ridge; ~26 ft TT OK on better pads; abort steep/rocky spurs. Fill in Spearfish.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.388218,-103.759036" }
-      ] },
-    { name: "Spearfish Canyon FR 222 (caution)", lat: 44.49082, lng: -103.85937, kind: "dispersed",
-      note: "Marginal: ABORT with the trailer unless truck-scouted; creek ice/mud mid-Oct. Canyon is a truck day-drive.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.49082,-103.85937" }
-      ] },
-    { name: "Belle Fourche Reservoir / Susie Peak (USBR)", lat: 44.7307, lng: -103.7292, kind: "dispersed",
-      note: "Free dispersed on the west peninsulas (not Rocky Point fee area); windy, great solar; non-potable lake. Devils Tower plan Oct 17.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.7307,-103.7292,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.7307,-103.7292" }
-      ] },
-    { name: "Warren Peak Rd FR 838, Sundance (BHNF WY)", lat: 44.451206, lng: -104.432024, kind: "dispersed",
-      note: "Best WY dispersed pick; big pad ~¼ mi off pavement. WY Stage 2: no campfires/charcoal to Dec 15. Fill in Sundance.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.451206,-104.432024,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.451206,-104.432024" }
-      ] },
-    { name: "Middle Baxter Rd BLM, Rock Springs", lat: 41.540071, lng: -109.107774, kind: "dispersed",
-      note: "BLM dispersed, easy I-80 hop; big-rig gravel lot reported; clay soft after rain/snow. No services.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/41.540071,-109.107774,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=41.540071,-109.107774" }
-      ] },
-    { name: "Wild Horse Facility pullout, Rock Springs", lat: 41.630, lng: -109.220, kind: "dispersed",
-      note: "Approximate BLM pullout alternative to Middle Baxter Rd; no services. Verify on arrival.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/41.630,-109.220,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=41.630,-109.220" }
-      ] }
-  ];
-  const MORE_CAMPGROUNDS = [
-    { name: "Roubaix Lake CG (USFS, Deadwood backup)", lat: 44.233, lng: -103.67, kind: "campground",
-      note: "Off-season from Oct 1: C Loop only, NO drinking water; ~25–46 ft depending on loop. Forest 605-673-9200.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.233,-103.67" }
-      ] },
-    { name: "Rocky Point Recreation Area (SD state)", lat: 44.70923, lng: -103.7125, kind: "campground",
-      note: "Belle Fourche Reservoir backup CG; year-round camping, but water/showers may be off Oct 1–Apr 30. Call 605-773-2408.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.70923,-103.7125,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.70923,-103.7125" }
-      ] },
-    { name: "Reuter CG (USFS Bearlodge, WY)", lat: 44.42611, lng: -104.42306, kind: "campground",
-      note: "Off-season to Dec 14: $15 (Senior ~half), max spur 30 ft (may need to unhitch), vault, NO water, FCFS. 307-283-1361.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.42611,-104.42306,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.42611,-104.42306" }
-      ] },
-    { name: "Cook Lake CG (USFS Bearlodge, WY)", lat: 44.5947222, lng: -104.4086111, kind: "campground",
-      note: "Off-season B Loop only, 45 ft max spur, $15 + $4 day use, water OFF, gravel roads unmaintained; closes Dec 15.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.5947222,-104.4086111,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.5947222,-104.4086111" }
-      ] },
-    { name: "Keyhole State Park (WY, I-90 exit 165)", lat: 44.3585753, lng: -104.8686985, kind: "campground",
-      note: "Pin is the general park point, not a campground. From Oct 15 most CGs close and water is off for all CGs.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.3585753,-104.8686985,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.3585753,-104.8686985" }
-      ] },
-    { name: "Tower Valley RV Park, Hulett (private / HH)", lat: 44.68276, lng: -104.601682, kind: "campground",
-      note: "Pin is the Hulett town point (313 Hwy 24). Full hookups 30/50 A, dump; mid-Oct season not stated, call first.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.68276,-104.601682,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.68276,-104.601682" }
-      ] },
-    { name: "Lower Portneuf / Byington (IDFG), Lava Hot Springs", lat: 42.642188, lng: -112.004568, kind: "campground",
-      note: "8 free designated sites, 10-day limit, no dispersed, no potable water (town ~3 mi). IDFG 208-232-4703.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.642188,-112.004568,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.642188,-112.004568" }
-      ] },
-    { name: "Lava Campground (private), Lava Hot Springs", lat: 42.619, lng: -112.018, kind: "campground",
-      note: "Dump + showers when open; ~1 mi from downtown pools. Mid-Oct open? Call 208-241-7540.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.619,-112.018,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.619,-112.018" }
-      ] }
   ];
 
   // Possible (not yet confirmed): always shown at load, no toggle.
@@ -726,7 +554,7 @@
   }
 
   function addTripMarker(place) {
-    const m = makeMarker({ lat: place.lat, lng: place.lng }, place.kind, place.name,
+    const m = makeMarker({ lat: place.lat, lng: place.lng }, place.pinKind || place.kind, place.name,
       (mk) => openInfo(place, mk));
     // Desktop convenience: double-click a classic marker routes straight there.
     if (!useAdvanced) m.addListener("dblclick", () => routeTo(place.lat, place.lng, place.name));
@@ -749,7 +577,7 @@
 
   function fitTrip() {
     const bounds = new google.maps.LatLngBounds();
-    SPINE.concat(HILLS, POSSIBLE).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    SPINE.concat(POSSIBLE).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
     map.fitBounds(bounds, 40);
   }
 
@@ -1072,12 +900,9 @@
     });
     infoWindow = new gm.InfoWindow({ maxWidth: 260 });
 
-    SPINE.forEach(addTripMarker);
-    HILLS.forEach(addTripMarker);
-    DISPERSED.forEach(addTripMarker);
-    CAMPGROUNDS.forEach(addTripMarker);
-    MORE_DISPERSED.forEach(addTripMarker);
-    MORE_CAMPGROUNDS.forEach(addTripMarker);
+    // Route sits only (visit/pass-through points stay on the route line but get no marker).
+    // All sit pins use the orange "Planned sit" style; info window keeps the original label.
+    SPINE.filter(p => p.kind !== "visit").forEach(p => addTripMarker(Object.assign({}, p, { pinKind: "stay" })));
     POSSIBLE.forEach(addTripMarker);
     drawSpine();
     fitTrip();
