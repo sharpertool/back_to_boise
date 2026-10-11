@@ -125,7 +125,7 @@ Corn Palace to Cedar Pass: ~210 mi, ~3 h 15 min driving at 65 mph (~222 mi / ~3 
   Drive SD-240 west from Cedar Pass to I-90 exit 110 at Wall, ~30 mi, ~1 h straight or 2–3 h with stops. With the trailer, use the big pull-outs. Notch Trail closed.  
   Drive: Starts at Cedar Pass / Ben Reifel VC; ~30 mi to Wall (I-90 exit 110) · Visit: ~1 h straight, 2–3 h with stops  
   Hours: Open 24 h (park road).  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.78,-102.05,14/overview) · [Google Maps](https://www.google.com/maps/dir/?api=1&origin=43.7493,-101.9419&destination=Wall,SD&waypoints=43.7860,-101.9016%7C43.7722,-102.0032&travelmode=driving) · [NPS page](https://www.nps.gov/badl/planyourvisit/scenic-drives.htm)
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.78,-102.05,14/overview) · [Google Maps](https://www.google.com/maps/dir/?api=1&origin=43.7493,-101.9419&destination=Wall,SD&waypoints=43.7860,-101.9016%7C43.7722,-102.0032&travelmode=driving) · [NPS page](https://www.nps.gov/thingstodo/badl-loop-road.htm)
 
 
 ---
