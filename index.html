@@ -165,6 +165,7 @@
     .swatch.visit { background: transparent; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
     .swatch.home { background: #38a169; }
     .swatch.dispersed { background: #2f855a; }
+    .swatch.possible { background: #7ec8ff; border-color: #1c5d99; }
     .swatch.search { background: #805ad5; }
     #directions-panel {
       position: absolute;
@@ -261,6 +262,7 @@
         <span class="swatch star"></span> CURRENT sit<br>
         <span class="swatch stay"></span> STAY overnight / developed campground (Black Hills, WY, Lava Hot Springs)<br>
         <span class="swatch later"></span> Later corridor stays<br>
+        <span class="swatch possible"></span> Possible (not yet confirmed): Blue Bell CG, Deerfield &amp; Pactola search areas<br>
         <span class="swatch dispersed"></span> Dispersed (free, no services): Badlands, Black Hills, Devils Tower, Rock Springs<br>
         <span class="swatch visit"></span> VISIT pass-through / day<br>
         <span class="swatch home"></span> HOME Boise / Meridian<br>
@@ -498,11 +500,34 @@
       ] }
   ];
 
+  // Possible (not yet confirmed): always shown at load, no toggle.
+  const POSSIBLE = [
+    { name: "Blue Bell Campground (Custer SP), possible", lat: 43.716916, lng: -103.482236, kind: "possible",
+      note: "Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
+      ] },
+    { name: "Deerfield Lake area: search area (scout in onX)", lat: 44.019, lng: -103.799, kind: "possible",
+      note: "SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.019,-103.799" }
+      ] },
+    { name: "Pactola Reservoir area: search area (scout in onX)", lat: 44.075, lng: -103.507, kind: "possible",
+      note: "SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.075,-103.507" }
+      ] }
+  ];
+
   const KIND_STYLE = {
     current: { fill: "#e53e3e", stroke: "#9b2c2c", size: 28, label: "★", text: "#fff", z: 1000 },
     stay:    { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 200 },
     later:   { fill: "#2b6cb0", stroke: "#2c5282", size: 22, label: "",  text: "#fff", z: 200 },
     visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
+    possible: { fill: "#7ec8ff", stroke: "#1c5d99", size: 26, label: "?",  text: "#0b3d6b", z: 1050 },
     campground: { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 210 },
     dispersed: { fill: "#2f855a", stroke: "#22543d", size: 22, label: "",  text: "#fff", z: 200 },
     home:    { fill: "#38a169", stroke: "#276749", size: 26, label: "H", text: "#fff", z: 900 },
@@ -511,7 +536,7 @@
   };
   const KIND_LABEL = {
     current: "CURRENT", stay: "STAY", later: "STAY (later corridor)",
-    visit: "VISIT", home: "HOME", search: "Searched place", dispersed: "DISPERSED (free)", campground: "DEVELOPED CAMPGROUND"
+    visit: "VISIT", home: "HOME", search: "Searched place", dispersed: "DISPERSED (free)", campground: "DEVELOPED CAMPGROUND", possible: "POSSIBLE (not yet confirmed)"
   };
 
   // ---------- state ----------
@@ -724,7 +749,7 @@
 
   function fitTrip() {
     const bounds = new google.maps.LatLngBounds();
-    SPINE.concat(HILLS).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    SPINE.concat(HILLS, POSSIBLE).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
     map.fitBounds(bounds, 40);
   }
 
@@ -1053,6 +1078,7 @@
     CAMPGROUNDS.forEach(addTripMarker);
     MORE_DISPERSED.forEach(addTripMarker);
     MORE_CAMPGROUNDS.forEach(addTripMarker);
+    POSSIBLE.forEach(addTripMarker);
     drawSpine();
     fitTrip();
 

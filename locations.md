@@ -159,6 +159,20 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
   Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview) · [Google Maps](https://www.google.com/maps?q=43.970262,-103.475686)
 
+### Possible (not yet confirmed): verified Oct 11, 2026
+
+- **Blue Bell Campground (Custer SP), possible** — `43.716916, -103.482236`  
+  Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
+- **Deerfield Lake area: search area (scout in onX)** — `44.019, -103.799`  
+  SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,13/overview) · [Google Maps](https://www.google.com/maps?q=44.019,-103.799)
+- **Pactola Reservoir area: search area (scout in onX)** — `44.075, -103.507`  
+  SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,13/overview) · [Google Maps](https://www.google.com/maps?q=44.075,-103.507)
+
+**Checked Oct 11, not added (closed or no water this week):** Horsethief Lake and Oreville (USFS) closed Oct 1; Dutchman open (top loop, 9 free FCFS sites, 50 ft spurs) but no water; Custer SP Center Lake (through Sep 30), Sylvan Lake, Stockade North/South (through Oct 1) and Legion Lake (through Oct 10) are past their open dates. Sources: fs.usda.gov BHNF Off-Season Campground Information (updated Sep 15, 2026); recreation.gov notices; gfp.sd.gov/csp-campgrounds.
+
 ### Also in the Black Hills spots list (caution)
 
 - **Spearfish Canyon FR 222 (caution)** — `44.49082, -103.85937`  
