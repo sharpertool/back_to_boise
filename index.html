@@ -314,11 +314,11 @@
         { label: "NPS scenic drives", href: "https://www.nps.gov/thingstodo/badl-loop-road.htm" }
       ] },
     { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
-    { name: "STAY: Blue Bell CG, Custer SP (Black Hills base, Oct 11/12–17)", lat: 43.716916, lng: -103.482236, kind: "stay",
-      note: "$34/night with electric; water (fill + dump on site), no sewer hookup. ~20 min to Custer. $25 7-day Custer SP license (expires 6 PM on day 7, so one license covers an Oct 11 or 12 arrival through the Oct 17 departure); Senior Pass not valid. Book campsd.com / 1-800-710-2267.",
+    { name: "STAY: Wabash Spring Rd FR 781 (Black Hills base, Oct 11–16/18)", lat: 43.75, lng: -103.66, kind: "stay",
+      note: "Free dispersed (Black Hills NF), off US-16 ~3 mi W of Custer. No water, no services: arrive full; fill at Blue Bell or Game Lodge (Custer SP, $25 7-day license). Rules: 14 days in any 60, within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, no open campfires in SD. Confirm MVUM camping dots / use only established sites near the entrance (2025 MVUM lists FR 781 for dispersed camping; onX labels it 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer, 4 mi / 9 min, 7 AM–9 PM daily.",
       links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75,-103.66" }
       ] },
     { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
     { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay", key: true },
@@ -409,12 +409,6 @@
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.075,-103.507" }
       ] },
-    { name: "Wabash Spring Rd (FR 781): search area (scout in onX)", lat: 43.75, lng: -103.66, kind: "dispersed",
-      note: "SEARCH AREA ~4 mi / 8 min NW of Custer. MVUM-marked for dispersed camping (Campendium, Boondocker's Bible); 38 ft rig reported Jul 2026; rougher/washed out farther north; many side roads closed to vehicles; cattle, ATVs.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75,-103.66" }
-      ] },
     { name: "Stagg Rd / Spar Spring (FR 653.1C): search area (scout in onX)", lat: 43.73, lng: -103.63, kind: "dispersed",
       note: "SEARCH AREA ~5 mi / 10 min SE of Custer by the airport. Stagg Rd good gravel (29 ft reported 2025), dirt spurs need a truck; FR 653.1C single big MVUM-marked site, soggy when wet, aircraft noise; cattle.",
       links: [
@@ -437,6 +431,12 @@
 
   // LIGHT BLUE = paid sites with electric. Always shown at load.
   const PAID_ELECTRIC = [
+    { name: "Blue Bell Campground (Custer SP)", lat: 43.716916, lng: -103.482236, kind: "paid",
+      note: "No availability for Oct 11–17 (checked Oct 11). Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge. $34/night with electric; water fill + dump, no sewer; open to Nov 1. $25 7-day Custer SP license; Senior Pass NOT valid. campsd.com / 1-800-710-2267.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
+      ] },
     { name: "Game Lodge Campground (Custer SP)", lat: 43.760650, lng: -103.371203, kind: "paid",
       note: "Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.",
       links: [
