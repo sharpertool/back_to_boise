@@ -166,6 +166,7 @@
     .swatch.home { background: #38a169; }
     .swatch.dispersed { background: #2f855a; }
     .swatch.keystop { background: #7b3fa0; border-color: #4a235f; }
+    .swatch.visit { background: #fff; }
     .swatch.possible { background: #7ec8ff; border-color: #1c5d99; }
     .swatch.search { background: #805ad5; }
     .swatch.route { width: 18px; height: 4px; border-radius: 2px; background: #2b6cb0; border: 0; vertical-align: 3px; }
@@ -260,9 +261,11 @@
     <details id="legend" open>
       <summary>Legend</summary>
       <div class="body">
-        <span class="swatch stay"></span> Planned sit (on the route)<br>
-        <span class="swatch keystop"></span> Key stop: Devils Tower<br>
-        <span class="swatch possible"></span> Possible (not yet confirmed)<br>
+        <span class="swatch stay"></span> Planned sit (one per area)<br>
+        <span class="swatch keystop"></span> Key stop<br>
+        <span class="swatch possible"></span> Paid site with electric<br>
+        <span class="swatch dispersed"></span> Free dispersed site<br>
+        <span class="swatch visit"></span> Viewpoint / scenic stop<br>
         <span class="swatch route"></span> Route<br>
         <span style="color:#718096;font-size:12px;">All camp options with onX/Google buttons: <a href="tomorrow.html">Tomorrow page</a> / <a href="locations.html">Locations page</a></span>
       </div>
@@ -330,25 +333,92 @@
     { name: "HOME: Boise / Meridian ID", lat: 43.612, lng: -116.392, kind: "home" }
   ];
 
-  // Possible (not yet confirmed): always shown at load, no toggle.
-  const POSSIBLE = [
-    { name: "Blue Bell Campground (Custer SP), possible", lat: 43.716916, lng: -103.482236, kind: "possible",
-      note: "Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.",
+  const HILLS = [
+    { name: "Rushmore (VISIT)", lat: 43.879, lng: -103.459, kind: "visit" },
+    { name: "Crazy Horse (VISIT opt)", lat: 43.837, lng: -103.623, kind: "visit" },
+    { name: "Custer Wildlife Loop (VISIT)", lat: 43.77, lng: -103.37, kind: "visit" },
+    { name: "Deadwood (VISIT / truck day)", lat: 44.377, lng: -103.73, kind: "visit" },
+    { name: "Spearfish Canyon (VISIT opt)", lat: 44.47, lng: -103.86, kind: "visit" },
+    { name: "Needles / Iron Mtn — truck only", lat: 43.84, lng: -103.53, kind: "visit" }
+  ];
+
+  // GREEN = free dispersed sites (incl. two search areas). Always shown at load.
+  const FREE_DISPERSED = [
+    { name: "Nomad View dispersed (Buffalo Gap NG)", lat: 43.893099, lng: -102.238540, kind: "dispersed",
+      note: "~7 mi S of Wall on SD-240 by the radio towers; use the second entrance past the towers. Free, no services.",
       links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.893099,-102.238540" }
       ] },
-    { name: "Deerfield Lake area: search area (scout in onX)", lat: 44.019, lng: -103.799, kind: "possible",
+    { name: "Conata Basin dispersed (Buffalo Gap NG)", lat: 43.782492, lng: -102.240161, kind: "dispersed",
+      note: "Off SD-240. Free, no services.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.782492,-102.240161" }
+      ] },
+    { name: "Bear Mountain Lookout Rd, FDR 293 (BHNF)", lat: 43.863490, lng: -103.760022, kind: "dispersed",
+      note: "Elev ~7k; scout the pad for ~47 ft hitched; early snow possible. Water/dump in Custer.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.863490,-103.760022" }
+      ] },
+    { name: "Calumet Rd / Cosmos (BHNF)", lat: 43.940199, lng: -103.452105, kind: "dispersed",
+      note: "Near Rushmore; mud when wet. Water/dump Hill City or Three Forks.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.940199,-103.452105" }
+      ] },
+    { name: "Mt Roosevelt corridor pullouts (BHNF)", lat: 44.395722, lng: -103.745491, kind: "dispersed",
+      note: "Northern Hills near Deadwood; better pads take ~35 ft. Vault at Friendship Tower TH; fill in Spearfish.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.395722,-103.745491" }
+      ] },
+    { name: "North Pole Rd, NFSR 287 (BHNF)", lat: 43.75103, lng: -103.73341, kind: "dispersed",
+      note: "Hell Canyon RD; firm gravel; base for Custer SP / Crazy Horse. Water in Custer.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75103,-103.73341" }
+      ] },
+    { name: "Taylor Ranch Rd meadow (BHNF)", lat: 44.002914, lng: -103.454769, kind: "dispersed",
+      note: "Mystic RD meadow; big-rig capable, short rough dirt; mud after freeze-thaw. Three Forks / Rapid dump+fill.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.002914,-103.454769" }
+      ] },
+    { name: "Top of Mountain / Mt Roosevelt Rd (BHNF)", lat: 44.388218, lng: -103.759036, kind: "dispersed",
+      note: "Good gravel ridge; ~26 ft TT OK on better pads; abort steep/rocky spurs. Fill in Spearfish.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.388218,-103.759036" }
+      ] },
+    { name: "Deerfield Lake area: search area (scout in onX)", lat: 44.019, lng: -103.799, kind: "dispersed",
       note: "SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.",
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.019,-103.799" }
       ] },
-    { name: "Pactola Reservoir area: search area (scout in onX)", lat: 44.075, lng: -103.507, kind: "possible",
+    { name: "Pactola Reservoir area: search area (scout in onX)", lat: 44.075, lng: -103.507, kind: "dispersed",
       note: "SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).",
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.075,-103.507" }
+      ] }
+  ];
+
+  // LIGHT BLUE = paid sites with electric. Always shown at load.
+  const PAID_ELECTRIC = [
+    { name: "Blue Bell Campground (Custer SP)", lat: 43.716916, lng: -103.482236, kind: "paid",
+      note: "Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
+      ] },
+    { name: "Game Lodge Campground (Custer SP)", lat: 43.760650, lng: -103.371203, kind: "paid",
+      note: "Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.760650,-103.371203" }
       ] }
   ];
 
@@ -358,6 +428,7 @@
     later:   { fill: "#2b6cb0", stroke: "#2c5282", size: 22, label: "",  text: "#fff", z: 200 },
     visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
     keystop: { fill: "#7b3fa0", stroke: "#4a235f", size: 32, label: "★", text: "#fff", z: 1100 },
+    paid: { fill: "#7ec8ff", stroke: "#1c5d99", size: 24, label: "",  text: "#0b3d6b", z: 300 },
     possible: { fill: "#7ec8ff", stroke: "#1c5d99", size: 26, label: "?",  text: "#0b3d6b", z: 1050 },
     campground: { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "",  text: "#fff", z: 210 },
     dispersed: { fill: "#2f855a", stroke: "#22543d", size: 22, label: "",  text: "#fff", z: 200 },
@@ -367,7 +438,7 @@
   };
   const KIND_LABEL = {
     current: "CURRENT", stay: "STAY", later: "STAY (later corridor)",
-    visit: "VISIT", home: "HOME", search: "Searched place", dispersed: "DISPERSED (free)", campground: "DEVELOPED CAMPGROUND", possible: "POSSIBLE (not yet confirmed)"
+    visit: "VISIT", home: "HOME", search: "Searched place", dispersed: "DISPERSED (free)", campground: "DEVELOPED CAMPGROUND", possible: "POSSIBLE (not yet confirmed)", paid: "PAID SITE WITH ELECTRIC", keystop: "KEY STOP"
   };
 
   // ---------- state ----------
@@ -580,7 +651,7 @@
 
   function fitTrip() {
     const bounds = new google.maps.LatLngBounds();
-    SPINE.concat(POSSIBLE).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    SPINE.concat(HILLS, FREE_DISPERSED, PAID_ELECTRIC).forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
     map.fitBounds(bounds, 40);
   }
 
@@ -903,10 +974,12 @@
     });
     infoWindow = new gm.InfoWindow({ maxWidth: 260 });
 
-    // Route sits only (visit/pass-through points stay on the route line but get no marker).
+    // Route points: visit/viewpoint stops keep the original white diamond style.
     // All sit pins use the orange "Planned sit" style; info window keeps the original label.
-    SPINE.filter(p => p.kind !== "visit").forEach(p => addTripMarker(Object.assign({}, p, { pinKind: p.key ? "keystop" : "stay" })));
-    POSSIBLE.forEach(addTripMarker);
+    SPINE.forEach(p => addTripMarker(p.kind === "visit" ? p : Object.assign({}, p, { pinKind: p.key ? "keystop" : "stay" })));
+    HILLS.forEach(addTripMarker);
+    FREE_DISPERSED.forEach(addTripMarker);
+    PAID_ELECTRIC.forEach(addTripMarker);
     drawSpine();
     fitTrip();
 
