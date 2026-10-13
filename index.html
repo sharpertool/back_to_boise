@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#ffffff" />
-  <title>Back to Boise — Blue Mounds → Meridian</title>
+  <title>Back to Boise — Custer SD → Meridian</title>
   <style>
     :root {
       --panel: #ffffff;
@@ -235,12 +235,12 @@
 <body>
   <header>
     <div class="title-row">
-      <h1>Back to Boise — from Blue Mounds</h1>
+      <h1>Back to Boise — from Custer, SD</h1>
       <a href="locations.html">Locations →</a>
     </div>
     <div id="controls">
       <select id="origin-select" aria-label="Directions origin">
-        <option value="blue-mounds">From: Blue Mounds (CURRENT)</option>
+        <option value="blue-mounds">From: Wabash / Custer SD (CURRENT)</option>
         <option value="geolocation">From: My location</option>
         <option value="custom">From: Searched place</option>
       </select>
@@ -300,19 +300,9 @@
 
   const API_KEY = "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI";
   const MAP_ID = "DEMO_MAP_ID";
-  const BLUE_MOUNDS = { lat: 43.718, lng: -96.193 };
+  const BLUE_MOUNDS = { lat: 43.75, lng: -103.66 };
 
   const SPINE = [
-    { name: "Blue Mounds SP (Luverne MN) — departed Oct 10", lat: 43.718, lng: -96.193, kind: "stay" },
-    { name: "Mitchell Corn Palace (VISIT opt)", lat: 43.709, lng: -98.03, kind: "visit" },
-    { name: "Chamberlain Dignity (VISIT/short STAY opt)", lat: 43.805, lng: -99.33, kind: "visit" },
-    { name: "STAY: Badlands Cedar Pass", lat: 43.746, lng: -101.948, kind: "stay",
-      note: "Sun AM: Badlands Loop Road (SD-240) west to I-90 exit 110 at Wall, ~30 mi, ~1 h straight or 2–3 h with stops. Trailer: use the big pull-outs. Notch Trail closed.",
-      links: [
-        { label: "Loop Rd route (Google Maps)", href: "https://www.google.com/maps/dir/?api=1&origin=43.7493,-101.9419&destination=Wall,SD&waypoints=43.7860,-101.9016%7C43.7722,-102.0032&travelmode=driving" },
-        { label: "NPS scenic drives", href: "https://www.nps.gov/thingstodo/badl-loop-road.htm" }
-      ] },
-    { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
     { name: "CURRENT: Wabash Spring Rd FR 781 (Black Hills base, arrived Oct 11)", lat: 43.75, lng: -103.66, kind: "current",
       note: "ARRIVED Oct 11. Free dispersed (Black Hills NF), off US-16 ~3 mi W of Custer. No water, no services: arrive full; fill at Blue Bell or Game Lodge (Custer SP, $25 7-day license). Rules: 14 days in any 60, within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, no open campfires in SD. Confirm MVUM camping dots / use only established sites near the entrance (2025 MVUM lists FR 781 for dispersed camping; onX labels it 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer, 4 mi / 9 min, 7 AM–9 PM daily.",
       links: [
@@ -348,18 +338,6 @@
 
   // GREEN = free dispersed sites. Always shown at load.
   const FREE_DISPERSED = [
-    { name: "Nomad View dispersed (Buffalo Gap NG)", lat: 43.893099, lng: -102.238540, kind: "dispersed",
-      note: "~7 mi S of Wall on SD-240 by the radio towers; use the second entrance past the towers. Free, no services.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.893099,-102.238540,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.893099,-102.238540" }
-      ] },
-    { name: "Conata Basin dispersed (Buffalo Gap NG)", lat: 43.782492, lng: -102.240161, kind: "dispersed",
-      note: "Off SD-240. Free, no services.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.782492,-102.240161" }
-      ] }
   ];
 
   // LIGHT BLUE = paid sites with electric. Always shown at load. (none on map after Black Hills alternate cleanup)
@@ -634,7 +612,7 @@
 
   async function resolveOrigin() {
     const mode = originMode();
-    if (mode === "blue-mounds") return { pos: BLUE_MOUNDS, name: "Blue Mounds SP" };
+    if (mode === "blue-mounds") return { pos: BLUE_MOUNDS, name: "Wabash / Custer SD" };
     if (mode === "geolocation") {
       if (geolocPos) return { pos: geolocPos, name: "My location" };
       setMsg("Getting your location…");
@@ -645,7 +623,7 @@
       if (searchPlace) return { pos: { lat: searchPlace.lat, lng: searchPlace.lng }, name: searchPlace.name };
       throw new Error("Search for a place first (it will be the starting point), then tap a trip marker → Directions here.");
     }
-    return { pos: BLUE_MOUNDS, name: "Blue Mounds SP" };
+    return { pos: BLUE_MOUNDS, name: "Wabash / Custer SD" };
   }
 
   // ---------- directions panel ----------
@@ -735,7 +713,7 @@
 
     let origin, originName;
     // Show the panel + Google Maps link right away so it works even if the APIs fail.
-    showPanel(originMode() === "geolocation" ? "My location" : (originMode() === "custom" && searchPlace ? searchPlace.name : "Blue Mounds SP"),
+    showPanel(originMode() === "geolocation" ? "My location" : (originMode() === "custom" && searchPlace ? searchPlace.name : "Wabash / Custer SD"),
       knownOrigin(), dest);
     try {
       const o = await resolveOrigin();
