@@ -2,10 +2,10 @@
 
 **America the Beautiful Senior Pass.** Prefers legal dispersed (OnX). Harvest Hosts backup. Service CG fine. Water useful; no electrical needed. Solar OK. No black tank.
 
-**Status: Cedar Pass Sat Oct 10 → Black Hills (Wabash Spring Rd dispersed) Oct 11–~16/18 → Devils Tower / Warren Peak ~Oct 17/18.** Cedar Pass LOCKED for Sat Oct 10 2026 (departed Luverne). Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131.
+**Status: CURRENT at Black Hills (Wabash Spring Rd dispersed) — arrived Oct 11; stay through ~Oct 16/18 → Devils Tower / Warren Peak ~Oct 17/18.** Cedar Pass done Sat Oct 10. Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131 was the prior leg.
 
 **Generated:** Tue Oct 6, 2026 ~3:10 PM CT  
-**Updated:** Sat Oct 10, 2026 — Cedar Pass Sat Oct 10 → Black Hills (Wabash Spring Rd dispersed) Oct 11–~16/18 → Devils Tower / Warren Peak ~Oct 17/18  
+**Updated:** Tue Oct 13, 2026 — CURRENT / ARRIVED Black Hills (Wabash Spring Rd dispersed) Oct 11–~16/18 → Devils Tower / Warren Peak ~Oct 17/18  
 **Corridor:** Blue Mounds MN → SD stays/visits → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian.
 
 **OnX links:** `https://webmap.onxmaps.com/offroad/map/query/LAT,LON,13/overview` (opens the onX Offroad web map at the coords). If web map fails, paste coords into the OnX app.
@@ -19,8 +19,6 @@
 | Area | Water / close flag (2026) | Source |
 |---|---|---|
 | BHNF developed CGs | **Drinking water OFF from Oct 1** (off-season). Many loops close Oct 1; some loops stay open FCFS, no water. | USFS BHNF Off-Season page updated Sept 15, 2026 |
-| Sheridan Lake South | Woodsy Loop open off-season from **Oct 1**; other loops closed; **no drinking water** Oct 1–~May 15 | USFS / recreation.gov |
-| Roubaix Lake | C Loop open from **Oct 1**; other loops closed; **no drinking water** off-season | USFS BHNF Off-Season |
 | Cedar Pass CG (**LOCKED — Sat Oct 10**; Cedar Pass Sat Oct 10 → Black Hills (Wabash Spring Rd dispersed) Oct 11–~16/18 → Devils Tower / Warren Peak ~Oct 17/18) | Season inventory on rec.gov shows sites through **2026-10-19**; Nov = unavailable. Lodge seasonal **Apr 15–Oct 15** (staybadlands.com). Conflict with some blogs saying Oct 11 — **rec.gov calendar does NOT support Oct 11 close**. VERIFY water/kiosk after lodge closes ~Oct 15. | recreation.gov API inventory Oct 2026; staybadlands.com |
 | Game Lodge (CSP) | Full facilities **May 1–Nov 1**; Nov 2–Apr 30: comfort station closed, **vault + water hydrant** still listed | gfp.sd.gov/csp-campgrounds |
 | Rocky Point RA | Year-round camping; **Oct 1–Apr 30** showers/flush/**water systems may be closed** — call | gfp.sd.gov Rocky Point |
@@ -29,7 +27,6 @@
 | Muddy Mountain (Casper BLM) | Road reopened May 15 2026; annual road close ~**late Nov–early Jun**. Mid-Oct typically open. Water seasonal — VERIFY | blm.gov Casper FO |
 | Lava Hot Springs area | Portneuf Bend **year-round**; Lower Portneuf IDFG free sites (no formal season close found). Town services year-round. | portneufbendcampground.com; IDFG |
 | Blue Mounds MN CG | Park open year-round; **not** on MN DNR winter-camping list → treat CG water/showers as **VERIFY / likely reduced after frost**. Call park. | dnr.state.mn.us winter camping list (Blue Mounds absent) |
-| Rafter J Bar Ranch | **Likely CLOSED for the season** (RV Life: May 8–Sep 23; AAA: through Oct 1) — call 605-574-2527 to confirm | RV Life / AAA; rafterj.com |
 | Dispersed (BHNF/BLM/USBR) | No formal close; frost, mud, hunting traffic, wind. BHNF SD Stage 1 fire restrictions from **Sept 24, 2026** (propane OK unless Stage upgrades). | USFS alerts / OnX |
 
 ---
@@ -47,14 +44,8 @@
 
 ## Voice-friendly Hills dispersed (PRIORITY)
 
-1. **Top of Mountain / Mt Roosevelt Rd** — OnX `44.388218, -103.759036`. BHNF Northern Hills. Good gravel; ~26 ft TT OK on better pads. Scout steep spurs — **abort** if rocky. Solar: open ridge.
-2. **Mt Roosevelt corridor pullouts** — OnX `44.395722, -103.745491`. Same cluster; longer vehicle ~35 ft on better pads.
-3. **Taylor Ranch Rd meadow** — OnX `44.002914, -103.454769`. BHNF Mystic. Big-rig capable; short rough dirt. Solar open.
-4. **Calumet Rd / Cosmos** — OnX `43.940199, -103.452105`. Near Rushmore; mud when wet.
-5. **North Pole Rd (NFSR 287)** — OnX `43.75103, -103.73341`. Hell Canyon. Firm gravel; base for CSP/Crazy Horse.
-6. **Bear Mountain Lookout Rd (FDR 293)** — preferred pad ~`43.863490, -103.760022`. Elev ~7k; **scout** for 47 ft hitched.
-7. **Belle Fourche Reservoir / Susie Peak (USBR)** — OnX `44.7307, -103.7292`. Free dispersed W peninsulas; NOT Rocky Point fee. Windy; great solar. Tower approach.
-8. **Spearfish Canyon FR 222** — OnX `44.49082, -103.85937`. **ABORT trailer** unless truck-scouted; prefer #1–2; canyon = truck day-drive.
+1. **Wabash Spring Rd (FR 781), dispersed** — **CURRENT / ARRIVED Oct 11** — OnX `43.75, -103.66`. BHNF Hell Canyon, ~3 mi W of Custer off US-16. Free; no water/services. Confirm MVUM camping dots / established sites near the entrance.
+2. **Belle Fourche Reservoir / Susie Peak (USBR)** — OnX `44.7307, -103.7292`. Free dispersed W peninsulas; NOT Rocky Point fee. Windy; great solar. Tower approach (next sit).
 
 ### Abort / not preferred for X195
 - Wrinkled Rock TH (`43.887014, -103.469105`) — climber/tent.
@@ -132,7 +123,7 @@ Corn Palace to Cedar Pass: ~210 mi, ~3 h 15 min driving at 65 mph (~222 mi / ~3 
 
 ## Black Hills: base Wabash Spring Rd (dispersed) — Sun Oct 11 to ~Fri Oct 16–Sun Oct 18, 2026
 
-Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). **Base: Wabash Spring Rd FR 781 dispersed** (free; no water or services), Sun Oct 11 to ~Fri Oct 16–Sun Oct 18. Blue Bell had no availability. **Confirm MVUM camping dots / use only established sites near the entrance** (the 2025 Hell Canyon MVUM lists FR 781 + branches 781.1A–1K for dispersed camping; onX labels FR 781 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer (4 mi / 9 min, 7 AM–9 PM daily). Alternatives: Game Lodge CG (Custer SP), Sheridan Lake South (no water), BHNF dispersed (North Pole, Bear Mountain, Stagg Rd) in the table below.
+Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountain Time**); weekdays = Vicki solo in the truck, Ed joins ~2 pm MT. Sunset ~6:15 pm MT. **Needles Hwy + Iron Mountain Rd = TRUCK ONLY** (Needles Eye tunnel ~8 ft wide; fold tow mirrors). **CURRENT / ARRIVED Oct 11 — Base: Wabash Spring Rd FR 781 dispersed** (free; no water or services), Sun Oct 11 to ~Fri Oct 16–Sun Oct 18. **Confirm MVUM camping dots / use only established sites near the entrance** (the 2025 Hell Canyon MVUM lists FR 781 + branches 781.1A–1K for dispersed camping; onX labels FR 781 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer (4 mi / 9 min, 7 AM–9 PM daily).
 
 - **Sun Oct 11 (move, both):** Morning: Cedar Pass loop in Badlands (Big Badlands Overlook, Door/Window, Fossil Exhibit Trail as time allows; Notch Trail closed for ladder repairs), then drive to **Wabash Spring Rd FR 781** (~3 mi W of Custer off US-16): Wall → Wabash ~98 mi / ~2–2.5 h towing via I-90, Rapid City and US-16; Cedar Pass → Wabash via I-90 ~127 mi / ~2.5–3 h. Arrive with full water; scout established sites near the entrance in daylight. Optional Rushmore after dark (lit sunset–9 pm).
 - **Mon Oct 12:** Vicki AM Crazy Horse (open daily; fall $12 one / $24 two). 2 pm both: US-16A through CSP (non-stop, no license) → Iron Mountain Rd northbound → Rushmore through sunset. **Evening Lighting Program ended Sept 30, 2026**; sculpture lit sunset–9 pm Oct 1–Mar 9. Parking concession (~$10; Senior Pass not valid).
@@ -150,99 +141,50 @@ Ed works 6 am–3 pm CT weekdays = **5 am–2 pm MT** (Black Hills are **Mountai
 **Near Custer**
 
 - **Wabash Spring Rd (FR 781), dispersed** — **BASE** — `43.75, -103.66`  
-  BASE (dispersed) Sun Oct 11 to ~Fri Oct 16–Sun Oct 18. Off US-16 ~3 mi W of Custer. Free; no water, no services. BHNF rules: 14 days in any 60, park within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, 100 ft from streams, no open campfires in SD (Stage 1). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer (4 mi / 9 min, 7 AM–9 PM daily). Water fill: Blue Bell (~30 min) or Game Lodge (~36 min) in Custer SP, $25 7-day license. MVUM check Oct 11: the 2025 Hell Canyon MVUM lists FR 781 and branches 781.1A–1K for dispersed camping (dots, up to 300 ft from the road); road open 5/15–12/15, first ~2.5 mi gravel. onX and the national USFS layer label FR 781 'Bebbington'. Ed saw no dots in onX: confirm MVUM camping dots / use only established sites near the entrance. 38 ft rig reported Jul 2026; rougher farther north; cattle, ATVs.  
+  BASE (dispersed) ARRIVED Oct 11; Sun Oct 11 to ~Fri Oct 16–Sun Oct 18. Off US-16 ~3 mi W of Custer. Free; no water, no services. BHNF rules: 14 days in any 60, park within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, 100 ft from streams, no open campfires in SD (Stage 1). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer (4 mi / 9 min, 7 AM–9 PM daily). Water fill: Blue Bell (~30 min) or Game Lodge (~36 min) in Custer SP, $25 7-day license. MVUM check Oct 11: the 2025 Hell Canyon MVUM lists FR 781 and branches 781.1A–1K for dispersed camping (dots, up to 300 ft from the road); road open 5/15–12/15, first ~2.5 mi gravel. onX and the national USFS layer label FR 781 'Bebbington'. Ed saw no dots in onX: confirm MVUM camping dots / use only established sites near the entrance. 38 ft rig reported Jul 2026; rougher farther north; cattle, ATVs.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,13/overview) · [Google Maps](https://www.google.com/maps?q=43.75,-103.66)
 - **Custer, SD (town, ~20 min)** — `43.7666, -103.5988`  
   Nearest town: fuel, groceries, water  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7666,-103.5988,13/overview) · [Google Maps](https://www.google.com/maps?q=43.7666,-103.5988)
-- **Bear Mountain Lookout Rd, FDR 293** — `43.863490, -103.760022`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,13/overview) · [Google Maps](https://www.google.com/maps?q=43.863490,-103.760022)
-- **Blue Bell Campground (Custer SP)** — `43.716916, -103.482236`  
-  No availability for Oct 11–17 (checked Oct 11). Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge. $34/night with electric; water fill + dump, no sewer; open to Nov 1. $25 7-day Custer SP license; Senior Pass NOT valid. campsd.com / 1-800-710-2267.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
-- **Cold Springs School Rd, Pringle: search area (scout in onX)** — `43.60, -103.51`  
-  SEARCH AREA ~17 mi / 27 min S of Custer near Wind Cave. Wide smooth gravel, ~4 sites (some back-in), big open site to the north; highway noise; SOS-only cell (The Dyrt). Confirm MVUM dots.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.60,-103.51,13/overview) · [Google Maps](https://www.google.com/maps?q=43.60,-103.51)
-- **Game Lodge Campground (Custer SP)** — `43.760650, -103.371203`  
-  Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,13/overview) · [Google Maps](https://www.google.com/maps?q=43.760650,-103.371203)
 - **Lynn's Dakotamart (grocery), Custer** — `43.767299, -103.595152`  
   Grocery + pharmacy with its own fuel pumps. 800 Mount Rushmore Rd, Custer. Open 7 AM–9 PM daily, 605-673-4463. ~4 mi / 9 min from Wabash.  
   [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.767299,-103.595152,13/overview) · [Google Maps](https://www.google.com/maps?q=43.767299,-103.595152)
-- **North Pole Rd, NFSR 287** — `43.75103, -103.73341`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,13/overview) · [Google Maps](https://www.google.com/maps?q=43.75103,-103.73341)
-- **RD 356 off SD-244 (Palmer Gulch): search area (scout in onX)** — `43.90, -103.52`  
-  SEARCH AREA ~15 mi / 24 min N of Custer. 30 ft trailer at 2nd site (Sep 2026); stay near the entrance, high clearance and a steep hill farther in; muddy after rain. Keep 1/2 mi from Willow Creek Horse Camp/KOA. Confirm MVUM dots.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.90,-103.52,13/overview) · [Google Maps](https://www.google.com/maps?q=43.90,-103.52)
-- **Stagg Rd / Spar Spring (FR 653.1C): search area (scout in onX)** — `43.73, -103.63`  
-  SEARCH AREA ~5 mi / 10 min SE of Custer by the airport. Stagg Rd good gravel (29 ft reported 2025), dirt spurs need a truck; FR 653.1C single big MVUM-marked site, soggy when wet, aircraft noise; cattle.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.73,-103.63,13/overview) · [Google Maps](https://www.google.com/maps?q=43.73,-103.63)
 
-**Elsewhere in the Hills**
 
-- **Calumet Rd / Cosmos** — `43.940199, -103.452105`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,13/overview) · [Google Maps](https://www.google.com/maps?q=43.940199,-103.452105)
-- **Deerfield Lake area: search area (scout in onX)** — `44.019, -103.799`  
-  SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,13/overview) · [Google Maps](https://www.google.com/maps?q=44.019,-103.799)
-- **Mt Roosevelt corridor pullouts** — `44.395722, -103.745491`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,13/overview) · [Google Maps](https://www.google.com/maps?q=44.395722,-103.745491)
-- **Pactola Reservoir area: search area (scout in onX)** — `44.075, -103.507`  
-  SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,13/overview) · [Google Maps](https://www.google.com/maps?q=44.075,-103.507)
-- **Rafter J Bar Ranch (private, Hill City)** — `43.891558, -103.592484`  
-  Full hookups. Likely CLOSED for the season (RV Life: May 8–Sep 23; AAA: through Oct 1); call 605-574-2527. In season $75–125/night, 2-night minimum, no Senior Pass discount.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,13/overview) · [Google Maps](https://www.google.com/maps?q=43.891558,-103.592484)
-- **Roubaix Lake Campground (USFS, Deadwood backup)** — `44.233, -103.67`  
-  Off-season from Oct 1: C Loop only, NO drinking water; ~25–46 ft depending on loop. Forest 605-673-9200.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,13/overview) · [Google Maps](https://www.google.com/maps?q=44.233,-103.67)
-- **Sheridan Lake South Campground (USFS)** — `43.970262, -103.475686`  
-  Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview) · [Google Maps](https://www.google.com/maps?q=43.970262,-103.475686)
-- **Spearfish Canyon FR 222 (caution)** — `44.49082, -103.85937`  
-  Marginal: ABORT with the trailer unless truck-scouted; creek ice/mud mid-Oct. Canyon is a truck day-drive.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,13/overview) · [Google Maps](https://www.google.com/maps?q=44.49082,-103.85937)
-- **Taylor Ranch Rd meadow** — `44.002914, -103.454769`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,13/overview) · [Google Maps](https://www.google.com/maps?q=44.002914,-103.454769)
-- **Top of Mountain / Mt Roosevelt Rd** — `44.388218, -103.759036`  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,13/overview) · [Google Maps](https://www.google.com/maps?q=44.388218,-103.759036)
+**Custer-area POIs**
+
+- **Jewel Cave NM** — `43.7298, -103.8293`  
+  11 mi/~15 min from Wabash. Tue–Sat 8:30–4:30, closed Sun–Mon. Scenic tour $16 (last 2:45), Discovery $6/$3 62+ (last 3:45); book Recreation.gov by noon day before.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7298,-103.8293,13/overview) · [Google Maps](https://www.google.com/maps?q=43.7298,-103.8293)
+- **Crazy Horse Memorial** — `43.8361, -103.6237`  
+  11 mi/~20–25 min from Wabash. Daily; closing 6 or 8 PM unconfirmed, call 605-673-4681; bus to mountain $5.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.8361,-103.6237,13/overview) · [Google Maps](https://www.google.com/maps?q=43.8361,-103.6237)
+- **Sylvan Lake / Needles Hwy start** — `43.8457, -103.5605`  
+  11 mi/~22 min from Wabash. Needles Hwy open until first snow (check sd511.org); Needles Eye tunnel: no trailer. CSP $25 7-day license.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.8457,-103.5605,13/overview) · [Google Maps](https://www.google.com/maps?q=43.8457,-103.5605)
+- **Mount Rushmore** — `43.8777, -103.4545`  
+  24 mi/~40 min from Wabash. Grounds 6 AM–9 PM, lit sunset–9 PM; parking $5 seniors at entry booth (Lane 4 for trailers).  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.8777,-103.4545,13/overview) · [Google Maps](https://www.google.com/maps?q=43.8777,-103.4545)
+- **Custer SP Visitor Center / Wildlife Loop** — `43.7595, -103.3480`  
+  19 mi/~45 min from Wabash. VC 9–4; loop year-round, dusk best for bison; $25 license.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.7595,-103.3480,13/overview) · [Google Maps](https://www.google.com/maps?q=43.7595,-103.3480)
+- **Wind Cave NP** — `43.5566, -103.4787`  
+  21 mi/~40 min from Wabash. VC 8–4:30 daily; Fairgrounds tour $8 62+ (last 2:20), Garden of Eden $7 62+.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.5566,-103.4787,13/overview) · [Google Maps](https://www.google.com/maps?q=43.5566,-103.4787)
+- **Mammoth Site, Hot Springs** — `43.4247, -103.4836`  
+  32 mi/~55 min from Wabash. Daily 9–5, $14 60+, arrive by 4.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.4247,-103.4836,13/overview) · [Google Maps](https://www.google.com/maps?q=43.4247,-103.4836)
+- **Hill City** — `43.9327, -103.5752`  
+  18 mi/~28 min from Wabash. 1880 Train $43 RT, call 605-574-2222 for Oct times.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.9327,-103.5752,13/overview) · [Google Maps](https://www.google.com/maps?q=43.9327,-103.5752)
+- **Keystone** — `43.8956, -103.4252`  
+  29 mi/~46 min from Wabash. Big Thunder Mine 9–5 (last tour 3:45); Haunting of Keystone Oct 16–18 evenings.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.8956,-103.4252,13/overview) · [Google Maps](https://www.google.com/maps?q=43.8956,-103.4252)
+- **Deadwood** — `44.3767, -103.7296`  
+  60 mi/~1.5 h from Wabash. Museums Tue–Sat 10–4.  
+  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.3767,-103.7296,13/overview) · [Google Maps](https://www.google.com/maps?q=44.3767,-103.7296)
 
 **Water fill near Custer:** no verified public spigot in town. Verified fills: Game Lodge CG dump-station loop (separate potable lane; free with the $25 7-day Custer SP license, Senior Pass not valid; ~28 min) and Blue Bell CG (drinking water + dump, open to Nov 1; ~22 min). Echo Valley Park (private, ~3.5 mi N) lists water/dump: call first. From Wabash: Blue Bell ~30 min, Game Lodge ~36 min. Harvest Hosts near Custer: none verified.
-
-### Black Hills developed campgrounds (alphabetical, not ranked)
-
-- **Game Lodge Campground (Custer SP)** — `43.760650, -103.371203`  
-  Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,13/overview) · [Google Maps](https://www.google.com/maps?q=43.760650,-103.371203)
-- **Rafter J Bar Ranch (private, Hill City)** — `43.891558, -103.592484`  
-  Full hookups. Likely CLOSED for the season (RV Life: May 8–Sep 23; AAA: through Oct 1); call 605-574-2527. In season $75–125/night, 2-night minimum, no Senior Pass discount.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,13/overview) · [Google Maps](https://www.google.com/maps?q=43.891558,-103.592484)
-- **Roubaix Lake Campground (USFS, Deadwood backup)** — `44.233, -103.67`  
-  Off-season from Oct 1: C Loop only, NO drinking water; ~25–46 ft depending on loop. Forest 605-673-9200.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,13/overview) · [Google Maps](https://www.google.com/maps?q=44.233,-103.67)
-- **Sheridan Lake South Campground (USFS)** — `43.970262, -103.475686`  
-  Off US-385 via Calumet Rd. Off-season (Oct 1–May 15): only Woodsy Loop open, ~30 first-come sites, $15/night (Senior Pass 50% off). NO drinking water; vault toilets; pack out trash; 60 ft spurs; roads not maintained.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview) · [Google Maps](https://www.google.com/maps?q=43.970262,-103.475686)
-
-### Possible (not yet confirmed): verified Oct 11, 2026
-
-- **Blue Bell Campground (Custer SP)** — `43.716916, -103.482236`  
-  **No availability for Oct 11–17.** Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge (avoid Needles Hwy north). Open to Nov 1: water, dump, showers; electric sites $34 (tent $16/$23), 31 sites. Needs $25 7-day Custer SP license per vehicle; Senior Pass NOT valid. Res 800-710-2267.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,13/overview) · [Google Maps](https://www.google.com/maps?q=43.716916,-103.482236)
-- **Deerfield Lake area: search area (scout in onX)** — `44.019, -103.799`  
-  SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,13/overview) · [Google Maps](https://www.google.com/maps?q=44.019,-103.799)
-- **Pactola Reservoir area: search area (scout in onX)** — `44.075, -103.507`  
-  SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,13/overview) · [Google Maps](https://www.google.com/maps?q=44.075,-103.507)
-
-**Checked Oct 11, not added (closed or no water this week):** Horsethief Lake and Oreville (USFS) closed Oct 1; Dutchman open (top loop, 9 free FCFS sites, 50 ft spurs) but no water; Custer SP Center Lake (through Sep 30), Sylvan Lake, Stockade North/South (through Oct 1) and Legion Lake (through Oct 10) are past their open dates. Sources: fs.usda.gov BHNF Off-Season Campground Information (updated Sep 15, 2026); recreation.gov notices; gfp.sd.gov/csp-campgrounds.
-
-### Also in the Black Hills spots list (caution)
-
-- **Spearfish Canyon FR 222 (caution)** — `44.49082, -103.85937`  
-  Marginal: ABORT with the trailer unless truck-scouted; creek ice/mud mid-Oct. Canyon is a truck day-drive.  
-  [onX Offroad](https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,13/overview) · [Google Maps](https://www.google.com/maps?q=44.49082,-103.85937)
 
 ---
 
@@ -283,19 +225,8 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 | Conata Basin (Buffalo Gap backup) | https://www.google.com/maps?q=43.782492,-102.240161 | https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,13/overview | dispersed | None — Wall | Wall ~12+ mi gravel | Wall | No formal close; wet = impassable | Prairie pullouts; cattle; OnX public land | Wall RD 605-279-2125 | https://www.fs.usda.gov/r02/nebraska/recreation/buffalo-gap-national-grassland |
 | Wall Drug | https://www.google.com/maps?q=43.9936,-102.2415 | https://webmap.onxmaps.com/offroad/map/query/43.9936,-102.2415,13/overview | visit-only | Town | Wall stations | Wall Drug + Food Center | Town year-round | Resupply | 605-279-2175 | https://www.walldrug.com/ |
 | Minuteman Missile NHS VC | https://www.google.com/maps?q=43.931,-101.956 | https://webmap.onxmaps.com/offroad/map/query/43.931,-101.956,13/overview | visit-only | VC facilities | I-90 exit 131 | Wall / Interior | VC hours seasonal — VERIFY mid-Oct | America the Beautiful Pass | 605-433-5552 | https://www.nps.gov/mimi |
-| Sheridan Lake South CG | https://www.google.com/maps?q=43.970262,-103.475686 | https://webmap.onxmaps.com/offroad/map/query/43.970262,-103.475686,13/overview | developed CG | **OFF Oct 1–~May 15** | Hill City / Rapid | Hill City / Rapid | **Off-season from Oct 1:** Woodsy Loop only; **no drinking water**; ~30 FCFS sites, $15/night (Senior Pass 50% off); roads unmaintained | BHNF Mystic; ≤60 ft spur listed; Three Forks fee dump nearby | Mystic RD 605-343-1567 | https://www.recreation.gov/camping/campgrounds/232300 |
-| Rafter J Bar Ranch | https://www.google.com/maps?q=43.891558,-103.592484 | https://webmap.onxmaps.com/offroad/map/query/43.891558,-103.592484,13/overview | developed CG (private) | Full hookups when open | Hill City | Hill City / store | **Likely CLOSED for the season** (RV Life: May 8–Sep 23; AAA: through Oct 1) — call to confirm | Non-KOA Hills backup; in season $75–125/night, 2-night min, no Senior Pass discount | 605-574-2527 | https://www.rafterj.com/ |
-| Game Lodge CG (Custer SP) | https://www.google.com/maps?q=43.760650,-103.371203 | https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,13/overview | developed CG | Potable; dump; showers (full season) | Custer / park | State Game Lodge / Custer | **Full facilities May 1–Nov 1**; Nov 2–Apr 30: vault + **water hydrant** listed (comfort station closed) | CSP ≤55 ft electric ($34; $27 non-elec); Wildlife Loop base. **$25 7-day CSP entrance license/vehicle; Senior Pass not valid in CSP.** Res 800-710-2267 | CSP 605-394-2693 | https://gfp.sd.gov/csp-campgrounds/ |
-| Top of Mountain / Mt Roosevelt dispersed | https://www.google.com/maps?q=44.388218,-103.759036 | https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,13/overview | dispersed | Spearfish City dump/fill ~15–18 mi | Deadwood/Lead ~3–6 mi | Deadwood; grocery Spearfish | No formal close; frost/snow possible mid-Oct; Stage 1 fire restr. | BHNF; MVUM dots; scout steeps | Northern Hills RD 605-642-4622 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| Mt Roosevelt Rd dispersed | https://www.google.com/maps?q=44.395722,-103.745491 | https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,13/overview | dispersed | Spearfish City fill | Deadwood ~3–6 mi | Deadwood / Spearfish | Same — no formal CG close | Same cluster; vault at Friendship Tower TH | Northern Hills RD 605-642-4622 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| Taylor Ranch Rd dispersed | https://www.google.com/maps?q=44.002914,-103.454769 | https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,13/overview | dispersed | Three Forks / Rapid dump+fill | Hill City / Rapid | Hill City / Rapid | No formal close; mud after rain/freeze-thaw | BHNF meadow; big-rig OK | Mystic RD 605-343-1567 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| Calumet Rd / Cosmos dispersed | https://www.google.com/maps?q=43.940199,-103.452105 | https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,13/overview | dispersed | Hill City / Three Forks | Keystone / Hill City | Keystone / Hill City / Rapid | No formal close; mud when wet | Near Rushmore | Mystic RD 605-343-1567 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| North Pole Rd (NFSR 287) dispersed | https://www.google.com/maps?q=43.75103,-103.73341 | https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,13/overview | dispersed | Custer town / private CG | Custer ~7–8 mi | Custer | No formal close; BHNF CG water already off | Firm gravel; CSP/Crazy Horse base | Hell Canyon / SO 605-673-9200 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| Bear Mountain Lookout Rd dispersed | https://www.google.com/maps?q=43.863490,-103.760022 | https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,13/overview | dispersed | Custer town | Custer ~20–35 min | Custer | No formal close; elev ~7k → early snow **?** | Scout for 26 ft / 47 ft hitched | Hell Canyon / SO 605-673-9200 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
-| Spearfish Canyon FR 222 (caution) | https://www.google.com/maps?q=44.49082,-103.85937 | https://webmap.onxmaps.com/offroad/map/query/44.49082,-103.85937,13/overview | dispersed (marginal) | Spearfish | Spearfish | Spearfish | No formal close; creek ice/mud risk mid-Oct | **Truck day-drive preferred** | Northern Hills RD 605-642-4622 | https://www.fs.usda.gov/r02/blackhills/recreation/dispersed-camping |
 | Belle Fourche Reservoir (Susie Peak) | https://www.google.com/maps?q=44.7307,-103.7292 | https://webmap.onxmaps.com/offroad/map/query/44.7307,-103.7292,13/overview | dispersed (USBR) | Lake non-potable; Rocky Point dump; town | Belle Fourche ~11–15 mi | Lynn’s / Runnings | No formal dispersed close; windy; freeze risk mid-Oct | Open sun/solar; Tower approach | USBR 605-394-9757; Rocky Point 605-773-2408 | https://www.boondockersbible.com/campsite/belle-fourche-reservoir-dispersed-area/ |
 | Rocky Point RA (backup CG) | https://www.google.com/maps?q=44.70923,-103.7125 | https://webmap.onxmaps.com/offroad/map/query/44.70923,-103.7125,13/overview | developed CG | Potable **may close Oct 1–Apr 30** | Belle Fourche ~8–12 mi | Belle Fourche | Year-round camping; **Oct 1–Apr 30 water systems may be closed** — call 605-773-2408 | Fee electric; vault usually open | 605-773-2408; res 800-710-2267 | https://gfp.sd.gov/parks/detail/rocky-point-recreation-area/ |
-| Roubaix Lake CG (Deadwood backup) | https://www.google.com/maps?q=44.233,-103.67 | https://webmap.onxmaps.com/offroad/map/query/44.233,-103.67,13/overview | developed CG | **OFF from Oct 1** | Deadwood / Lead | Deadwood / Spearfish | Off-season from **Oct 1**: C Loop only; **no drinking water** | BHNF; ≤~25–46 ft depending on loop | Forest 605-673-9200 | https://www.recreation.gov/camping/campgrounds/232365 |
 | Mount Rushmore | https://www.google.com/maps?q=43.8803,-103.4538 | https://webmap.onxmaps.com/offroad/map/query/43.8803,-103.4538,13/overview | visit-only | VC / parking | Keystone | Keystone / Hill City | Monument year-round; some services reduce mid-Oct — VERIFY hours | America the Beautiful (parking fee may still apply) | 605-574-3171 | https://www.nps.gov/moru |
 | Crazy Horse Memorial | https://www.google.com/maps?q=43.8366,-103.6225 | https://webmap.onxmaps.com/offroad/map/query/43.8366,-103.6225,13/overview | visit-only | On-site | Custer / Hill City | On-site / Custer | Year-round attraction; hours may shorten — VERIFY | Private fee (not Senior Pass) | 605-673-4681 | https://crazyhorsememorial.org/ |
 | Wildlife Loop (Custer SP) | https://www.google.com/maps?q=43.733,-103.40 | https://webmap.onxmaps.com/offroad/map/query/43.733,-103.40,13/overview | visit-only (drive) | Park CGs | Custer | CSP / Custer | Road typically open; weather/wildlife delays | Truck scenic; bison | CSP 605-394-2693 | https://gfp.sd.gov/parks/detail/custer-state-park/ |
@@ -328,7 +259,7 @@ Prefer **weekend hops**, dispersed first, developed/HH backup, water useful, Sen
 
 ## Do-not
 
-- Cedar Pass is **LOCKED** for Sat Oct 10 2026 (Ed confirmed); status: Cedar Pass Sat Oct 10 → Black Hills (Wabash Spring Rd dispersed) Oct 11–~16/18 → Devils Tower / Warren Peak ~Oct 17/18
+- Black Hills (Wabash Spring Rd) is **CURRENT / ARRIVED Oct 11**; Cedar Pass was LOCKED Sat Oct 10. Next: Devils Tower / Warren Peak ~Oct 17/18
 
 ## Sources (date research)
 

@@ -263,7 +263,6 @@
       <div class="body">
         <span class="swatch stay"></span> Planned sit (one per area)<br>
         <span class="swatch keystop"></span> Key stop<br>
-        <span class="swatch possible"></span> Paid site with electric<br>
         <span class="swatch dispersed"></span> Free dispersed site<br>
         <span class="swatch visit"></span> Viewpoint / scenic stop<br>
         <span class="swatch route"></span> Route<br>
@@ -304,7 +303,7 @@
   const BLUE_MOUNDS = { lat: 43.718, lng: -96.193 };
 
   const SPINE = [
-    { name: "CURRENT: Blue Mounds SP (Luverne MN)", lat: 43.718, lng: -96.193, kind: "current" },
+    { name: "Blue Mounds SP (Luverne MN) — departed Oct 10", lat: 43.718, lng: -96.193, kind: "stay" },
     { name: "Mitchell Corn Palace (VISIT opt)", lat: 43.709, lng: -98.03, kind: "visit" },
     { name: "Chamberlain Dignity (VISIT/short STAY opt)", lat: 43.805, lng: -99.33, kind: "visit" },
     { name: "STAY: Badlands Cedar Pass", lat: 43.746, lng: -101.948, kind: "stay",
@@ -314,8 +313,8 @@
         { label: "NPS scenic drives", href: "https://www.nps.gov/thingstodo/badl-loop-road.htm" }
       ] },
     { name: "Wall Drug / Minuteman (VISIT opt)", lat: 43.993, lng: -102.242, kind: "visit" },
-    { name: "STAY: Wabash Spring Rd FR 781 (Black Hills base, Oct 11–16/18)", lat: 43.75, lng: -103.66, kind: "stay",
-      note: "Free dispersed (Black Hills NF), off US-16 ~3 mi W of Custer. No water, no services: arrive full; fill at Blue Bell or Game Lodge (Custer SP, $25 7-day license). Rules: 14 days in any 60, within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, no open campfires in SD. Confirm MVUM camping dots / use only established sites near the entrance (2025 MVUM lists FR 781 for dispersed camping; onX labels it 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer, 4 mi / 9 min, 7 AM–9 PM daily.",
+    { name: "CURRENT: Wabash Spring Rd FR 781 (Black Hills base, arrived Oct 11)", lat: 43.75, lng: -103.66, kind: "current",
+      note: "ARRIVED Oct 11. Free dispersed (Black Hills NF), off US-16 ~3 mi W of Custer. No water, no services: arrive full; fill at Blue Bell or Game Lodge (Custer SP, $25 7-day license). Rules: 14 days in any 60, within 300 ft of the road only where MVUM dots show, 1/2 mi from developed sites, no open campfires in SD. Confirm MVUM camping dots / use only established sites near the entrance (2025 MVUM lists FR 781 for dispersed camping; onX labels it 'Bebbington'). Groceries: Lynn's Dakotamart, 800 Mount Rushmore Rd, Custer, 4 mi / 9 min, 7 AM–9 PM daily.",
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75,-103.66" }
@@ -347,7 +346,7 @@
     { name: "Needles / Iron Mtn — truck only", lat: 43.84, lng: -103.53, kind: "visit" }
   ];
 
-  // GREEN = free dispersed sites (incl. two search areas). Always shown at load.
+  // GREEN = free dispersed sites. Always shown at load.
   const FREE_DISPERSED = [
     { name: "Nomad View dispersed (Buffalo Gap NG)", lat: 43.893099, lng: -102.238540, kind: "dispersed",
       note: "~7 mi S of Wall on SD-240 by the radio towers; use the second entrance past the towers. Free, no services.",
@@ -360,89 +359,11 @@
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.782492,-102.240161,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.782492,-102.240161" }
-      ] },
-    { name: "Bear Mountain Lookout Rd, FDR 293 (BHNF)", lat: 43.863490, lng: -103.760022, kind: "dispersed",
-      note: "Elev ~7k; scout the pad for ~47 ft hitched; early snow possible. Water/dump in Custer.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.863490,-103.760022,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.863490,-103.760022" }
-      ] },
-    { name: "Calumet Rd / Cosmos (BHNF)", lat: 43.940199, lng: -103.452105, kind: "dispersed",
-      note: "Near Rushmore; mud when wet. Water/dump Hill City or Three Forks.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.940199,-103.452105,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.940199,-103.452105" }
-      ] },
-    { name: "Mt Roosevelt corridor pullouts (BHNF)", lat: 44.395722, lng: -103.745491, kind: "dispersed",
-      note: "Northern Hills near Deadwood; better pads take ~35 ft. Vault at Friendship Tower TH; fill in Spearfish.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.395722,-103.745491,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.395722,-103.745491" }
-      ] },
-    { name: "North Pole Rd, NFSR 287 (BHNF)", lat: 43.75103, lng: -103.73341, kind: "dispersed",
-      note: "Hell Canyon RD; firm gravel; base for Custer SP / Crazy Horse. Water in Custer.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75103,-103.73341,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75103,-103.73341" }
-      ] },
-    { name: "Taylor Ranch Rd meadow (BHNF)", lat: 44.002914, lng: -103.454769, kind: "dispersed",
-      note: "Mystic RD meadow; big-rig capable, short rough dirt; mud after freeze-thaw. Three Forks / Rapid dump+fill.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.002914,-103.454769,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.002914,-103.454769" }
-      ] },
-    { name: "Top of Mountain / Mt Roosevelt Rd (BHNF)", lat: 44.388218, lng: -103.759036, kind: "dispersed",
-      note: "Good gravel ridge; ~26 ft TT OK on better pads; abort steep/rocky spurs. Fill in Spearfish.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.388218,-103.759036,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.388218,-103.759036" }
-      ] },
-    { name: "Deerfield Lake area: search area (scout in onX)", lat: 44.019, lng: -103.799, kind: "dispersed",
-      note: "SEARCH AREA, not a campsite (pin = lake centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from campgrounds/picnic areas, 100 ft from streams, 14 days in 28. Legal fallback: free off-season Custer Trail, Dutchman (top loop), Whitetail (lower loop), no water, 50 ft spurs.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.019,-103.799,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.019,-103.799" }
-      ] },
-    { name: "Pactola Reservoir area: search area (scout in onX)", lat: 44.075, lng: -103.507, kind: "dispersed",
-      note: "SEARCH AREA, not a campsite (pin = reservoir centroid). BHNF: no dispersed camping around the reservoir except designated sites; elsewhere only on MVUM-dot roads, 1/2 mi from developed sites, 100 ft from streams, 14 days in 28. Pactola CG closed Oct 1; Loop B/Osprey Trail area closed (BKF-195-2026).",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/44.075,-103.507,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=44.075,-103.507" }
-      ] },
-    { name: "Stagg Rd / Spar Spring (FR 653.1C): search area (scout in onX)", lat: 43.73, lng: -103.63, kind: "dispersed",
-      note: "SEARCH AREA ~5 mi / 10 min SE of Custer by the airport. Stagg Rd good gravel (29 ft reported 2025), dirt spurs need a truck; FR 653.1C single big MVUM-marked site, soggy when wet, aircraft noise; cattle.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.73,-103.63,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.73,-103.63" }
-      ] },
-    { name: "Cold Springs School Rd, Pringle: search area (scout in onX)", lat: 43.60, lng: -103.51, kind: "dispersed",
-      note: "SEARCH AREA ~17 mi / 27 min S of Custer near Wind Cave. Wide smooth gravel, ~4 sites (some back-in), big open site to the north; highway noise; SOS-only cell (The Dyrt). Confirm MVUM dots.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.60,-103.51,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.60,-103.51" }
-      ] },
-    { name: "RD 356 off SD-244 (Palmer Gulch): search area (scout in onX)", lat: 43.90, lng: -103.52, kind: "dispersed",
-      note: "SEARCH AREA ~15 mi / 24 min N of Custer. 30 ft trailer at 2nd site (Sep 2026); stay near the entrance, high clearance and a steep hill farther in; muddy after rain. Keep 1/2 mi from Willow Creek Horse Camp/KOA. Confirm MVUM dots.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.90,-103.52,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.90,-103.52" }
       ] }
   ];
 
-  // LIGHT BLUE = paid sites with electric. Always shown at load.
+  // LIGHT BLUE = paid sites with electric. Always shown at load. (none on map after Black Hills alternate cleanup)
   const PAID_ELECTRIC = [
-    { name: "Blue Bell Campground (Custer SP)", lat: 43.716916, lng: -103.482236, kind: "paid",
-      note: "No availability for Oct 11–17 (checked Oct 11). Custer SP on SD-87 south of US-16A, next to Blue Bell Lodge. $34/night with electric; water fill + dump, no sewer; open to Nov 1. $25 7-day Custer SP license; Senior Pass NOT valid. campsd.com / 1-800-710-2267.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.716916,-103.482236,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.716916,-103.482236" }
-      ] },
-    { name: "Game Lodge Campground (Custer SP)", lat: 43.760650, lng: -103.371203, kind: "paid",
-      note: "Developed CG on US-16A, ¼ mi east of the State Game Lodge. Electric sites $34 ($27 non-electric); water, dump and showers through about Nov 1. Needs the $25 7-day Custer SP entrance license per vehicle; Senior Pass NOT valid in Custer SP. Res 800-710-2267.",
-      links: [
-        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.760650,-103.371203,14/overview" },
-        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.760650,-103.371203" }
-      ] }
   ];
 
   const KIND_STYLE = {
