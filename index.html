@@ -309,22 +309,20 @@
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/43.75,-103.66,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=43.75,-103.66" }
       ] },
-    { name: "Belle Fourche (opt approach)", lat: 44.671, lng: -103.852, kind: "visit" },
-    { name: "STAY: Devils Tower WY", lat: 44.590, lng: -104.715, kind: "stay", key: true },
-    { name: "STAY: Casper WY", lat: 42.867, lng: -106.313, kind: "later",
+    { name: "STAY: Casper WY (Fri Oct 16)", lat: 42.867, lng: -106.313, kind: "later",
       note: "Casper area (general): BLM Willow Creek / Pathfinder / Bolton Creek dispersed; Muddy Mountain CG backup ($7, Senior half). Exact pin TBD.",
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.867,-106.313,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.867,-106.313" }
       ] },
-    { name: "STAY: Rock Springs WY", lat: 41.587, lng: -109.203, kind: "later" },
-    { name: "STAY: Lava Hot Springs ID", lat: 42.619, lng: -112.012, kind: "later",
+    { name: "STAY: Rock Springs WY (Sat Oct 17)", lat: 41.587, lng: -109.203, kind: "later" },
+    { name: "STAY/opt: Lava Hot Springs ID", lat: 42.619, lng: -112.012, kind: "later",
       note: "Portneuf Bend CG (private, same point): open year-round, electric, central water hydrants. 208-530-1595.",
       links: [
         { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.619,-112.012,14/overview" },
         { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.619,-112.012" }
       ] },
-    { name: "HOME: Boise / Meridian ID", lat: 43.612, lng: -116.392, kind: "home" }
+    { name: "HOME: Boise / Meridian ID (~Sun Oct 18)", lat: 43.612, lng: -116.392, kind: "home" }
   ];
 
   const HILLS = [
@@ -338,10 +336,34 @@
 
   // GREEN = free dispersed sites. Always shown at load.
   const FREE_DISPERSED = [
+    { name: "Fri opt: Pathfinder Reservoir BLM dispersed", lat: 42.55218, lng: -106.71643, kind: "dispersed",
+      note: "Free BLM, north shore via Pathfinder Rd / CR 407, ~12 mi dirt, high-clearance 2WD, big-rig room, 14-night limit, no water. Pathfinder NWR next door bans overnight camping: confirm BLM land in onX. Windy Sat.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.55218,-106.71643,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.55218,-106.71643" }
+      ] },
+    { name: "Fri opt: Muddy Mountain BLM (Rim / Lodgepole CGs) — approx", lat: 42.7, lng: -106.3, kind: "dispersed",
+      note: "BLM developed CGs south of Casper; road open to late Nov. High and cold; water likely off. Approx pin. BLM Casper 307-261-7600.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.7,-106.3,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.7,-106.3" }
+      ] },
   ];
 
   // LIGHT BLUE = paid sites with electric. Always shown at load. (none on map after Black Hills alternate cleanup)
   const PAID_ELECTRIC = [
+    { name: "Fri opt: Casper East RV Park — approx", lat: 42.86, lng: -106.25, kind: "paid",
+      note: "Water + electric / full hookups, open nightly through Oct 30. Showers. Approx pin; search the name.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.86,-106.25,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.86,-106.25" }
+      ] },
+    { name: "Fri opt: Casper KOA (Bar Nunn)", lat: 42.912, lng: -106.346, kind: "paid",
+      note: "1101 Prairie Lane, Bar Nunn. Open through Oct 31; site water may be off but has a fill station. 307-577-1664.",
+      links: [
+        { label: "onX Offroad", href: "https://webmap.onxmaps.com/offroad/map/query/42.912,-106.346,14/overview" },
+        { label: "Google Maps", href: "https://www.google.com/maps/dir/?api=1&destination=42.912,-106.346" }
+      ] },
   ];
 
   const KIND_STYLE = {
