@@ -38,3 +38,4 @@ python make_return_map.py
 ```
 
 Status: Cedar Pass Sat Oct 10 → Black Hills Oct 11–17 → Devils Tower Oct 17.
+Last connectivity check: 2026-10-16.
