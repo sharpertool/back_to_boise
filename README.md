@@ -1,7 +1,24 @@
-# Back to Boise — return map
+# Trip maps — Ed and Vicki Henderson
 
-Interactive Folium map + locations table for Ed Henderson’s mid-October return:
-**Blue Mounds MN → SD → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian**.
+Two trips on this GitHub Pages site. The October return is unchanged. Christmas 2026 is a separate folder.
+
+## Christmas 2026 — Boise to Heber Valley
+
+Planning map for about Dec 20–31, 2026. Still home in Boise; nothing is locked. Suggested base is Mountain Valley RV Resort in Heber (Wasatch Mountain State Park, Soldier Hollow, is the other base to compare), with an optional night at Echo State Park.
+
+| Page | URL |
+|---|---|
+| **Map** | https://sharpertool.github.io/back_to_boise/christmas-2026/ |
+| **Locations** | https://sharpertool.github.io/back_to_boise/christmas-2026/locations.html |
+| Tonight (home) | https://sharpertool.github.io/back_to_boise/christmas-2026/tonight.html |
+| Tomorrow (first overnight idea) | https://sharpertool.github.io/back_to_boise/christmas-2026/tomorrow.html |
+
+Drive is I-84 to I-80 through Echo Canyon, then US-40 into Heber Valley. The map opens on Boise. Orange is the current sit. Light blue is one pin per paid winter campground. Purple stars are the North Pole Express and Park City. White diamonds are skipped or closed places. No dispersed pins.
+
+## Back to Boise — October 2026 return
+
+Interactive map + locations table for the finished mid-October return:
+**Custer SD (Wabash) → Devils Tower WY → Casper → Rock Springs/I-80 → Lava Hot Springs ID → Boise/Meridian**.
 
 ## Live pages (after GitHub Pages / CDN)
 
