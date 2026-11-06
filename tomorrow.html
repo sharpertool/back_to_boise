@@ -46,7 +46,7 @@ function render(){
  var lg=null;s.spots.forEach(function(p){if(p.grp&&p.grp!==lg){lg=p.grp;o+='<h2 class="grp-h">'+p.grp+'</h2>';}o+='<div class="spot"><strong>'+p.n+'</strong>'+(p.tag?' <span class="badge">'+p.tag+'</span>':'')+'<br><span class="coords">'+p.la+', '+p.lo+'</span>'+(p.note?'<div class="spot-note">'+p.note+'</div>':'<br>')+'<a class="btn onx" href="'+p.onx+'" target="_blank" rel="noopener">onX Offroad</a><a class="btn g" href="'+p.g+'" target="_blank" rel="noopener">Google Maps</a></div>';});
  o+=poiHtml(s,'btn onx','btn g','btn nps');
  o+='<div class="nav"><a href="tonight.html">&larr; Tonight</a><span></span></div>';
- o+='<div class="foot"><a href="locations.html">Full locations page</a> &middot; <a href="./">Trip map</a></div>';
+ o+='<div class="foot"><a href="locations.html">Full locations page</a> &middot; <a href="./">Trip map</a> &middot; <a href="christmas-2026/">Christmas 2026</a></div>';
  document.getElementById('app').innerHTML=o;
 }
 render();

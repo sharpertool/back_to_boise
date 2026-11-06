@@ -1,5 +1,7 @@
 # Back-to-Boise Locations — Ed Henderson (F-350 + X195 ~26 ft / ~47 ft hitched)
 
+**Christmas 2026** (Boise → Heber Valley, about Dec 20–31) is a separate trip: [map](christmas-2026/) · [locations](christmas-2026/locations.html). This file is the October return.
+
 **America the Beautiful Senior Pass.** Prefers legal dispersed (OnX). Harvest Hosts backup. Service CG fine. Water useful; no electrical needed. Solar OK. No black tank.
 
 **Status: CURRENT at Black Hills (Wabash Spring Rd dispersed) — arrived Oct 11; stay through ~Oct 16/18 → Devils Tower / Warren Peak ~Oct 17/18.** Cedar Pass done Sat Oct 10. Drive ~290–320 mi / ~4.5–5 h from Luverne (Blue Mounds) via I-90 to exit 131 was the prior leg.
