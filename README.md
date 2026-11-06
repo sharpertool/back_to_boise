@@ -1,6 +1,19 @@
 # Trip maps — Ed and Vicki Henderson
 
-Two trips on this GitHub Pages site. The October return is unchanged. Christmas 2026 is a separate folder.
+Trip maps on this GitHub Pages site. The October return is unchanged. Christmas 2026 Heber and the Leavenworth alternate each have their own folder.
+
+## Leavenworth 2026 — alternate Christmas (Wenatchee Valley)
+
+Alternate to Heber Valley, not a stop on that trip. Still home in Boise; nothing is locked. Recommended base is Wenatchee Confluence State Park, with day trips into Leavenworth.
+
+| Page | URL |
+|---|---|
+| **Map** | https://sharpertool.github.io/back_to_boise/leavenworth-2026/ |
+| **Locations** | https://sharpertool.github.io/back_to_boise/leavenworth-2026/locations.html |
+| Tonight (home) | https://sharpertool.github.io/back_to_boise/leavenworth-2026/tonight.html |
+| Tomorrow (first overnight idea) | https://sharpertool.github.io/back_to_boise/leavenworth-2026/tomorrow.html |
+
+Drive is I-84 to I-82, then US-97 over Blewett Pass and US-2 to Wenatchee. The map opens on Boise. Orange is the current sit. Light blue is one pin per winter campground. The purple star is Leavenworth Christmastown / Village of Lights. White diamonds are skipped or closed places. No dispersed pins.
 
 ## Christmas 2026 — Boise to Heber Valley
 

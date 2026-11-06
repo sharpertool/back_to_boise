@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Leavenworth 2026 — Boise to Wenatchee Valley</title>
+  <style>
+    :root {
+      --panel: #ffffff;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --accent: #2b6cb0;
+      --accent-dark: #2c5282;
+      --border: #cbd5e0;
+      --err-bg: #fff5f5;
+      --err: #c53030;
+      --tap: 44px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: #e2e8f0;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+    }
+    header {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      z-index: 10;
+    }
+    .title-row {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      min-width: 0;
+    }
+    header h1 {
+      margin: 0; font-size: 1rem; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    }
+    .title-links { display: flex; gap: 10px; flex: 0 0 auto; align-items: baseline; }
+    .title-row a {
+      flex: 0 0 auto; font-size: 0.85rem; color: var(--accent); font-weight: 600;
+      text-decoration: none; padding: 6px 0;
+    }
+    #controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    #origin-select {
+      width: 100%;
+      min-height: var(--tap);
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      background: #fff;
+      color: var(--text);
+    }
+    #search-wrap {
+      width: 100%;
+      min-width: 0;
+      min-height: var(--tap);
+    }
+    #search-wrap gmp-place-autocomplete {
+      width: 100%;
+      min-height: var(--tap);
+      font-size: 16px;
+      color-scheme: light;
+    }
+    #search-fallback {
+      width: 100%; min-height: var(--tap); padding: 8px 10px; font-size: 16px;
+      border: 1px dashed var(--border); border-radius: 8px; background: #f7fafc; color: var(--muted);
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    button.ctrl, a.ctrl {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: var(--tap);
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #edf2f7;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    button.ctrl:active, a.ctrl:active { filter: brightness(0.93); }
+    button.ctrl.primary, a.ctrl.primary {
+      background: var(--accent); border-color: var(--accent-dark); color: #fff;
+    }
+    #msg {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--muted);
+      min-height: 0;
+      overflow-wrap: anywhere;
+    }
+    #msg:empty { display: none; }
+    #msg.error {
+      color: var(--err); background: var(--err-bg);
+      border: 1px solid #feb2b2; border-radius: 8px; padding: 8px 10px; font-weight: 600;
+    }
+    #map-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 240px;
+      overflow: hidden;
+    }
+    #map { position: absolute; inset: 0; }
+    #legend {
+      position: absolute;
+      left: 8px;
+      bottom: 22px;
+      z-index: 5;
+      max-width: min(300px, calc(100vw - 80px));
+      background: rgba(255,255,255,0.96);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.55;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    #legend summary {
+      cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 13px;
+      min-height: var(--tap); display: flex; align-items: center; gap: 8px; list-style: none;
+    }
+    #legend summary::-webkit-details-marker { display: none; }
+    #legend summary::before { content: "▸"; }
+    #legend[open] summary::before { content: "▾"; }
+    #legend .body { padding: 0 12px 10px; }
+    #legend a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    .swatch {
+      display: inline-block; width: 12px; height: 12px;
+      border-radius: 50%; margin-right: 4px; vertical-align: -1px;
+      border: 2px solid transparent;
+    }
+    .swatch.stay { background: #dd6b20; }
+    .swatch.paid { background: #7ec8ff; border-color: #1c5d99; }
+    .swatch.dispersed { background: #2f855a; }
+    .swatch.keystop { background: #7b3fa0; border-color: #4a235f; }
+    .swatch.visit { background: #fff; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
+    .swatch.route { width: 18px; height: 4px; border-radius: 2px; background: #2b6cb0; border: 0; vertical-align: 3px; }
+    #directions-panel {
+      position: absolute;
+      z-index: 6;
+      left: 0; right: 0; bottom: 0;
+      max-height: 55%;
+      overflow: auto;
+      background: rgba(255,255,255,0.98);
+      border-top: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.15);
+      padding: 10px 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      font-size: 14px;
+      display: none;
+    }
+    #directions-panel.show { display: block; }
+    #directions-panel .head {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    }
+    #directions-panel h2 { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+    #dir-close {
+      flex: 0 0 auto; width: var(--tap); height: var(--tap);
+      border: none; background: transparent; font-size: 22px; cursor: pointer; color: var(--muted);
+    }
+    #dir-route { color: var(--muted); margin: 4px 0 6px; overflow-wrap: anywhere; }
+    #dir-summary { font-size: 20px; font-weight: 700; margin: 4px 0 8px; }
+    #dir-summary:empty { display: none; }
+    #dir-error {
+      color: var(--err); background: var(--err-bg); border: 1px solid #feb2b2;
+      border-radius: 8px; padding: 8px 10px; margin: 6px 0 8px; font-weight: 600; overflow-wrap: anywhere;
+    }
+    #dir-error:empty { display: none; }
+    #dir-actions { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    #dir-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .iw { max-width: 260px; font-size: 14px; line-height: 1.4; }
+    .iw b { display: block; margin-bottom: 2px; }
+    .iw .sub { color: var(--muted); font-size: 12px; }
+    .iw .note { font-size: 12px; margin-top: 4px; }
+    .iw .iw-links { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .iw .iw-actions { display: grid; gap: 6px; margin-top: 8px; }
+    .iw .iw-actions .ctrl { font-size: 14px; }
+    .pin {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; border: 3px solid; font-weight: 700; font-size: 12px; line-height: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,.35); cursor: pointer;
+    }
+    @media (min-width: 760px) {
+      header { padding: 10px 14px; }
+      #controls {
+        grid-template-columns: minmax(200px, 280px) minmax(220px, 1fr) auto;
+        align-items: center;
+      }
+      .btn-row { grid-template-columns: repeat(3, auto); }
+      #directions-panel {
+        left: auto; top: 12px; right: 12px; bottom: auto;
+        width: 360px; max-height: calc(100% - 24px);
+        border: 1px solid var(--border); border-radius: 10px;
+      }
+      #legend { bottom: 28px; left: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <h1>Leavenworth 2026 — Boise to Wenatchee</h1>
+      <span class="title-links">
+        <a href="locations.html">Locations →</a>
+      </span>
+    </div>
+    <div id="controls">
+      <select id="origin-select" aria-label="Directions origin">
+        <option value="boise">From: Boise / home (CURRENT)</option>
+        <option value="geolocation">From: My location</option>
+        <option value="custom">From: Searched place</option>
+      </select>
+      <div id="search-wrap" aria-label="Search a place">
+        <input id="search-fallback" type="text" disabled placeholder="Loading place search…" />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="ctrl primary" id="btn-go">Directions</button>
+        <button type="button" class="ctrl" id="btn-clear">Clear route</button>
+        <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+      </div>
+    </div>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </header>
+
+  <div id="map-wrap">
+    <div id="map" role="application" aria-label="Leavenworth 2026 trip map"></div>
+    <details id="legend" open>
+      <summary>Legend</summary>
+      <div class="body">
+        <span class="swatch stay"></span> Current sit — one orange dot: Boise / home. Map opens here.<br>
+        <span class="swatch paid"></span> Winter campground — one light-blue pin each. Not every campground.<br>
+        <span class="swatch keystop"></span> Key stop — purple star: Leavenworth Christmastown, not a sit<br>
+        <span class="swatch dispersed"></span> Free dispersed — none realistic. No green pins.<br>
+        <span class="swatch visit"></span> Skipped, closed, or won't fit (white diamond)<br>
+        <span class="swatch route"></span> Tow: I-84 → I-82 → Blewett → US-2 → Confluence<br>
+        <a href="locations.html">Locations</a> ·
+        <a href="tonight.html">Tonight</a> ·
+        <a href="tomorrow.html">Tomorrow</a> ·
+        <a href="../christmas-2026/index.html">Heber map</a> ·
+        <a href="../index.html">October trip</a>
+      </div>
+    </details>
+    <div id="directions-panel" aria-live="polite">
+      <div class="head">
+        <h2 id="dir-title">Directions</h2>
+        <button type="button" id="dir-close" aria-label="Close directions">×</button>
+      </div>
+      <div id="dir-route"></div>
+      <div id="dir-summary"></div>
+      <div id="dir-error"></div>
+      <div id="dir-actions">
+        <a id="dir-gmaps" class="ctrl primary" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div id="dir-note"></div>
+    </div>
+  </div>
+
+  <script>
+    /* Same referrer-restricted Maps key as the October trip map.
+       HTTP-referrer-restricted to sharpertool.github.io. */
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI",
+      v: "weekly",
+      loading: "async"
+    });
+  </script>
+
+  <script>
+(function () {
+  "use strict";
+
+  const API_KEY = "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI";
+  const MAP_ID = "DEMO_MAP_ID";
+  const BOISE = { lat: 43.612, lng: -116.392 };
+  const BLEWETT = { lat: 47.33492, lng: -120.57826 };
+  const CONFLUENCE = { lat: 47.4605, lng: -120.3272 };
+
+  function onx(lat, lng) {
+    return "https://webmap.onxmaps.com/offroad/map/query/" + lat + "," + lng + ",13/overview";
+  }
+  function gpin(lat, lng) {
+    return "https://www.google.com/maps?q=" + lat + "," + lng;
+  }
+
+  const PLACES = [
+    { name: "CURRENT: Boise / home", lat: 43.612, lng: -116.392, kind: "current",
+      note: "Current sit. Still home; nothing on this trip is locked. Same home pin as the October map (Boise / Meridian). This is an alternate to the Heber Valley Christmas trip, not a stop on that drive. Planned tow: I-84 west, I-82 through Yakima, US-97 over Blewett Pass, then US-2 to Wenatchee Confluence. Plan 8.5–10 hours door to door with the trailer.",
+      links: [
+        { label: "onX Offroad", href: onx(43.612, -116.392) },
+        { label: "Locations", href: "locations.html" }
+      ] },
+    { name: "Wenatchee Confluence State Park (intended base)", lat: 47.4605, lng: -120.3272, kind: "paid",
+      note: "Top pick. 333 Olds Station Rd, Wenatchee. Loop 2 open year-round. First-come Oct 16–Mar 31. Winter full-utility $41. Water off around Nov 1; frost-free fill near sites 34 and 36. Confirm electric on arrival (509-664-6373). Max 65 ft. About 21 mi / 30–40 min to downtown Leavenworth on US-2, no pass. Elevation about 640 ft. Senior Pass does not discount WA state parks.",
+      links: [
+        { label: "onX Offroad", href: onx(47.4605, -120.3272) },
+        { label: "Park page", href: "https://parks.wa.gov/find-parks/state-parks/wenatchee-confluence-state-park" }
+      ] },
+    { name: "Leavenworth / Pine Village KOA Holiday", lat: 47.5984, lng: -120.6402, kind: "paid",
+      note: "Sleep-in-the-Christmas-bubble option, not the default. Ed usually skips KOAs. 308 Zelt Strasse. Open all year with water still on, big-rig sites to about 65 ft. About 5–10 min to Front Street. Roughly $80–$120+; Christmas weekends higher. Call 509-548-7709.",
+      links: [
+        { label: "onX Offroad", href: onx(47.5984, -120.6402) },
+        { label: "KOA", href: "https://koa.com/campgrounds/leavenworth/" }
+      ] },
+    { name: "Blu Shastin RV Park, Peshastin", lat: 47.4786, lng: -120.6565, kind: "paid",
+      note: "Mid-valley private park. 3300 US Hwy 97, Peshastin. $60 full hookup. Call 888-548-4184 and confirm December water and electric before you count on it. About 12 mi / 20–25 min to town.",
+      links: [
+        { label: "onX Offroad", href: onx(47.4786, -120.6565) },
+        { label: "Park", href: "https://www.blushastinrv.com/" }
+      ] },
+    { name: "Thousand Trails Leavenworth (members)", lat: 47.8004, lng: -120.6308, kind: "paid",
+      note: "Members only. 20752 Chiwawa Loop Rd. Limited sites Nov 1–Apr 30. Water and sewer off Oct–Apr. About 17 mi / 30–35 min, higher and snowier. Rigs over 30 ft may not fit some snowy sites. Only if you already have a membership.",
+      links: [
+        { label: "onX Offroad", href: onx(47.8004, -120.6308) },
+        { label: "Park", href: "https://thousandtrails.com/washington/leavenworth-rv-campground" }
+      ] },
+    { name: "59er Diner overnight RV (overflow backup)", lat: 47.7588, lng: -120.7419, kind: "paid",
+      note: "Overflow only, not the base. One full-hookup spot behind the diner at Coles Corner, on US-2 toward Stevens Pass. About 15 mi / 25 min to town, on the snowier side. Call 509-763-2267. No separate December-open RV park was verified in East Wenatchee or Cashmere.",
+      links: [
+        { label: "onX Offroad", href: onx(47.7588, -120.7419) },
+        { label: "Map", href: gpin(47.7588, -120.7419) }
+      ] },
+    { name: "Leavenworth Christmastown / Village of Lights", lat: 47.595596, lng: -120.661954, kind: "keystop",
+      note: "Key stop, not a sit. Front Street Park / gazebo, 820 Front St. Christmastown Nov 27–Dec 24, 2026. Village of Lights 6 a.m.–11 p.m. from Thanksgiving (Nov 26) through Feb 28, 2027. Lights and the gazebo are free. Leave the trailer in camp. Truck parking: Willkommen Park & Ride, 200 Ward Strasse, then the free Link shuttle. No overnight RV on city streets ($500/day).",
+      links: [
+        { label: "onX Offroad", href: onx(47.595596, -120.661954) },
+        { label: "Christmastown", href: "https://leavenworth.org/christmastown/" }
+      ] },
+    { name: "SKIP: Lake Wenatchee State Park", lat: 47.810405, lng: -120.721583, kind: "visit",
+      note: "Not a sit. Once snow closes the campgrounds, winter camping is the South day-use lot: RV/trailer combos 20 ft or less, trailer unhooked. The X195 will not fit. Pin is the park center.",
+      links: [
+        { label: "onX Offroad", href: onx(47.810405, -120.721583) },
+        { label: "Winter schedule", href: "https://parks.wa.gov/find-activities/winter-schedule" }
+      ] },
+    { name: "SKIP: Lincoln Rock State Park", lat: 47.5349, lng: -120.2833, kind: "visit",
+      note: "Not a sit. Campground closed Nov 1, 2026–Mar 13, 2027. Day-use stays open. Pin is the State Parks geolocation.",
+      links: [
+        { label: "onX Offroad", href: onx(47.5349, -120.2833) },
+        { label: "Park page", href: "https://parks.wa.gov/find-parks/state-parks/lincoln-rock-state-park" }
+      ] },
+    { name: "SKIP: Daroga State Park", lat: 47.706565, lng: -120.201811, kind: "visit",
+      note: "Not a sit. Campground closed Oct 1–Apr 1. Pin is the park center, 1 S Daroga Park Lane, Orondo.",
+      links: [
+        { label: "onX Offroad", href: onx(47.706565, -120.201811) },
+        { label: "Park page", href: "https://parks.wa.gov/find-parks/state-parks/daroga-state-park" }
+      ] },
+    { name: "SKIP: Beebe Bridge campground", lat: 47.805618, lng: -119.97435, kind: "visit",
+      note: "Not a sit. Campground closed Oct 16–Apr 14. 23459 SR 97, Orondo. Pin is the campground.",
+      links: [
+        { label: "onX Offroad", href: onx(47.805618, -119.97435) },
+        { label: "Park page", href: "https://www.chelanpud.org/parks-and-recreation/our-parks/parks-with-camping/beebe-bridge-park" }
+      ] },
+    { name: "SKIP: Alpine RV Park", lat: 47.595956, lng: -120.645779, kind: "visit",
+      note: "Not a sit. 9825 Duncan Road, Leavenworth. Seasonal, about Mar–early Nov. Closed for December.",
+      links: [
+        { label: "onX Offroad", href: onx(47.595956, -120.645779) },
+        { label: "Park", href: "https://alpinervparkcampground.com/" }
+      ] },
+    { name: "SKIP: Icicle River RV Resort", lat: 47.548702, lng: -120.687642, kind: "visit",
+      note: "Not a sit. 7305 Icicle Road. Season is Apr 1 through the third Sunday of October. Closed for December.",
+      links: [
+        { label: "onX Offroad", href: onx(47.548702, -120.687642) }
+      ] },
+    { name: "SKIP: Wenatchee River County Park", lat: 47.483551, lng: -120.408342, kind: "visit",
+      note: "Not a sit. Monitor, on US-2. The park says it is open Apr 1–Oct 31. Closed for December.",
+      links: [
+        { label: "onX Offroad", href: onx(47.483551, -120.408342) },
+        { label: "Park", href: "https://www.wenatcheeriverpark.org/about-us" }
+      ] },
+    { name: "SKIP: Entiat City Park", lat: 47.66844, lng: -120.218066, kind: "visit",
+      note: "Not a sit. 2461 Lakeshore Drive, Entiat. Camping closed about Nov 14–Mar 16. Pin is Entiat Park.",
+      links: [
+        { label: "onX Offroad", href: onx(47.66844, -120.218066) },
+        { label: "Park", href: "https://www.chelanpud.org/parks-and-recreation/our-parks/parks-with-camping/entiat-city-park" }
+      ] },
+    { name: "SKIP: Eightmile Campground (Icicle Creek NF)", lat: 47.551554, lng: -120.763748, kind: "visit",
+      note: "Not a sit. Forest Service pin for Eightmile, the named campground on Icicle Creek. Season is generally May–October. The other Icicle Creek forest campgrounds are snowed in the same way. One pin for that group.",
+      links: [
+        { label: "onX Offroad", href: onx(47.551554, -120.763748) },
+        { label: "Forest Service", href: "https://www.fs.usda.gov/r06/okanogan-wenatchee/recreation/eightmile-campground" }
+      ] }
+  ];
+
+  /* Driving trace Boise → Wenatchee Confluence along I-84, I-82, US-97 over
+     Blewett Pass, and US-2. Decimated road geometry so the line is on the
+     highway, not a straight chord, and not over Stevens Pass from the west.
+     Google Routes replaces it (via Blewett) when that API answers. */
+  const ROUTE_FALLBACK = [
+[43.61195,-116.392],
+[43.6026,-116.39362],
+[43.59355,-116.43621],
+[43.59876,-116.55007],
+[43.63288,-116.62985],
+[43.66865,-116.67425],
+[43.69537,-116.69689],
+[43.74083,-116.7107],
+[43.78159,-116.72819],
+[43.81372,-116.75503],
+[43.86002,-116.77135],
+[43.88507,-116.80138],
+[43.91441,-116.82446],
+[43.95521,-116.89306],
+[43.99358,-116.9347],
+[44.05298,-116.9817],
+[44.14713,-117.1073],
+[44.20523,-117.1443],
+[44.25621,-117.17627],
+[44.26953,-117.19716],
+[44.28426,-117.21409],
+[44.37318,-117.2973],
+[44.41042,-117.30989],
+[44.44431,-117.32552],
+[44.45902,-117.33061],
+[44.47555,-117.34256],
+[44.48552,-117.3602],
+[44.51043,-117.37575],
+[44.52129,-117.3848],
+[44.53212,-117.4044],
+[44.59071,-117.46714],
+[44.62932,-117.51823],
+[44.66643,-117.61776],
+[44.71773,-117.75733],
+[44.78674,-117.81095],
+[44.91647,-117.82048],
+[44.9798,-117.88782],
+[45.04813,-117.93743],
+[45.16205,-117.96404],
+[45.21124,-118.02543],
+[45.28778,-118.03466],
+[45.33836,-118.0793],
+[45.34287,-118.11723],
+[45.34398,-118.13634],
+[45.3459,-118.1518],
+[45.34736,-118.16856],
+[45.3548,-118.18815],
+[45.3476,-118.20377],
+[45.34677,-118.22274],
+[45.3452,-118.24261],
+[45.36962,-118.2927],
+[45.39012,-118.32127],
+[45.41592,-118.34685],
+[45.44657,-118.37684],
+[45.46732,-118.38995],
+[45.5302,-118.44755],
+[45.55389,-118.4638],
+[45.58055,-118.45497],
+[45.60012,-118.50428],
+[45.59168,-118.54104],
+[45.58195,-118.58539],
+[45.58479,-118.60679],
+[45.58566,-118.6231],
+[45.59286,-118.61003],
+[45.59969,-118.62808],
+[45.60578,-118.64697],
+[45.63693,-118.68144],
+[45.66475,-118.76265],
+[45.67039,-118.78725],
+[45.66921,-118.79885],
+[45.67362,-118.83843],
+[45.71457,-119.00101],
+[45.77067,-119.20524],
+[45.79134,-119.22312],
+[45.82764,-119.27649],
+[45.84403,-119.2902],
+[45.86891,-119.29241],
+[45.91815,-119.3184],
+[45.94853,-119.39308],
+[45.94819,-119.44116],
+[45.93717,-119.60313],
+[45.97409,-119.60297],
+[46.12489,-119.60168],
+[46.18883,-119.70514],
+[46.19981,-119.71386],
+[46.20845,-119.72724],
+[46.20705,-119.748],
+[46.2216,-119.78482],
+[46.26844,-119.91332],
+[46.30639,-120.03834],
+[46.33372,-120.12511],
+[46.37055,-120.21416],
+[46.40683,-120.2853],
+[46.4441,-120.34728],
+[46.49795,-120.43976],
+[46.5343,-120.47152],
+[46.59782,-120.47963],
+[46.60405,-120.49822],
+[46.60273,-120.50632],
+[46.61074,-120.51025],
+[46.61958,-120.51195],
+[46.6304,-120.51569],
+[46.67747,-120.48125],
+[46.72558,-120.39366],
+[46.75586,-120.38328],
+[46.79227,-120.35862],
+[46.82192,-120.35871],
+[46.84584,-120.38044],
+[46.88871,-120.42955],
+[46.92643,-120.49812],
+[46.97273,-120.5131],
+[46.97446,-120.53743],
+[46.9839,-120.5476],
+[46.99493,-120.54726],
+[46.99955,-120.55161],
+[47.00812,-120.57202],
+[47.03589,-120.6092],
+[47.06532,-120.62322],
+[47.11066,-120.66524],
+[47.14119,-120.69026],
+[47.16454,-120.70547],
+[47.19081,-120.70634],
+[47.21152,-120.69835],
+[47.22764,-120.69561],
+[47.24243,-120.69754],
+[47.25504,-120.69495],
+[47.27073,-120.69799],
+[47.28882,-120.69793],
+[47.3031,-120.69696],
+[47.32664,-120.66847],
+[47.33507,-120.62872],
+[47.33629,-120.58881],
+[47.3337,-120.57168],
+[47.34744,-120.56817],
+[47.35628,-120.56343],
+[47.36509,-120.57756],
+[47.38171,-120.59427],
+[47.39716,-120.62132],
+[47.3933,-120.64272],
+[47.41242,-120.65842],
+[47.42241,-120.65914],
+[47.43428,-120.65738],
+[47.45004,-120.65419],
+[47.46183,-120.6606],
+[47.48771,-120.64988],
+[47.49833,-120.632],
+[47.50678,-120.63365],
+[47.52463,-120.62455],
+[47.54259,-120.61763],
+[47.5526,-120.60529],
+[47.5568,-120.59553],
+[47.54318,-120.56844],
+[47.53406,-120.5379],
+[47.52994,-120.49688],
+[47.5234,-120.45865],
+[47.49837,-120.42173],
+[47.4737,-120.35945],
+[47.46912,-120.33626],
+[47.46404,-120.33404],
+[47.46019,-120.32716]
+  ].map(function (p) { return { lat: p[0], lng: p[1] }; });
+
+  const KIND_STYLE = {
+    current: { fill: "#dd6b20", stroke: "#9c4221", size: 30, label: "", text: "#fff", z: 1000 },
+    stay:    { fill: "#dd6b20", stroke: "#9c4221", size: 22, label: "", text: "#fff", z: 200 },
+    visit:   { fill: "rgba(255,255,255,0.85)", stroke: "#2c7a7b", size: 20, label: "◇", text: "#2c7a7b", z: 100 },
+    keystop: { fill: "#7b3fa0", stroke: "#4a235f", size: 32, label: "★", text: "#fff", z: 1100 },
+    paid:    { fill: "#7ec8ff", stroke: "#1c5d99", size: 24, label: "", text: "#0b3d6b", z: 300 },
+    dispersed:{ fill: "#2f855a", stroke: "#22543d", size: 22, label: "", text: "#fff", z: 200 },
+    search:  { fill: "#805ad5", stroke: "#553c9a", size: 26, label: "●", text: "#fff", z: 1100 },
+    me:      { fill: "#4299e1", stroke: "#ffffff", size: 18, label: "", text: "#fff", z: 1200 }
+  };
+  const KIND_LABEL = {
+    current: "CURRENT SIT",
+    stay: "PLANNED SIT",
+    visit: "SKIPPED / CLOSED / WON'T FIT",
+    keystop: "KEY STOP",
+    paid: "WINTER CAMPGROUND",
+    dispersed: "FREE DISPERSED",
+    search: "Searched place"
+  };
+
+  const OPEN_NOTE = "Opens on Boise / home. Blue line is the tow: I-84 to I-82, US-97 over Blewett, then US-2 to Wenatchee Confluence (about 445 mi on this trace). Car time is shorter. Plan 8.5–10 hours towing, door to door. Tap Fit trip to see it all.";
+
+  let gm = {};
+  let map = null;
+  let infoWindow = null;
+  let useAdvanced = false;
+  let geolocPos = null;
+  let searchPlace = null;
+  let searchMarker = null;
+  let meMarker = null;
+  let routeLines = [];
+  let baseLine = null;
+  let basePath = ROUTE_FALLBACK.slice();
+  let lastDest = null;
+  let routesMode = "none";
+  let placesFailed = false;
+  let baseNote = OPEN_NOTE;
+
+  const $ = (id) => document.getElementById(id);
+
+  function setMsg(text, isError) {
+    const el = $("msg");
+    el.textContent = text || "";
+    el.classList.toggle("error", !!(text && isError));
+  }
+
+  function fmtMiles(meters) {
+    const mi = meters / 1609.344;
+    return (mi >= 100 ? Math.round(mi).toLocaleString() : mi.toFixed(1)) + " mi";
+  }
+
+  function fmtDuration(ms) {
+    const totalMin = Math.round(ms / 60000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h === 0) return m + " min";
+    return h + " h " + m + " min";
+  }
+
+  function ll(p) {
+    if (!p) return null;
+    const lat = typeof p.lat === "function" ? p.lat() : p.lat;
+    const lng = typeof p.lng === "function" ? p.lng() : p.lng;
+    return { lat: Number(lat), lng: Number(lng) };
+  }
+
+  function coordStr(p) { return p.lat.toFixed(6) + "," + p.lng.toFixed(6); }
+
+  function gmapsUrl(origin, dest) {
+    let url = "https://www.google.com/maps/dir/?api=1";
+    if (origin) url += "&origin=" + coordStr(origin);
+    url += "&destination=" + coordStr(dest) + "&travelmode=driving";
+    return url;
+  }
+
+  function errText(e) {
+    if (!e) return "unknown error";
+    let s = e.message || e.code || String(e);
+    if (e.error && e.error.message) s = e.error.message;
+    return String(s).slice(0, 300);
+  }
+
+  function looksNotEnabled(s) {
+    return /not (been )?(used|enabled)|SERVICE_DISABLED|PERMISSION_DENIED|ApiNotActivated|disabled|not authorized|API_KEY_SERVICE_BLOCKED|REQUEST_DENIED|403/i.test(s);
+  }
+
+  window.gm_authFailure = function () {
+    setMsg("Google Maps rejected the API key for this page (check the key's HTTP-referrer restriction and that Maps JavaScript API is enabled).", true);
+  };
+
+  function pinElement(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    const el = document.createElement("div");
+    el.className = "pin";
+    el.style.width = s.size + "px";
+    el.style.height = s.size + "px";
+    el.style.background = s.fill;
+    el.style.borderColor = s.stroke;
+    el.style.color = s.text;
+    if (kind === "visit") { el.style.borderRadius = "4px"; el.style.transform = "rotate(45deg)"; }
+    if (s.label && kind !== "visit") el.textContent = s.label;
+    return el;
+  }
+
+  function classicIcon(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      fillColor: s.fill.startsWith("rgba") ? "#ffffff" : s.fill,
+      fillOpacity: kind === "visit" ? 0.3 : 1,
+      strokeColor: s.stroke,
+      strokeWeight: 2.5,
+      scale: s.size / 2.4
+    };
+  }
+
+  function makeMarker(pos, kind, title, onTap) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.visit;
+    let marker;
+    if (useAdvanced) {
+      marker = new gm.AdvancedMarkerElement({
+        map: map, position: pos, title: title, content: pinElement(kind),
+        zIndex: s.z, gmpClickable: true
+      });
+      if (onTap) marker.addEventListener("gmp-click", () => onTap(marker));
+    } else {
+      marker = new google.maps.Marker({
+        map: map, position: pos, title: title, icon: classicIcon(kind), zIndex: s.z,
+        label: s.label ? { text: s.label, color: kind === "visit" ? "#2c7a7b" : "#fff", fontSize: "11px", fontWeight: "700" } : undefined
+      });
+      if (onTap) marker.addListener("click", () => onTap(marker));
+    }
+    return marker;
+  }
+
+  function removeMarker(m) {
+    if (!m) return;
+    if (useAdvanced) m.map = null; else m.setMap(null);
+  }
+
+  function infoContent(place) {
+    const root = document.createElement("div");
+    root.className = "iw";
+    const b = document.createElement("b");
+    b.textContent = place.name;
+    root.appendChild(b);
+    const sub = document.createElement("div");
+    sub.className = "sub";
+    sub.textContent = (KIND_LABEL[place.kind] || place.kind || "") +
+      (place.address ? " · " + place.address : "") +
+      " · " + place.lat.toFixed(5) + ", " + place.lng.toFixed(5);
+    root.appendChild(sub);
+    if (place.note) {
+      const n = document.createElement("div");
+      n.className = "note";
+      n.textContent = place.note;
+      root.appendChild(n);
+    }
+    if (place.links && place.links.length) {
+      const lk = document.createElement("div");
+      lk.className = "iw-links";
+      place.links.forEach((L) => {
+        const a = document.createElement("a");
+        a.className = "ctrl";
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = L.label;
+        a.href = L.href;
+        lk.appendChild(a);
+      });
+      root.appendChild(lk);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "iw-actions";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ctrl primary";
+    btn.textContent = "Directions here";
+    btn.dataset.lat = String(place.lat);
+    btn.dataset.lng = String(place.lng);
+    btn.dataset.name = place.name;
+    btn.addEventListener("click", (ev) => {
+      const d = ev.currentTarget.dataset;
+      infoWindow.close();
+      routeTo(Number(d.lat), Number(d.lng), d.name);
+    });
+    actions.appendChild(btn);
+
+    const link = document.createElement("a");
+    link.className = "ctrl";
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open in Google Maps";
+    link.href = gmapsUrl(knownOrigin(), { lat: place.lat, lng: place.lng });
+    actions.appendChild(link);
+    root.appendChild(actions);
+    return root;
+  }
+
+  function openInfo(place, marker) {
+    infoWindow.setContent(infoContent(place));
+    infoWindow.open({ map: map, anchor: marker });
+  }
+
+  function addTripMarker(place) {
+    const m = makeMarker({ lat: place.lat, lng: place.lng }, place.kind, place.name,
+      (mk) => openInfo(place, mk));
+    if (!useAdvanced) m.addListener("dblclick", () => routeTo(place.lat, place.lng, place.name));
+    return m;
+  }
+
+  function drawBaseLine(path) {
+    basePath = path;
+    if (baseLine) baseLine.setMap(null);
+    baseLine = new google.maps.Polyline({
+      map: map,
+      path: path,
+      geodesic: true,
+      strokeColor: "#2b6cb0",
+      strokeOpacity: 0.9,
+      strokeWeight: 4,
+      zIndex: 1,
+      clickable: false
+    });
+  }
+
+  function fitTrip() {
+    const bounds = new google.maps.LatLngBounds();
+    PLACES.forEach(p => bounds.extend({ lat: p.lat, lng: p.lng }));
+    basePath.forEach(p => bounds.extend(p));
+    map.fitBounds(bounds, 48);
+  }
+
+  function originMode() { return $("origin-select").value; }
+
+  function knownOrigin() {
+    const mode = originMode();
+    if (mode === "boise") return BOISE;
+    if (mode === "geolocation") return geolocPos;
+    if (mode === "custom" && searchPlace) return { lat: searchPlace.lat, lng: searchPlace.lng };
+    return BOISE;
+  }
+
+  function originLabel() {
+    const mode = originMode();
+    if (mode === "geolocation") return "My location";
+    if (mode === "custom" && searchPlace) return searchPlace.name;
+    return "Boise / home";
+  }
+
+  function getGeolocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error("Location is not available in this browser.")); return; }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          showMe();
+          resolve(geolocPos);
+        },
+        (err) => reject(new Error("Couldn't get your location" + (err && err.message ? " (" + err.message + ")" : "") + ".")),
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 120000 }
+      );
+    });
+  }
+
+  function showMe() {
+    if (!map || !geolocPos) return;
+    removeMarker(meMarker);
+    meMarker = makeMarker(geolocPos, "me", "My location", null);
+  }
+
+  async function resolveOrigin() {
+    const mode = originMode();
+    if (mode === "boise") return { pos: BOISE, name: "Boise / home" };
+    if (mode === "geolocation") {
+      if (geolocPos) return { pos: geolocPos, name: "My location" };
+      setMsg("Getting your location…");
+      const p = await getGeolocation();
+      return { pos: p, name: "My location" };
+    }
+    if (mode === "custom") {
+      if (searchPlace) return { pos: { lat: searchPlace.lat, lng: searchPlace.lng }, name: searchPlace.name };
+      throw new Error("Search for a place first (it will be the starting point), then tap a trip marker → Directions here.");
+    }
+    return { pos: BOISE, name: "Boise / home" };
+  }
+
+  function showPanel(originName, origin, dest) {
+    $("dir-title").textContent = "To " + dest.name;
+    $("dir-route").textContent = "From " + (originName || "your location") + " · driving";
+    $("dir-summary").textContent = "";
+    $("dir-error").textContent = "";
+    $("dir-note").textContent = "";
+    $("dir-gmaps").href = gmapsUrl(origin, dest);
+    $("directions-panel").classList.add("show");
+  }
+
+  function hidePanel() { $("directions-panel").classList.remove("show"); }
+
+  function clearRouteLines() {
+    routeLines.forEach(l => l.setMap(null));
+    routeLines = [];
+  }
+
+  function clearRoute() {
+    clearRouteLines();
+    hidePanel();
+    lastDest = null;
+    setMsg(baseNote);
+  }
+
+  const ROUTE_STYLE = { strokeColor: "#c53030", strokeOpacity: 0.9, strokeWeight: 6, zIndex: 50 };
+
+  async function computeWithJs(origin, dest) {
+    const { routes } = await gm.Route.computeRoutes({
+      origin: origin,
+      destination: dest,
+      travelMode: "DRIVING",
+      fields: ["path", "distanceMeters", "durationMillis", "viewport"]
+    });
+    if (!routes || !routes.length) throw new Error("No driving route found.");
+    const r = routes[0];
+    let lines = [];
+    if (typeof r.createPolylines === "function") {
+      lines = r.createPolylines({ polylineOptions: ROUTE_STYLE }) || [];
+      lines.forEach(l => { l.setOptions(ROUTE_STYLE); l.setMap(map); });
+    } else if (r.path) {
+      lines = [new google.maps.Polyline(Object.assign({ map: map, path: r.path.map(ll) }, ROUTE_STYLE))];
+    }
+    return { lines: lines, meters: r.distanceMeters, ms: r.durationMillis, viewport: r.viewport, path: r.path ? r.path.map(ll) : null };
+  }
+
+  async function computeWithRest(origin, dest, via) {
+    const body = {
+      origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+      destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
+      travelMode: "DRIVE",
+      units: "IMPERIAL",
+      routingPreference: "TRAFFIC_UNAWARE",
+      polylineQuality: "OVERVIEW"
+    };
+    if (via) {
+      body.intermediates = [{ location: { latLng: { latitude: via.lat, longitude: via.lng } } }];
+    }
+    const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": API_KEY,
+        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline"
+      },
+      body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await res.json(); } catch (_) { /* ignore */ }
+    if (!res.ok) {
+      const m = (data && data.error && (data.error.status + ": " + data.error.message)) || ("HTTP " + res.status);
+      throw new Error(m);
+    }
+    if (!data || !data.routes || !data.routes.length) throw new Error("No driving route found.");
+    const r = data.routes[0];
+    if (!gm.encoding) {
+      const geo = await google.maps.importLibrary("geometry");
+      gm.encoding = geo.encoding;
+    }
+    const path = gm.encoding.decodePath(r.polyline.encodedPolyline);
+    const line = new google.maps.Polyline(Object.assign({ map: map, path: path }, ROUTE_STYLE));
+    const secs = parseFloat(String(r.duration || "0").replace("s", "")) || 0;
+    return { lines: [line], meters: r.distanceMeters || 0, ms: secs * 1000, viewport: null, path: path.map(ll) };
+  }
+
+  async function routeTo(lat, lng, name) {
+    const dest = { lat: Number(lat), lng: Number(lng), name: name || "Destination" };
+    lastDest = dest;
+    clearRouteLines();
+    showPanel(originLabel(), knownOrigin(), dest);
+    let origin, originName;
+    try {
+      const o = await resolveOrigin();
+      origin = o.pos; originName = o.name;
+    } catch (e) {
+      $("dir-error").textContent = errText(e);
+      setMsg(errText(e), true);
+      return;
+    }
+    if (lastDest !== dest) return;
+    showPanel(originName, origin, dest);
+    $("dir-summary").textContent = "Routing…";
+    setMsg("Routing " + originName + " → " + dest.name + "…");
+
+    let result = null, jsErr = null, restErr = null;
+    if (routesMode === "js") {
+      try { result = await computeWithJs(origin, dest); } catch (e) { jsErr = e; console.warn("Route.computeRoutes failed:", e); }
+    }
+    if (!result) {
+      try { result = await computeWithRest(origin, dest); } catch (e) { restErr = e; console.warn("Routes REST failed:", e); }
+    }
+    if (lastDest !== dest) { if (result) result.lines.forEach(l => l.setMap(null)); return; }
+
+    if (!result) {
+      const detail = [jsErr && ("JS: " + errText(jsErr)), restErr && ("REST: " + errText(restErr))].filter(Boolean).join(" | ");
+      const notEnabled = looksNotEnabled(detail);
+      const head = notEnabled ? "Routes API not enabled (or key not allowed to use it)." : "Routes API request failed.";
+      $("dir-summary").textContent = "";
+      $("dir-error").textContent = head + " " + detail;
+      $("dir-note").textContent = "Open in Google Maps above still works. The blue line is still the Boise → Blewett → Wenatchee Confluence tow.";
+      setMsg(head + " Enable “Routes API” in Google Cloud for this key.", true);
+      return;
+    }
+
+    routeLines = result.lines;
+    $("dir-summary").textContent = fmtMiles(result.meters || 0) + " · " + fmtDuration(result.ms || 0);
+    $("dir-note").textContent = "Car drive time. Plan about 8.5–10 hours door to door with the trailer. The blue line is the Blewett tow for the whole trip.";
+    setMsg("Route ready: " + originName + " → " + dest.name);
+
+    const panelH = window.innerWidth < 760 ? $("directions-panel").offsetHeight : 0;
+    const pad = { top: 40, left: 30, right: window.innerWidth < 760 ? 30 : 390, bottom: 30 + panelH };
+    if (result.viewport && typeof result.viewport.getNorthEast === "function") {
+      map.fitBounds(result.viewport, pad);
+    } else if (result.path && result.path.length) {
+      const b = new google.maps.LatLngBounds();
+      result.path.forEach(p => b.extend(p));
+      map.fitBounds(b, pad);
+    }
+  }
+
+  async function upgradeBaseRoute() {
+    try {
+      const result = await computeWithRest(BOISE, CONFLUENCE, BLEWETT);
+      result.lines.forEach(l => l.setMap(null));
+      if (!result.path || !result.path.length) return;
+      drawBaseLine(result.path);
+      baseNote = "Driving line from Google: Boise → Blewett Pass → Wenatchee Confluence · " +
+        fmtMiles(result.meters || 0) + " · " + fmtDuration(result.ms || 0) +
+        " by car. Towing is about 8.5–10 hours door to door. Map stays on Boise — tap Fit trip for the whole drive.";
+      if (!lastDest) setMsg(baseNote);
+    } catch (e) {
+      console.warn("Base route upgrade failed; keeping the highway trace.", e);
+    }
+  }
+
+  function placesError(detail) {
+    placesFailed = true;
+    const msg = "Places API (New) not enabled (or key not allowed to use it) — place search unavailable." + (detail ? " " + detail : "");
+    setMsg(msg, true);
+  }
+
+  async function onPlaceSelected(ev) {
+    const pred = ev.placePrediction || (ev.detail && ev.detail.placePrediction);
+    if (!pred) { setMsg("No place details returned.", true); return; }
+    let place;
+    try {
+      place = pred.toPlace();
+      await place.fetchFields({ fields: ["displayName", "location", "formattedAddress"] });
+    } catch (e) {
+      console.warn("Place fetchFields failed:", e);
+      placesError(errText(e));
+      return;
+    }
+    const loc = ll(place.location);
+    if (!loc || isNaN(loc.lat)) { setMsg("That place has no location.", true); return; }
+    searchPlace = {
+      name: place.displayName || place.formattedAddress || "Searched place",
+      address: place.formattedAddress || "",
+      lat: loc.lat, lng: loc.lng, kind: "search"
+    };
+    removeMarker(searchMarker);
+    searchMarker = makeMarker(loc, "search", searchPlace.name, (mk) => openInfo(searchPlace, mk));
+    map.panTo(loc);
+    if (map.getZoom() < 9) map.setZoom(10);
+
+    if (originMode() === "custom") {
+      setMsg("Start set to " + searchPlace.name + ". Tap a trip marker → Directions here.");
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    } else {
+      setMsg("Selected: " + searchPlace.name);
+      routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+    }
+  }
+
+  function setupSearch() {
+    const wrap = $("search-wrap");
+    if (!gm.PlaceAutocompleteElement) {
+      wrap.innerHTML = "";
+      const f = document.createElement("input");
+      f.id = "search-fallback"; f.disabled = true;
+      f.placeholder = "Place search unavailable";
+      wrap.appendChild(f);
+      placesError("(PlaceAutocompleteElement not available.)");
+      return;
+    }
+    const pac = new gm.PlaceAutocompleteElement({ includedRegionCodes: ["us", "ca"] });
+    pac.id = "pac";
+    pac.setAttribute("placeholder", "Search a place or address…");
+    try { pac.placeholder = "Search a place or address…"; } catch (_) { /* older builds */ }
+    try {
+      pac.locationBias = { center: BOISE, radius: 50000 };
+    } catch (_) { /* optional */ }
+    wrap.innerHTML = "";
+    wrap.appendChild(pac);
+    pac.addEventListener("gmp-select", onPlaceSelected);
+    const onErr = (e) => { console.warn("PlaceAutocompleteElement error:", e); placesError(errText(e && (e.error || e.detail || e))); };
+    pac.addEventListener("gmp-error", onErr);
+    pac.addEventListener("gmp-requesterror", onErr);
+  }
+
+  function routeToSearchPlace() {
+    if (!searchPlace) {
+      setMsg(placesFailed ? "Place search is unavailable (Places API (New) not enabled). Tap a trip marker instead." : "Search for a place first, or tap a trip marker.", placesFailed);
+      return;
+    }
+    if (originMode() === "custom") {
+      setMsg("The searched place is the start. Tap a trip marker → Directions here for the destination.");
+      return;
+    }
+    routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+  }
+
+  async function init() {
+    if (window.innerWidth < 760) $("legend").removeAttribute("open");
+
+    $("btn-go").addEventListener("click", routeToSearchPlace);
+    $("btn-clear").addEventListener("click", clearRoute);
+    $("btn-fit").addEventListener("click", () => { clearRoute(); fitTrip(); });
+    $("dir-close").addEventListener("click", hidePanel);
+    $("origin-select").addEventListener("change", () => {
+      if (originMode() === "geolocation" && !geolocPos) {
+        getGeolocation().then(() => setMsg("Using your location as the start.")).catch(e => setMsg(errText(e), true));
+      }
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    });
+
+    let mapsLib;
+    try {
+      mapsLib = await google.maps.importLibrary("maps");
+    } catch (e) {
+      setMsg("Google Maps failed to load: " + errText(e), true);
+      return;
+    }
+    gm.Map = mapsLib.Map;
+    gm.InfoWindow = mapsLib.InfoWindow;
+
+    try {
+      const markerLib = await google.maps.importLibrary("marker");
+      gm.AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
+      useAdvanced = !!gm.AdvancedMarkerElement;
+    } catch (e) {
+      console.warn("marker library unavailable, using classic Marker", e);
+      useAdvanced = false;
+    }
+
+    map = new gm.Map($("map"), {
+      center: BOISE,
+      zoom: 8,
+      mapId: useAdvanced ? MAP_ID : undefined,
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+        position: google.maps.ControlPosition.TOP_LEFT
+      },
+      zoomControl: true,
+      streetViewControl: false,
+      fullscreenControl: false,
+      cameraControl: false,
+      scaleControl: true,
+      clickableIcons: false,
+      gestureHandling: "greedy"
+    });
+    infoWindow = new gm.InfoWindow({ maxWidth: 280 });
+
+    PLACES.forEach(addTripMarker);
+    drawBaseLine(ROUTE_FALLBACK);
+    setMsg(baseNote);
+
+    try {
+      const placesLib = await google.maps.importLibrary("places");
+      gm.PlaceAutocompleteElement = placesLib.PlaceAutocompleteElement;
+    } catch (e) {
+      console.warn("places library failed", e);
+    }
+    setupSearch();
+
+    try {
+      const routesLib = await google.maps.importLibrary("routes");
+      if (routesLib && routesLib.Route && typeof routesLib.Route.computeRoutes === "function") {
+        gm.Route = routesLib.Route;
+        routesMode = "js";
+      } else {
+        routesMode = "rest";
+      }
+    } catch (e) {
+      console.warn("routes library failed; using REST", e);
+      routesMode = "rest";
+    }
+
+    upgradeBaseRoute();
+
+    try {
+      if (navigator.permissions && navigator.geolocation) {
+        const st = await navigator.permissions.query({ name: "geolocation" });
+        if (st.state === "granted") getGeolocation().catch(() => {});
+      }
+    } catch (_) { /* ignore */ }
+  }
+
+  init();
+})();
+  </script>
+</body>
+</html>
