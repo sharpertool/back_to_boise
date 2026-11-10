@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Phoenix 2026 — Boise scenic run</title>
+  <style>
+    :root {
+      --panel: #ffffff;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --accent: #2b6cb0;
+      --accent-dark: #2c5282;
+      --border: #cbd5e0;
+      --err-bg: #fff5f5;
+      --err: #c53030;
+      --tap: 44px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text); background: #e2e8f0; -webkit-text-size-adjust: 100%;
+    }
+    body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+    header {
+      flex: 0 0 auto; padding: 8px 10px; padding-top: max(8px, env(safe-area-inset-top));
+      background: var(--panel); border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.08); z-index: 10;
+    }
+    .title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-width: 0; }
+    header h1 { margin: 0; font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .title-links { display: flex; gap: 10px; flex: 0 0 auto; align-items: baseline; }
+    .title-row a { flex: 0 0 auto; font-size: 0.85rem; color: var(--accent); font-weight: 600; text-decoration: none; padding: 6px 0; }
+    #controls { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 6px; }
+    #origin-select, #search-fallback {
+      width: 100%; min-height: var(--tap); padding: 8px 10px; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 16px; background: #fff; color: var(--text);
+    }
+    #search-fallback { border-style: dashed; background: #f7fafc; color: var(--muted); }
+    #search-wrap { width: 100%; min-width: 0; min-height: var(--tap); }
+    #search-wrap gmp-place-autocomplete { width: 100%; min-height: var(--tap); font-size: 16px; color-scheme: light; }
+    .btn-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+    button.ctrl, a.ctrl {
+      display: inline-flex; align-items: center; justify-content: center; min-height: var(--tap);
+      padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: #edf2f7;
+      color: var(--text); font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
+      touch-action: manipulation; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    button.ctrl:active, a.ctrl:active { filter: brightness(0.93); }
+    button.ctrl.primary, a.ctrl.primary { background: var(--accent); border-color: var(--accent-dark); color: #fff; }
+    #msg { margin-top: 6px; font-size: 13px; line-height: 1.35; color: var(--muted); overflow-wrap: anywhere; }
+    #msg:empty { display: none; }
+    #msg.error { color: var(--err); background: var(--err-bg); border: 1px solid #feb2b2; border-radius: 8px; padding: 8px 10px; font-weight: 600; }
+    #map-wrap { position: relative; flex: 1 1 auto; min-height: 240px; overflow: hidden; }
+    #map { position: absolute; inset: 0; }
+    #legend {
+      position: absolute; left: 8px; bottom: 22px; z-index: 5;
+      max-width: min(340px, calc(100vw - 70px));
+      background: rgba(255,255,255,0.96); border: 1px solid #ccc; border-radius: 8px;
+      font-size: 12px; line-height: 1.45; box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    #legend summary {
+      cursor: pointer; padding: 10px 12px; font-weight: 700; font-size: 13px;
+      min-height: var(--tap); display: flex; align-items: center; gap: 8px; list-style: none;
+    }
+    #legend summary::-webkit-details-marker { display: none; }
+    #legend summary::before { content: "▸"; }
+    #legend[open] summary::before { content: "▾"; }
+    #legend .body { padding: 0 12px 10px; max-height: 48vh; overflow: auto; }
+    #legend a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    .layer-row, .route-row { display: flex; align-items: flex-start; gap: 6px; margin: 4px 0; }
+    .layer-row input, .route-row input { width: 18px; height: 18px; margin-top: 2px; flex: 0 0 auto; }
+    .swatch {
+      display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 4px;
+      vertical-align: -1px; border: 2px solid transparent; flex: 0 0 auto;
+    }
+    .swatch.stay { background: #dd6b20; }
+    .swatch.paid { background: #7ec8ff; border-color: #1c5d99; }
+    .swatch.dispersed { background: #2f855a; }
+    .swatch.keystop { background: #7b3fa0; border-color: #4a235f; }
+    .swatch.visit { background: #fff; border-color: #2c7a7b; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; }
+    .swatch.twoday { background: #d69e2e; border-color: #975a16; border-radius: 2px; }
+    .swatch.route { width: 18px; height: 4px; border-radius: 2px; border: 0; vertical-align: 3px; margin-top: 7px; }
+    .route-copy { min-width: 0; }
+    .route-copy b { display: block; }
+    .fine { color: var(--muted); }
+    #directions-panel {
+      position: absolute; z-index: 6; left: 0; right: 0; bottom: 0; max-height: 55%; overflow: auto;
+      background: rgba(255,255,255,0.98); border-top: 1px solid var(--border); border-radius: 14px 14px 0 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,.15); padding: 10px 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom)); font-size: 14px; display: none;
+    }
+    #directions-panel.show { display: block; }
+    #directions-panel .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    #directions-panel h2 { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+    #dir-close { flex: 0 0 auto; width: var(--tap); height: var(--tap); border: none; background: transparent; font-size: 22px; cursor: pointer; color: var(--muted); }
+    #dir-route { color: var(--muted); margin: 4px 0 6px; overflow-wrap: anywhere; }
+    #dir-summary { font-size: 20px; font-weight: 700; margin: 4px 0 8px; }
+    #dir-summary:empty { display: none; }
+    #dir-error { color: var(--err); background: var(--err-bg); border: 1px solid #feb2b2; border-radius: 8px; padding: 8px 10px; margin: 6px 0 8px; font-weight: 600; overflow-wrap: anywhere; }
+    #dir-error:empty { display: none; }
+    #dir-actions { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    #dir-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .iw { max-width: 280px; font-size: 14px; line-height: 1.4; }
+    .iw b { display: block; margin-bottom: 2px; }
+    .iw .sub { color: var(--muted); font-size: 12px; }
+    .iw .note { font-size: 12px; margin-top: 4px; }
+    .iw .iw-links { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .iw .iw-actions { display: grid; gap: 6px; margin-top: 8px; }
+    .iw .iw-actions .ctrl { font-size: 14px; }
+    .pin {
+      display: flex; align-items: center; justify-content: center; border-radius: 50%;
+      border: 3px solid; font-weight: 700; font-size: 12px; line-height: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,.35); cursor: pointer;
+    }
+    @media (min-width: 760px) {
+      header { padding: 10px 14px; }
+      #controls { grid-template-columns: minmax(200px, 280px) minmax(220px, 1fr) auto; align-items: center; }
+      .btn-row { grid-template-columns: repeat(3, auto); }
+      #directions-panel {
+        left: auto; top: 12px; right: 12px; bottom: auto; width: 360px; max-height: calc(100% - 24px);
+        border: 1px solid var(--border); border-radius: 10px;
+      }
+      #legend { bottom: 28px; left: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <h1>Phoenix 2026 — scenic run</h1>
+      <span class="title-links">
+        <a href="locations.html">Locations →</a>
+      </span>
+    </div>
+    <div id="controls">
+      <select id="origin-select" aria-label="Directions origin">
+        <option value="boise">From: Boise / home (CURRENT)</option>
+        <option value="geolocation">From: My location</option>
+        <option value="custom">From: Searched place</option>
+      </select>
+      <div id="search-wrap" aria-label="Search a place">
+        <input id="search-fallback" type="text" disabled placeholder="Loading place search…" />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="ctrl primary" id="btn-go">Directions</button>
+        <button type="button" class="ctrl" id="btn-clear">Clear route</button>
+        <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+      </div>
+    </div>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </header>
+  <div id="map-wrap">
+    <div id="map" role="application" aria-label="Phoenix 2026 trip map"></div>
+    <details id="legend" open>
+      <summary>Legend and routes</summary>
+      <div class="body" id="legend-body"></div>
+    </details>
+    <div id="directions-panel" aria-live="polite">
+      <div class="head">
+        <h2 id="dir-title">Directions</h2>
+        <button type="button" id="dir-close" aria-label="Close directions">×</button>
+      </div>
+      <div id="dir-route"></div>
+      <div id="dir-summary"></div>
+      <div id="dir-error"></div>
+      <div id="dir-actions">
+        <a id="dir-gmaps" class="ctrl primary" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div id="dir-note"></div>
+    </div>
+  </div>
+  <script>
+    /* Same referrer-restricted Maps key as the other trip maps.
+       HTTP-referrer-restricted to sharpertool.github.io. */
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI",
+      v: "weekly",
+      loading: "async"
+    });
+  </script>
+  <script id="trip-data" type="application/json">{"places": [{"name": "CURRENT: Boise / home", "lat": 43.612, "lng": -116.392, "layer": "current", "note": "Current sit. Map opens here. Same home pin as the other trip maps (Boise / Meridian). Nothing on this Phoenix run is reserved. Hitching and packing takes about 2–3 hours. Ed works remote weekdays 6 a.m.–3 p.m. Mountain time, so the long hops are weekend days.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/43.612,-116.392,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=43.612,-116.392"}, {"label": "Locations", "href": "locations.html"}]}, {"name": "Lamoille Canyon / Thomas Canyon (HTNF) search", "lat": 40.6472, "lng": -115.4068, "layer": "dispersed", "note": "Search area, not a reserved site. Pin is the Forest Service coordinate for Thomas Canyon Campground in Lamoille Canyon (7,200 ft), about 30 miles from Elko. Reservations are generally Memorial Day to Labor Day; drinking water is off in the fall first-come window. The canyon road is not plowed in winter. Nevada trail notes say passenger cars cannot use it once snow closes it. Do not plan a November night up this canyon.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/40.6472,-115.4068,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=40.6472,-115.4068"}, {"label": "Forest Service", "href": "https://www.fs.usda.gov/r04/humboldt-toiyabe/recreation/thomas-canyon-campground"}]}, {"name": "Ward Mountain (BLM north trailhead) search", "lat": 39.22259, "lng": -114.96999, "layer": "dispersed", "note": "Ely-area public-land search. Pin is the BLM north trailhead on US-6, about 6 miles southwest of Ely: free, restrooms, no potable water, trails. The Forest Service Ward Mountain Campground is across the highway (fee, no hookups, about 7,350 ft, 39.2092, -114.9712). Snow at the summit is likely in November. Nevada BLM dispersed stay is 14 days in any 28, then move at least 25 miles, unless a site posts something else.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.22259,-114.96999,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.22259,-114.96999"}, {"label": "BLM", "href": "https://www.blm.gov/visit/ward-mountain-recreation-area"}]}, {"name": "Sacramento Pass (BLM) search", "lat": 39.1215, "lng": -114.305, "layer": "dispersed", "note": "Free BLM camp area on US-50, about 40 miles east of Ely and about 20 miles from Great Basin National Park. Ten sites, first-come, 14-day limit, restrooms, no potable water. Lower than Wheeler Peak. A usable Great Basin-side search if the park campgrounds are closed or too short for the trailer.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.1215,-114.305,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.1215,-114.305"}, {"label": "BLM", "href": "https://www.blm.gov/visit/sacramento-pass-rec-area"}]}, {"name": "Patterson Pass (BLM) search", "lat": 37.97734, "lng": -114.53748, "layer": "dispersed", "note": "No-fee BLM site on the US-93 leg between Ely and Pioche. From Pioche, 47 miles north on US-93, then 1 mile west. Restrooms, tables, grills, fire pits, shade. No drinking water is listed. Ely District, 775-726-8100. Nevada 14-day / 28-day dispersed rule unless posted otherwise.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.97734,-114.53748,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.97734,-114.53748"}, {"label": "BLM", "href": "https://www.blm.gov/visit/patterson-pass"}]}, {"name": "Curlew Campground (Curlew National Grassland)", "lat": 42.0705556, "lng": -112.6913889, "layer": "dispersed", "note": "Named grassland campground about 7 miles north of Snowville, on the I-84 east side used by Routes A, B, and D (not the Jackpot turn). Recreation.gov: open year-round, no electric, water, or sewer hookups. Stone Reservoir is closed to boats. A concessionaire manages it; confirm any fee at 208-757-3999. Pin is the campground, not a dispersed dot.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/42.0705556,-112.6913889,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=42.0705556,-112.6913889"}, {"label": "Recreation.gov", "href": "https://www.recreation.gov/camping/campgrounds/233970"}]}, {"name": "White House / Paria (Grand Staircase) search", "lat": 37.07993889, "lng": -111.8902833, "layer": "dispersed", "note": "Named BLM campground on the Paria, the Kanab-side Grand Staircase search. Recreation.gov: open year-round, first-come, vault toilets, seven car sites and walk-in tent sites. Confirm the posted fee at the information board. This is not a hookup park. US-89 can be snowy between Kanab and Page. Do not assume a long dirt road is trailer-ready until you scout it in the truck.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.07993889,-111.8902833,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.07993889,-111.8902833"}, {"label": "Recreation.gov", "href": "https://www.recreation.gov/camping/campgrounds/256924"}]}, {"name": "Bulldog Canyon (Tonto NF) permit search", "lat": 33.550932, "lng": -111.581588, "layer": "dispersed", "note": "Phoenix-east search area. Pin is the Recreation.gov point for the Tonto OHV permit zone, not a campsite. Since Jan 1, 2025 every motorized vehicle inside the zone needs a Tonto OHV permit, including the truck. Camping is banned at staging areas and for the first mile from each gate (first two miles from Blue Point), and 300 feet to either side of the road in that stretch. Past that, 14 days in 30. No running water and no developed campground in the zone. Buy the permit on Recreation.gov before you drive in.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/33.550932,-111.581588,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=33.550932,-111.581588"}, {"label": "Forest rules (PDF)", "href": "https://www.fs.usda.gov/sites/nfs/files/r03/tonto/publication/OHV%20Permit%20Zones%20Rules%20Regulations%2020250516.pdf"}]}, {"name": "Wild Cow Springs (BLM, Hualapai Mtns) search", "lat": 35.0613, "lng": -113.86918, "layer": "dispersed", "note": "Kingman-area BLM campground in the Hualapai Mountains, from the Recreation.gov listing. Fee, water, and whether the road is open in November were not on the page retrieved here. Call the Kingman Field Office before you count on it. It is the named public-land search for the Kingman two-day, not a town RV park.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.0613,-113.86918,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.0613,-113.86918"}, {"label": "Kingman Field Office", "href": "https://www.blm.gov/office/kingman-field-office"}]}, {"name": "South Fork State Recreation Area", "lat": 40.6572015, "lng": -115.7388639, "layer": "paid", "note": "First-night search south of Elko, on SR-228. Nevada State Parks: camping open all year, 14 days in a 30-day period. East Campground has power sites; the power fee is charged if you take the site, whether or not you plug in. Water spigots: fill, then unhook. Non-Nevada vehicles pay the higher rate. The Nov 1, 2026 state winterization list did not name South Fork. Call 775-744-4346 before you count on water. Senior Pass does not discount Nevada state parks. No dump stop is part of this plan.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/40.6572015,-115.7388639,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=40.6572015,-115.7388639"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/south-fork"}]}, {"name": "Wild Horse State Recreation Area", "lat": 41.669393, "lng": -115.800286, "layer": "paid", "note": "Developed state park on Wild Horse Reservoir, north of Elko on SR-225. Open year-round. The park page lists no hookups; a May 12, 2026 note said Loop 2 electricity was not yet available. Water faucets are summer only. The Nov 1, 2026 winterization notice closed the flush restrooms and showers; pit toilets stay open. 14 days in 30. Cold. Pin is the coordinate on the State Parks map link. Senior Pass does not apply.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/41.669393,-115.800286,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=41.669393,-115.800286"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/wild-horse"}]}, {"name": "Tabor Creek (BLM, near Wells)", "lat": 41.41032, "lng": -115.10803, "layer": "paid", "note": "BLM fee campground west of Wells, on the US-93 approach. Tables, shade, no drinking water listed. Nevada fee-site list (Jan 2025) includes Tabor Creek. 14-day rule. Not a hookup park. Call Elko District 775-753-0200. Pin is the BLM coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/41.41032,-115.10803,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=41.41032,-115.10803"}, {"label": "BLM", "href": "https://www.blm.gov/visit/tabor-creek-campground"}]}, {"name": "Cave Lake State Park (Lake View)", "lat": 39.1838213, "lng": -114.7172603, "layer": "paid", "note": "Ely-area developed backup, off US-50/6/93 at Success Summit. Lake View is open year-round; Elk Flat is closed Nov 1 through May 1. No hookups are listed. Flush toilets and showers may close in extreme cold. Call 775-296-1505. Stay limit on the park page is seven days in 30. The park warns of several feet of snow in a normal winter, and plowing can wait a day or two. Senior Pass does not apply. Pin is the State Parks map coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.1838213,-114.7172603,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.1838213,-114.7172603"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/cave-lake"}]}, {"name": "Cathedral Gorge State Park", "lat": 37.8240508, "lng": -114.4154551, "layer": "paid", "note": "US-93 developed stop at Pioche. Park page: 22 sites with electric hookups, water, and flush restrooms with showers open year-round. 14 days in 30. Open every day. Not on the Nov 1, 2026 winterization list. Senior Pass does not apply. Pin is the State Parks map coordinate. A strong backup if Ely is too cold and you are rolling south.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.8240508,-114.4154551,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.8240508,-114.4154551"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/cathedral-gorge"}]}, {"name": "Echo Canyon State Park", "lat": 37.911011, "lng": -114.267281, "layer": "paid", "note": "East of Pioche. Nov 1, 2026 Nevada winterization notice: water shut off at each RV site; bathrooms and showers still available; group-use bathroom closed. Confirm before you count on a spigot. Senior Pass does not apply. Pin is the State Parks map coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.911011,-114.267281,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.911011,-114.267281"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/echo-canyon"}]}, {"name": "Kershaw-Ryan State Park", "lat": 37.5888639, "lng": -114.521294, "layer": "paid", "note": "In Rainbow Canyon at Caliente, on US-93. Nov 1, 2026 winterization notice: day-use water off; showers, bathrooms, and frost-free spigots in the campground still open. Senior Pass does not apply. Pin is the State Parks map coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.5888639,-114.521294,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.5888639,-114.521294"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/kershaw-ryan"}]}, {"name": "Quail Creek State Park", "lat": 37.1854, "lng": -113.3976, "layer": "paid", "note": "St. George area. Utah State Parks: open year-round, drinking water in the campground, partial-hookup sites and standard sites. Published November and December hours are 7 a.m. to 5 p.m. Confirm that an overnight camper can pass the gate after 5. Mild winter climate is the park's own description. Senior Pass does not discount Utah state parks. Reserve at 1-800-322-3770. Pin is the Recreation.gov park coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.1854,-113.3976,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.1854,-113.3976"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/quail-creek/"}]}, {"name": "Sand Hollow State Park", "lat": 37.1218007, "lng": -113.3852791, "layer": "paid", "note": "St. George / Hurricane developed state park. Pin is the Recreation.gov coordinate. This pass did not re-read a hookup table for Sand Hollow. Confirm winter water and electric on the state parks page before you count on a pedestal. Senior Pass does not apply. Quail Creek, nearby, does publish water and electric.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.1218007,-113.3852791,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.1218007,-113.3852791"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/sand-hollow/"}]}, {"name": "Snow Canyon State Park", "lat": 37.203056, "lng": -113.641389, "layer": "paid", "note": "Developed campground in the red rocks north of St. George. The park page lists drinking water and electricity, year-round camping, and no camping outside the campground. Reservations are recommended. Senior Pass does not apply. Pin is the Recreation.gov coordinate. A two-day outing base as well as a night.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.203056,-113.641389,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.203056,-113.641389"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/snow-canyon/"}]}, {"name": "Coral Pink Sand Dunes State Park", "lat": 37.037682, "lng": -112.7325284, "layer": "paid", "note": "Kanab-area state park. The park page lists drinking water, electricity, showers, and a dump (do not plan a dump; the X195 has no black tank). Hours posted as daylight hours. Hoses freeze when the night drops below freezing even if a spigot is on. Senior Pass does not apply. Pin is the Recreation.gov coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.037682,-112.7325284,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.037682,-112.7325284"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/coral-pink/"}]}, {"name": "Lone Rock Beach (Glen Canyon NRA)", "lat": 37.01516, "lng": -111.53777, "layer": "paid", "note": "Page / Lake Powell primitive beach, not a hookup park. NPS: $14 per night per vehicle plus the park entrance fee, first-come, no reservations. No potable water. Vault toilets year-round; flush toilets and showers are the summer setup. Sandy roads after the pavement. Senior or Access Pass takes 50% off the camping fee (Glen Canyon fees page, updated Nov 4, 2026); it does not waive the fee. Park camping limit is 14 consecutive days and 30 days a calendar year. Pin is an NPS-published Lone Rock coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.01516,-111.53777,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.01516,-111.53777"}, {"label": "NPS", "href": "https://www.nps.gov/glca/planyourvisit/lone-rock-beach.htm"}]}, {"name": "Little Sahara Recreation Area (BLM)", "lat": 39.726489, "lng": -112.307417, "layer": "paid", "note": "Fillmore Field Office sand recreation area, the named BLM site for the Delta / Fillmore part of Route C. Four campgrounds were listed open, and dispersed camping is allowed outside them. As retrieved Nov 10, 2026: water fill stations, dump stations, and flush toilets were CLOSED; the visitor center is closed Nov 8 through spring 2027. Camping is included in the entry fee, first-come. This is an OHV sand area. Stay on the paved campground roads with the trailer. Pin is the Recreation.gov area coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.726489,-112.307417,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.726489,-112.307417"}, {"label": "BLM", "href": "https://www.blm.gov/visit/little-sahara-recreation-area"}]}, {"name": "Lake Pleasant Regional Park", "lat": 33.86337, "lng": -112.32155, "layer": "paid", "note": "Maricopa County park northwest of Phoenix, the straightforward developed base for the family week. Developed sites have water and electricity; semi-developed sites do not all have hookups. Shoreline camping is not available. Maximum 14 nights in any 28 days. Reservations. Senior Pass does not discount a county park. Pin is the Recreation.gov Lake Pleasant coordinate (Morristown).", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/33.86337,-112.32155,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=33.86337,-112.32155"}, {"label": "County camping", "href": "https://www.maricopacountyparks.net/park-locator/lake-pleasant-regional-park/camping/"}]}, {"name": "Boulder Beach Campground (Lake Mead NRA)", "lat": 36.037088, "lng": -114.801748, "layer": "paid", "note": "NPS campground on Lake Mead, minutes from Boulder City, open year-round. Large sites, water spigots, restrooms. Electric hookups were not listed in the Recreation.gov description retrieved here. Entrance fee is separate from camping. Senior Pass: confirm the camping discount on the reservation screen. Max stay on the listing is 30 nights. Pin is the campground coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.037088,-114.801748,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.037088,-114.801748"}, {"label": "Recreation.gov", "href": "https://www.recreation.gov/camping/campgrounds/10075120"}]}, {"name": "Green River State Park", "lat": 38.9900343, "lng": -110.1569074, "layer": "paid", "note": "Developed Utah state park in Green River, on Route D. Pin is the Recreation.gov coordinate. Confirm winter water and hookups on the state parks page. Senior Pass does not apply. This is the in-town backup if you are not staying out at Goblin Valley or on the San Rafael.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.9900343,-110.1569074,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.9900343,-110.1569074"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/green-river/"}]}, {"name": "Kaibab Lake Campground (Kaibab NF)", "lat": 35.2811111, "lng": -112.1569444, "layer": "paid", "note": "Fee forest campground at Williams, about 30 miles west of Flagstaff on the Kaibab. Recreation.gov: trailers up to 40 feet, elevation 6,800 ft, potable water for drinking only (do not fill the RV tank from the hydrant). A November open date was not in the text retrieved. Snow is likely. No electric hookups were listed. Call the Williams ranger district. Pin is the campground coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.2811111,-112.1569444,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.2811111,-112.1569444"}, {"label": "Recreation.gov", "href": "https://www.recreation.gov/camping/campgrounds/233957"}]}, {"name": "Ashurst Lake (Coconino NF)", "lat": 35.01953, "lng": -111.40847, "layer": "paid", "note": "Fee forest campground south of Flagstaff, toward Mormon Lake. Recreation.gov: no utility hookups, drinking water, trailers up to 35 feet (the X195 is under that; the limit is the trailer, not a promise about snow). Winter status was not in the text retrieved. Snow is the risk. Pin is the campground coordinate.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.01953,-111.40847,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.01953,-111.40847"}, {"label": "Recreation.gov", "href": "https://www.recreation.gov/camping/campgrounds/10210112"}]}, {"name": "Two-day: Elko, Nevada", "lat": 40.83243, "lng": -115.76314, "layer": "twoday", "note": "Western corridor and the first long day. USGS populated place. California Trail Interpretive Center (BLM): free, Wednesday–Sunday 8:30 a.m.–5 p.m., closed Thanksgiving, Christmas, and New Year's, at I-80 exit 292. Lamoille Canyon is the scenic piece and is a winter road closure. Nearby camping search: South Fork SRA, Wild Horse SRA, Lamoille Canyon pin. On Route C and the US-93 reference. Elko nights in November and December are often in the teens or single digits.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/40.83243,-115.76314,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=40.83243,-115.76314"}, {"label": "California Trail", "href": "https://www.blm.gov/learn/interpretive-centers/california-trail-interpretive-center"}]}, {"name": "Two-day: Ely, Nevada", "lat": 39.24744, "lng": -114.88864, "layer": "twoday", "note": "Key multi-day sit on the western corridor (Route C and the US-93 reference). USGS town point, about 6,400 ft. Nevada Northern Railway: check nnry.com for the winter schedule before you count on a weekday train. Ward Charcoal Ovens State Historic Park is open every day. Great Basin National Park and Lehman Caves are a truck day, not a trailer camp (Wheeler Peak Campground allows neither a vehicle nor a towed unit over 24 feet, and it closes for snow). Nearby search: Cave Lake, Ward Mountain, Sacramento Pass.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.24744,-114.88864,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.24744,-114.88864"}, {"label": "Nevada Northern", "href": "https://nnry.com/"}, {"label": "Lehman Caves", "href": "https://www.nps.gov/grba/planyourvisit/lehman-caves-tours.htm"}]}, {"name": "Two-day: Delta, Utah", "lat": 39.35218, "lng": -112.57718, "layer": "twoday", "note": "Route C town, where US-50/US-6 meets the desert west of I-15. USGS populated place. Topaz Museum covers the WWII incarceration site; confirm winter hours at topazmuseum.org. The local Great Basin Museum is the other small-museum stop; confirm its current hours in town (no web address is linked here). Nearby camping search: Little Sahara Recreation Area.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.35218,-112.57718,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.35218,-112.57718"}, {"label": "Topaz Museum", "href": "https://topazmuseum.org/"}]}, {"name": "Two-day: Fillmore, Utah", "lat": 38.96886, "lng": -112.32356, "layer": "twoday", "note": "Route C on I-15. USGS populated place. Territorial Statehouse State Park is the historic stop. The state parks site blocked an automated read; use the official page for hours. Nearby camping search: Little Sahara, north of town.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.96886,-112.32356,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.96886,-112.32356"}, {"label": "Statehouse", "href": "https://stateparks.utah.gov/parks/territorial-statehouse/"}]}, {"name": "Two-day: Cedar City, Utah", "lat": 37.67748, "lng": -113.0619, "layer": "twoday", "note": "I-15 town on Routes A and B, and on Route C once it joins I-15. USGS populated place. Cedar Breaks National Monument is the scenic piece and is a winter closure: the visitor center is closed about mid-October to late May, and the road to the south overlooks is usually closed about mid-November to mid-May. Nearby pinned camping is down at St. George (Quail Creek, Sand Hollow, Snow Canyon), not in the high Dixie forest. Pine Valley Recreation Area is closed until further notice.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.67748,-113.0619,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.67748,-113.0619"}, {"label": "Cedar Breaks conditions", "href": "https://www.nps.gov/cebr/planyourvisit/conditions.htm"}]}, {"name": "Two-day: St. George, Utah", "lat": 37.10415, "lng": -113.58413, "layer": "twoday", "note": "Key multi-day sit. Mild winter. On Routes A, B, and C. USGS populated place. Zion is a truck day from the south entrance; do not tow through the Zion–Mt. Carmel Tunnel (combined limit 50 feet overall, trailer 26 feet hitch to rear axle, 7 feet 10 inches wide, 11 feet 4 inches tall). Snow Canyon, Quail Creek, and Sand Hollow are the camping searches. Red Cliffs NCA: no dispersed camping. Red Cliffs Campground needs a reservation and rejects vehicles over 11 feet 9 inches tall or wide.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.10415,-113.58413,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.10415,-113.58413"}, {"label": "Zion tunnel", "href": "https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm"}, {"label": "Red Cliffs NCA", "href": "https://www.blm.gov/visit/red-cliffs-national-conservation-area"}]}, {"name": "Two-day: Kanab, Utah", "lat": 37.04749, "lng": -112.52633, "layer": "twoday", "note": "Routes B and D. USGS populated place. Coral Pink Sand Dunes, Best Friends Animal Sanctuary, and Vermilion Cliffs / White House are the three stops. US-89 toward Page is high enough to snow. Best Friends is a scheduled visit, not a camp. The Wave is a permit hike, not a backup night. Nearby camping search: Coral Pink and White House.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.04749,-112.52633,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.04749,-112.52633"}, {"label": "Best Friends", "href": "https://bestfriends.org/sanctuary"}, {"label": "Coral Pink", "href": "https://stateparks.utah.gov/parks/coral-pink/"}]}, {"name": "Two-day: Page, Arizona", "lat": 36.91473, "lng": -111.45584, "layer": "twoday", "note": "Routes B and D. USGS populated place. Horseshoe Bend (truck; leave the trailer), Glen Canyon Dam, and Antelope Canyon (Navajo Nation guided tours; confirm winter trips). Nearby camping search: Lone Rock Beach, primitive, no potable water in the off season. Page is cooler than Phoenix and can be windy.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.91473,-111.45584,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.91473,-111.45584"}, {"label": "Horseshoe Bend", "href": "https://www.nps.gov/glca/planyourvisit/horseshoe-bend.htm"}, {"label": "Glen Canyon Dam", "href": "https://www.nps.gov/glca/planyourvisit/visitorcenters.htm"}, {"label": "Navajo Nation Parks", "href": "https://navajonationparks.org/"}]}, {"name": "Two-day: Flagstaff, Arizona", "lat": 35.19807, "lng": -111.65128, "layer": "twoday", "note": "Routes B and D, before I-17. USGS populated place, high city, snow is normal in November and December. Lowell Observatory, Walnut Canyon, and Sunset Crater / Wupatki are the outings. Bonito Campground at Sunset Crater posted a close for roadwork starting Sept 21, 2026. Nearby camping search: Ashurst Lake (south) and Kaibab Lake at Williams (west). Neither listing confirmed a November open date.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.19807,-111.65128,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.19807,-111.65128"}, {"label": "Lowell Observatory", "href": "https://lowell.edu/"}, {"label": "Walnut Canyon", "href": "https://www.nps.gov/waca/"}, {"label": "Sunset Crater", "href": "https://www.nps.gov/sucr/"}]}, {"name": "Two-day: Camp Verde / Verde Valley", "lat": 34.56364, "lng": -111.85433, "layer": "twoday", "note": "Off I-17 on Routes B and D. USGS Camp Verde point. Montezuma Castle, Tuzigoot, and Jerome are the loop. Potato Patch Campground on 89A caps combined vehicle length at 40 feet, so the hitched F-350 and X195 will not fit, and it sits at 7,200 ft. Nearest pinned Phoenix-side searches are Lake Pleasant and Bulldog Canyon, which are a drive south, not a Verde campground.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/34.56364,-111.85433,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=34.56364,-111.85433"}, {"label": "Montezuma Castle", "href": "https://www.nps.gov/moca/"}, {"label": "Tuzigoot", "href": "https://www.nps.gov/tuzi/"}]}, {"name": "Two-day: Kingman, Arizona", "lat": 35.18945, "lng": -114.05302, "layer": "twoday", "note": "Routes A, C, and the US-93 reference. USGS populated place. Historic Route 66 Museum at the Powerhouse, and Hualapai Mountain Park as the county in-town alternative to confirm by phone. Nearby public-land search: Wild Cow Springs (BLM). Confirm November access before you climb the mountain.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.18945,-114.05302,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.18945,-114.05302"}, {"label": "Explore Kingman", "href": "https://www.explorekingman.com/"}]}, {"name": "Two-day: Boulder City, Nevada", "lat": 35.9786, "lng": -114.8325, "layer": "twoday", "note": "Routes A, C, and the US-93 reference, on the way between Las Vegas and Hoover Dam. USGS populated place. Hoover Dam and Lake Mead are the outings. Leave the trailer at Boulder Beach or in town; do not take it across the dam. Nearby camping search: Boulder Beach.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.9786,-114.8325,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.9786,-114.8325"}, {"label": "Hoover Dam", "href": "https://www.nps.gov/lake/index.htm"}]}, {"name": "Two-day: Valley of Fire State Park", "lat": 36.4303452, "lng": -114.5143309, "layer": "twoday", "note": "Short side off I-15, on Routes A, C, and the reference. Pin is the State Parks map coordinate. Two campgrounds, 72 sites, shaded tables, grills, water, restrooms, showers, reservations, 14 days in 30. The park closes every year December 1 through December 14, including foot entry. Do not plan those dates. Senior Pass does not apply. This is a sit, not only a photo stop.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.4303452,-114.5143309,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.4303452,-114.5143309"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/valley-of-fire"}]}, {"name": "Two-day: Wickenburg, Arizona", "lat": 33.96865, "lng": -112.72963, "layer": "twoday", "note": "Routes A, C, and the reference, on US-93 north of Phoenix. USGS populated place. Desert Caballeros Western Museum is the stop. Confirm winter hours. Nearby camping search is back toward Lake Pleasant or the Phoenix BLM, not a pinned Wickenburg campground.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/33.96865,-112.72963,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=33.96865,-112.72963"}, {"label": "Desert Caballeros", "href": "https://westernmuseum.org/"}]}, {"name": "Two-day: Price, Utah", "lat": 39.59942, "lng": -110.81073, "layer": "twoday", "note": "Route D, on US-6 east of the Wasatch. USGS populated place. USU Eastern Prehistoric Museum, and Nine Mile Canyon (BLM backcountry byway, no fee at the published point). Scout Nine Mile in the truck; do not take the trailer down a long dirt canyon road you have not seen. Nearby camping search: Green River State Park to the south, or Little Sahara if you are still west.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.59942,-110.81073,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.59942,-110.81073"}, {"label": "Prehistoric Museum", "href": "https://eastern.usu.edu/prehistoric-museum/"}, {"label": "Nine Mile Canyon", "href": "https://www.blm.gov/visit/nine-mile-canyon"}]}, {"name": "Two-day: Green River, Utah", "lat": 38.99526, "lng": -110.16181, "layer": "twoday", "note": "Route D, where US-6 meets I-70. USGS populated place. Goblin Valley and the San Rafael Swell are the days out. No single Swell campsite is pinned: the USGS range center is not a legal site. Use onX on BLM land and the Price Field Office rules. Nearby developed backup: Green River State Park. Goblin Valley is its own two-day pin.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.99526,-110.16181,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.99526,-110.16181"}, {"label": "Goblin Valley", "href": "https://stateparks.utah.gov/parks/goblin-valley/"}]}, {"name": "Two-day: Goblin Valley State Park", "lat": 38.5689742, "lng": -110.706287, "layer": "twoday", "note": "Side trip off Route D from Green River / I-70, not the through-highway. Pin is the Recreation.gov park coordinate. Confirm winter water and whether the campground has hookups; the automated read of the state parks page was blocked. Senior Pass does not apply. The valley itself is the hike. Pair with the San Rafael on a truck day.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.5689742,-110.706287,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.5689742,-110.706287"}, {"label": "Park page", "href": "https://stateparks.utah.gov/parks/goblin-valley/"}]}, {"name": "Two-day: Capitol Reef / Fruita", "lat": 38.2824861, "lng": -111.2468889, "layer": "twoday", "note": "Side trip off Route D on UT-24, not the modeled through-route (that stays on I-70 to Salina, then US-89). Pin is Fruita Campground. Recreation.gov: reservable year-round, picnic tables and fire rings, a dump and potable water are mentioned, 14-day stay limit per year. No cell service at the campground. Scenic drive and petroglyphs along UT-24. Confirm trailer length against the site you reserve. Senior Pass applies to the park entrance; confirm the camping discount.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.2824861,-111.2468889,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.2824861,-111.2468889"}, {"label": "Park", "href": "https://www.nps.gov/care/"}, {"label": "Fruita", "href": "https://www.recreation.gov/camping/campgrounds/272245"}]}, {"name": "Two-day: Richfield, Utah", "lat": 38.77247, "lng": -112.08411, "layer": "twoday", "note": "On I-70 about 20 miles west of Salina. The modeled Route D turns south on US-89 at Salina and does not pass Richfield. USGS populated place. Fremont Indian State Park is the museum stop, southwest toward I-70 and Clear Creek Canyon. Fish Lake is a high Dixie/Fishlake forest day and a poor November trailer target. Nearby if you jog west: Fremont Indian, then return to US-89.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/38.77247,-112.08411,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=38.77247,-112.08411"}, {"label": "Fremont Indian", "href": "https://stateparks.utah.gov/parks/fremont-indian/"}]}, {"name": "Two-day: City of Rocks", "lat": 42.067203, "lng": -113.701382, "layer": "twoday", "note": "I-84 side between Burley and the Snowville climb, so it sits on Routes A, B, and D. Route C leaves I-84 at Twin Falls for Jackpot and misses it. Pin is the National Reserve campground. The reserve is open year-round; roads can close in snow. Camping page: some sites have seasonal water and electricity; confirm which loops are open in November. 14 days in a 30-day period. Silent City and the California Trail ruts are the walk. Senior Pass: confirm on the reservation.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/42.067203,-113.701382,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=42.067203,-113.701382"}, {"label": "Camping", "href": "https://www.nps.gov/ciro/planyourvisit/camping.htm"}, {"label": "Hours", "href": "https://www.nps.gov/ciro/planyourvisit/hours.htm"}]}, {"name": "Great Basin NP / Lehman Caves", "lat": 39.005691, "lng": -114.219904, "layer": "outing", "note": "Outing from Ely, not the sit. Pin is the Lehman Caves Visitor Center. Book cave tours on the NPS page; winter tour schedules change. Wheeler Peak Campground: no vehicle and no towed unit over 24 feet, and it closes for snow, sometimes as early as September. Baker Creek has no potable water. Do not take the X195 up the Wheeler Peak road.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.005691,-114.219904,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.005691,-114.219904"}, {"label": "Lehman Caves", "href": "https://www.nps.gov/grba/planyourvisit/lehman-caves-tours.htm"}, {"label": "Park", "href": "https://www.nps.gov/grba/"}]}, {"name": "Zion National Park", "lat": 37.298393, "lng": -113.026514, "layer": "outing", "note": "Outing from St. George, not a trailer camp. Pin is the Recreation.gov park coordinate. Drive the truck to the south entrance and use the shuttle when it is running. The Mt. Carmel tunnel is not on any tow route drawn here. Watchman non-electric sites do not take a vehicle or combination 19 feet and over, so do not plan the X195 inside Zion.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.298393,-113.026514,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.298393,-113.026514"}, {"label": "Tunnel limits", "href": "https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm"}]}, {"name": "Grand Canyon South Rim", "lat": 36.0497222, "lng": -112.1204694, "layer": "outing", "note": "Outing from Flagstaff, not a sit. Pin is Mather Campground, on the South Rim, so the dot is the rim and not the inner canyon. Mather's own text recommends reservations March 1–November 30. December operations, snow, and site length need a check before anyone moves a trailer there. The day trip is the truck.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.0497222,-112.1204694,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.0497222,-112.1204694"}, {"label": "Park", "href": "https://www.nps.gov/grca/"}]}, {"name": "Cedar Breaks National Monument", "lat": 37.63332, "lng": -112.84245, "layer": "outing", "note": "Outing from Cedar City, often closed to cars in this season. Pin is the USGS summit name point, not a parking lot. NPS: visitor center closed about mid-October to late May. The road through the south end (SR-148) is usually closed to vehicles about mid-November to mid-May. SR-143 on the north end stays open more often and can still close in a storm. Over 10,000 feet.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/37.63332,-112.84245,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=37.63332,-112.84245"}, {"label": "Conditions", "href": "https://www.nps.gov/cebr/planyourvisit/conditions.htm"}]}, {"name": "Ward Charcoal Ovens State Historic Park", "lat": 39.0368996, "lng": -114.8472976, "layer": "outing", "note": "Ely outing, and a real campground if you want it. Always open. 14 days in 30. The park page describes camping, picnicking, and the ovens. Do not climb on the ovens. Senior Pass does not apply. Pin is the State Parks map coordinate. Winter trails are ski and snowshoe, not a guaranteed plowed spur.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.0368996,-114.8472976,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.0368996,-114.8472976"}, {"label": "Park page", "href": "https://parks.nv.gov/parks/ward-charcoal-ovens"}]}, {"name": "Montezuma Castle National Monument", "lat": 34.622378, "lng": -111.814786, "layer": "outing", "note": "Verde Valley outing off I-17. Pin is the Recreation.gov monument coordinate. Cliff dwelling, short walk. Confirm winter hours on the NPS page. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/34.622378,-111.814786,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=34.622378,-111.814786"}, {"label": "NPS", "href": "https://www.nps.gov/moca/"}]}, {"name": "Tuzigoot National Monument", "lat": 34.772964, "lng": -112.027907, "layer": "outing", "note": "Verde Valley outing at Clarkdale, paired with Jerome and Montezuma Castle. Pin is the Recreation.gov coordinate. Confirm winter hours. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/34.772964,-112.027907,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=34.772964,-112.027907"}, {"label": "NPS", "href": "https://www.nps.gov/tuzi/"}]}, {"name": "Walnut Canyon National Monument", "lat": 35.16823, "lng": -111.502424, "layer": "outing", "note": "Flagstaff outing, east of town. Pin is the Recreation.gov coordinate. Island trail is a stair climb; there is also a rim walk. Confirm winter hours and any ice closure. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.16823,-111.502424,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.16823,-111.502424"}, {"label": "NPS", "href": "https://www.nps.gov/waca/"}]}, {"name": "Wupatki National Monument", "lat": 35.557411, "lng": -111.395722, "layer": "outing", "note": "Flagstaff outing on the loop with Sunset Crater. Pin is the Recreation.gov coordinate. Pueblo and the ball court. Confirm winter hours. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.557411,-111.395722,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.557411,-111.395722"}, {"label": "NPS", "href": "https://www.nps.gov/wupa/"}]}, {"name": "Sunset Crater Volcano", "lat": 35.370429, "lng": -111.543602, "layer": "outing", "note": "Flagstaff outing. Pin is Bonito Campground, which posted an early close for roadwork starting Sept 21, 2026. Do not plan to camp here. The monument road is a separate question; check nps.gov/sucr the week you go. Lava flow trail is the walk when it is open.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/35.370429,-111.543602,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=35.370429,-111.543602"}, {"label": "NPS", "href": "https://www.nps.gov/sucr/"}]}, {"name": "Horseshoe Bend", "lat": 36.88013, "lng": -111.51735, "layer": "view", "note": "Viewpoint, not a camp. Pin is the USGS name point for the bend. The NPS overlook and parking lot are the visit, a short walk from US-89 south of Page. Leave the trailer in town or at Lone Rock. No water on the trail. The NPS page is the safety briefing.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.88013,-111.51735,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.88013,-111.51735"}, {"label": "NPS", "href": "https://www.nps.gov/glca/planyourvisit/horseshoe-bend.htm"}]}, {"name": "Glen Canyon Dam", "lat": 36.93811, "lng": -111.49406, "layer": "view", "note": "Viewpoint at Page. Pin is the Recreation.gov Glen Canyon Dam coordinate. Tour availability in November and December changes; check the NPS dam page. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.93811,-111.49406,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.93811,-111.49406"}, {"label": "NPS", "href": "https://www.nps.gov/glca/planyourvisit/visitorcenters.htm"}]}, {"name": "Hoover Dam", "lat": 36.0160918, "lng": -114.7380381, "layer": "view", "note": "Viewpoint from Boulder City. Pin is the Recreation.gov Hoover Dam coordinate. Security and vehicle rules apply. Do not take the trailer across the dam. Not a camp.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/36.0160918,-114.7380381,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=36.0160918,-114.7380381"}, {"label": "NPS Lake Mead", "href": "https://www.nps.gov/lake/index.htm"}]}, {"name": "Nine Mile Canyon (BLM byway)", "lat": 39.55555, "lng": -110.6678, "layer": "view", "note": "Rock-art drive from the Price / Wellington side of Route D. Pin is the BLM byway coordinate. No fee at that listing. The published direction is from Wellington along Soldier Creek Road. Scout in the truck. Do not take the trailer until you have seen the road.", "links": [{"label": "onX Offroad", "href": "https://webmap.onxmaps.com/offroad/map/query/39.55555,-110.6678,13/overview"}, {"label": "Google Maps", "href": "https://www.google.com/maps?q=39.55555,-110.6678"}, {"label": "BLM", "href": "https://www.blm.gov/visit/nine-mile-canyon"}]}], "routes": [{"id": "A", "title": "A · Las Vegas", "color": "#c53030", "dash": false, "osrmMi": 1065, "osrmH": 19.3, "known": "Earlier OSRM for this corridor was about 1,067 mi.", "blurb": "I-84 to Salt Lake, I-15 through St. George and Las Vegas, US-93 via Kingman and Wickenburg. This is the middle corridor.", "waypoints": [{"lat": 43.612, "lng": -116.392}, {"lat": 42.56297, "lng": -114.46088}, {"lat": 40.76079, "lng": -111.89106}, {"lat": 37.10415, "lng": -113.58413}, {"lat": 36.17498, "lng": -115.13723}, {"lat": 35.18945, "lng": -114.05302}, {"lat": 33.96865, "lng": -112.72963}, {"lat": 33.44838, "lng": -112.07405}], "path": [{"lat": 43.61195, "lng": -116.392}, {"lat": 43.59665, "lng": -116.39378}, {"lat": 43.59718, "lng": -116.34602}, {"lat": 43.57338, "lng": -116.23974}, {"lat": 43.56218, "lng": -116.18882}, {"lat": 43.47932, "lng": -116.10895}, {"lat": 43.31251, "lng": -115.91874}, {"lat": 43.16796, "lng": -115.71939}, {"lat": 43.12649, "lng": -115.65277}, {"lat": 43.07582, "lng": -115.60514}, {"lat": 43.00678, "lng": -115.54648}, {"lat": 42.95834, "lng": -115.48104}, {"lat": 42.94589, "lng": -115.42196}, {"lat": 42.95712, "lng": -115.35331}, {"lat": 42.95974, "lng": -115.29061}, {"lat": 42.9689, "lng": -115.24006}, {"lat": 42.96341, "lng": -115.18682}, {"lat": 42.94542, "lng": -115.09806}, {"lat": 42.938, "lng": -114.95957}, {"lat": 42.89505, "lng": -114.89448}, {"lat": 42.85797, "lng": -114.84508}, {"lat": 42.81172, "lng": -114.7763}, {"lat": 42.76666, "lng": -114.70721}, {"lat": 42.73156, "lng": -114.56265}, {"lat": 42.68852, "lng": -114.51837}, {"lat": 42.6572, "lng": -114.48161}, {"lat": 42.60569, "lng": -114.45249}, {"lat": 42.58575, "lng": -114.46021}, {"lat": 42.57415, "lng": -114.46034}, {"lat": 42.56132, "lng": -114.46275}, {"lat": 42.54915, "lng": -114.46246}, {"lat": 42.5485, "lng": -114.43926}, {"lat": 42.54814, "lng": -114.35509}, {"lat": 42.56068, "lng": -114.30535}, {"lat": 42.57612, "lng": -114.25119}, {"lat": 42.57429, "lng": -114.14765}, {"lat": 42.57596, "lng": -114.04384}, {"lat": 42.57626, "lng": -113.88127}, {"lat": 42.56864, "lng": -113.82284}, {"lat": 42.56865, "lng": -113.73038}, {"lat": 42.56844, "lng": -113.54408}, {"lat": 42.50932, "lng": -113.41362}, {"lat": 42.43667, "lng": -113.34467}, {"lat": 42.34372, "lng": -113.23609}, {"lat": 42.2638, "lng": -113.13782}, {"lat": 42.22117, "lng": -113.07644}, {"lat": 42.20498, "lng": -113.04313}, {"lat": 42.1785, "lng": -113.01022}, {"lat": 42.1017, "lng": -112.93749}, {"lat": 41.97541, "lng": -112.7897}, {"lat": 41.93478, "lng": -112.65363}, {"lat": 41.89424, "lng": -112.56939}, {"lat": 41.85379, "lng": -112.44913}, {"lat": 41.80579, "lng": -112.32937}, {"lat": 41.72214, "lng": -112.2325}, {"lat": 41.67636, "lng": -112.135}, {"lat": 41.54145, "lng": -112.0672}, {"lat": 41.4243, "lng": -112.0547}, {"lat": 41.35196, "lng": -112.04157}, {"lat": 41.261, "lng": -112.02451}, {"lat": 41.20697, "lng": -111.99508}, {"lat": 41.15928, "lng": -112.0239}, {"lat": 41.11112, "lng": -112.01123}, {"lat": 41.05137, "lng": -111.96041}, {"lat": 41.00371, "lng": -111.92904}, {"lat": 40.91974, "lng": -111.89116}, {"lat": 40.84566, "lng": -111.91501}, {"lat": 40.79962, "lng": -111.91985}, {"lat": 40.76073, "lng": -111.91467}, {"lat": 40.76064, "lng": -111.89961}, {"lat": 40.76275, "lng": -111.88845}, {"lat": 40.75848, "lng": -111.8994}, {"lat": 40.75005, "lng": -111.91002}, {"lat": 40.69359, "lng": -111.90291}, {"lat": 40.62118, "lng": -111.9041}, {"lat": 40.53097, "lng": -111.89184}, {"lat": 40.45078, "lng": -111.91327}, {"lat": 40.40389, "lng": -111.85412}, {"lat": 40.38041, "lng": -111.82512}, {"lat": 40.37121, "lng": -111.80248}, {"lat": 40.32435, "lng": -111.72946}, {"lat": 40.28303, "lng": -111.72504}, {"lat": 40.25162, "lng": -111.69604}, {"lat": 40.2288, "lng": -111.68001}, {"lat": 40.19077, "lng": -111.64696}, {"lat": 40.1219, "lng": -111.6599}, {"lat": 40.04882, "lng": -111.73978}, {"lat": 39.99811, "lng": -111.76342}, {"lat": 39.93486, "lng": -111.81219}, {"lat": 39.82117, "lng": -111.83375}, {"lat": 39.74693, "lng": -111.83402}, {"lat": 39.68138, "lng": -111.83951}, {"lat": 39.59789, "lng": -111.91375}, {"lat": 39.49031, "lng": -111.97238}, {"lat": 39.33862, "lng": -112.08113}, {"lat": 39.2132, "lng": -112.15775}, {"lat": 39.09366, "lng": -112.26552}, {"lat": 38.97165, "lng": -112.34222}, {"lat": 38.80587, "lng": -112.51028}, {"lat": 38.69627, "lng": -112.60204}, {"lat": 38.6608, "lng": -112.59318}, {"lat": 38.55977, "lng": -112.60599}, {"lat": 38.46562, "lng": -112.61894}, {"lat": 38.39942, "lng": -112.65654}, {"lat": 38.28169, "lng": -112.65069}, {"lat": 38.17862, "lng": -112.62922}, {"lat": 38.11342, "lng": -112.64354}, {"lat": 37.87538, "lng": -112.81088}, {"lat": 37.80394, "lng": -112.94449}, {"lat": 37.71202, "lng": -113.06803}, {"lat": 37.6521, "lng": -113.08364}, {"lat": 37.59674, "lng": -113.1661}, {"lat": 37.42687, "lng": -113.23582}, {"lat": 37.34435, "lng": -113.2731}, {"lat": 37.2435, "lng": -113.35431}, {"lat": 37.17827, "lng": -113.42231}, {"lat": 37.14726, "lng": -113.48791}, {"lat": 37.1132, "lng": -113.55617}, {"lat": 37.10474, "lng": -113.56852}, {"lat": 37.10077, "lng": -113.58942}, {"lat": 37.08626, "lng": -113.5845}, {"lat": 37.0755, "lng": -113.58503}, {"lat": 37.00232, "lng": -113.62306}, {"lat": 36.97593, "lng": -113.68043}, {"lat": 36.97137, "lng": -113.72579}, {"lat": 36.95826, "lng": -113.78604}, {"lat": 36.92373, "lng": -113.83227}, {"lat": 36.91918, "lng": -113.86159}, {"lat": 36.89228, "lng": -113.92888}, {"lat": 36.81076, "lng": -114.06876}, {"lat": 36.77953, "lng": -114.14271}, {"lat": 36.77937, "lng": -114.26032}, {"lat": 36.74634, "lng": -114.41673}, {"lat": 36.67906, "lng": -114.51356}, {"lat": 36.66577, "lng": -114.55906}, {"lat": 36.63109, "lng": -114.60685}, {"lat": 36.4693, "lng": -114.8256}, {"lat": 36.32661, "lng": -114.92753}, {"lat": 36.26667, "lng": -115.06848}, {"lat": 36.21122, "lng": -115.129}, {"lat": 36.18192, "lng": -115.14491}, {"lat": 36.17726, "lng": -115.1434}, {"lat": 36.17482, "lng": -115.13726}, {"lat": 36.16741, "lng": -115.10204}, {"lat": 36.12039, "lng": -115.08316}, {"lat": 36.07176, "lng": -115.03691}, {"lat": 36.00675, "lng": -114.98672}, {"lat": 35.98103, "lng": -114.91771}, {"lat": 35.96782, "lng": -114.90315}, {"lat": 35.96881, "lng": -114.85836}, {"lat": 35.97131, "lng": -114.85066}, {"lat": 35.97758, "lng": -114.84516}, {"lat": 35.99436, "lng": -114.8257}, {"lat": 36.00843, "lng": -114.79348}, {"lat": 36.01069, "lng": -114.77401}, {"lat": 36.01462, "lng": -114.75565}, {"lat": 36.00426, "lng": -114.72396}, {"lat": 35.97151, "lng": -114.68699}, {"lat": 35.8927, "lng": -114.62442}, {"lat": 35.83777, "lng": -114.56862}, {"lat": 35.70532, "lng": -114.47769}, {"lat": 35.58962, "lng": -114.39419}, {"lat": 35.37675, "lng": -114.245}, {"lat": 35.22993, "lng": -114.13621}, {"lat": 35.20462, "lng": -114.09089}, {"lat": 35.19094, "lng": -114.06798}, {"lat": 35.19038, "lng": -114.06146}, {"lat": 35.21724, "lng": -114.03405}, {"lat": 35.19728, "lng": -113.89925}, {"lat": 35.16612, "lng": -113.7432}, {"lat": 35.13351, "lng": -113.6694}, {"lat": 35.03905, "lng": -113.66515}, {"lat": 34.99851, "lng": -113.66439}, {"lat": 34.9157, "lng": -113.65777}, {"lat": 34.82942, "lng": -113.63016}, {"lat": 34.77802, "lng": -113.62102}, {"lat": 34.71628, "lng": -113.6145}, {"lat": 34.67531, "lng": -113.59076}, {"lat": 34.61602, "lng": -113.52821}, {"lat": 34.57068, "lng": -113.48184}, {"lat": 34.53503, "lng": -113.43332}, {"lat": 34.50108, "lng": -113.40144}, {"lat": 34.48191, "lng": -113.34748}, {"lat": 34.45097, "lng": -113.28706}, {"lat": 34.42966, "lng": -113.25001}, {"lat": 34.38896, "lng": -113.20705}, {"lat": 34.29856, "lng": -113.11696}, {"lat": 34.19109, "lng": -113.05341}, {"lat": 34.12002, "lng": -112.94568}, {"lat": 34.06111, "lng": -112.86162}, {"lat": 34.03, "lng": -112.8161}, {"lat": 34.01685, "lng": -112.79814}, {"lat": 34.00365, "lng": -112.77297}, {"lat": 33.99717, "lng": -112.75829}, {"lat": 33.98993, "lng": -112.74472}, {"lat": 33.97718, "lng": -112.73314}, {"lat": 33.9695, "lng": -112.72881}, {"lat": 33.97132, "lng": -112.7221}, {"lat": 33.96449, "lng": -112.71894}, {"lat": 33.95621, "lng": -112.70997}, {"lat": 33.94188, "lng": -112.69887}, {"lat": 33.92037, "lng": -112.67867}, {"lat": 33.90663, "lng": -112.67337}, {"lat": 33.88798, "lng": -112.66396}, {"lat": 33.86375, "lng": -112.63364}, {"lat": 33.84416, "lng": -112.6135}, {"lat": 33.8139, "lng": -112.57509}, {"lat": 33.76793, "lng": -112.51609}, {"lat": 33.71212, "lng": -112.44459}, {"lat": 33.66804, "lng": -112.38899}, {"lat": 33.64588, "lng": -112.35975}, {"lat": 33.61794, "lng": -112.32377}, {"lat": 33.60207, "lng": -112.28817}, {"lat": 33.59213, "lng": -112.25392}, {"lat": 33.58078, "lng": -112.23701}, {"lat": 33.56284, "lng": -112.21412}, {"lat": 33.53664, "lng": -112.18383}, {"lat": 33.50923, "lng": -112.15066}, {"lat": 33.48798, "lng": -112.1262}, {"lat": 33.4756, "lng": -112.1115}, {"lat": 33.46136, "lng": -112.09453}, {"lat": 33.45141, "lng": -112.08167}, {"lat": 33.44931, "lng": -112.07382}, {"lat": 33.44821, "lng": -112.07406}]}, {"id": "B", "title": "B · Grand Staircase / Page", "color": "#2b6cb0", "dash": false, "osrmMi": 1092, "osrmH": 19.9, "known": "A shorter SLC–Flagstaff–I-17 line is often about 1,059 mi. This draw goes to St. George first, then around the Zion tunnel, so it is longer.", "blurb": "I-84 to Salt Lake, I-15 to St. George, UT-59 and AZ-389 through Colorado City and Fredonia to Kanab (not the Zion tunnel), US-89 via Page to Flagstaff, I-17 to Phoenix.", "waypoints": [{"lat": 43.612, "lng": -116.392}, {"lat": 42.56297, "lng": -114.46088}, {"lat": 40.76079, "lng": -111.89106}, {"lat": 37.10415, "lng": -113.58413}, {"lat": 36.99027, "lng": -112.97578}, {"lat": 36.94555, "lng": -112.5266}, {"lat": 37.04749, "lng": -112.52633}, {"lat": 36.91473, "lng": -111.45584}, {"lat": 35.19807, "lng": -111.65128}, {"lat": 33.44838, "lng": -112.07405}], "path": [{"lat": 43.61195, "lng": -116.392}, {"lat": 43.59381, "lng": -116.39383}, {"lat": 43.59716, "lng": -116.31924}, {"lat": 43.57222, "lng": -116.23664}, {"lat": 43.54502, "lng": -116.16455}, {"lat": 43.45866, "lng": -116.08755}, {"lat": 43.21351, "lng": -115.81251}, {"lat": 43.15705, "lng": -115.69113}, {"lat": 43.09746, "lng": -115.62195}, {"lat": 43.04187, "lng": -115.57373}, {"lat": 42.97896, "lng": -115.51023}, {"lat": 42.95586, "lng": -115.44514}, {"lat": 42.955, "lng": -115.37473}, {"lat": 42.96116, "lng": -115.30825}, {"lat": 42.96584, "lng": -115.25096}, {"lat": 42.97016, "lng": -115.19489}, {"lat": 42.95067, "lng": -115.11796}, {"lat": 42.93798, "lng": -114.97761}, {"lat": 42.89685, "lng": -114.89684}, {"lat": 42.85681, "lng": -114.84422}, {"lat": 42.80841, "lng": -114.77149}, {"lat": 42.76361, "lng": -114.69154}, {"lat": 42.72836, "lng": -114.55353}, {"lat": 42.68097, "lng": -114.51201}, {"lat": 42.64963, "lng": -114.46773}, {"lat": 42.59558, "lng": -114.45657}, {"lat": 42.58101, "lng": -114.4603}, {"lat": 42.56856, "lng": -114.46031}, {"lat": 42.55549, "lng": -114.47057}, {"lat": 42.54859, "lng": -114.45188}, {"lat": 42.54832, "lng": -114.4036}, {"lat": 42.55043, "lng": -114.31625}, {"lat": 42.57647, "lng": -114.2887}, {"lat": 42.57594, "lng": -114.16228}, {"lat": 42.57597, "lng": -114.06913}, {"lat": 42.57635, "lng": -113.89442}, {"lat": 42.56868, "lng": -113.83216}, {"lat": 42.56868, "lng": -113.7357}, {"lat": 42.56849, "lng": -113.53967}, {"lat": 42.50692, "lng": -113.41058}, {"lat": 42.42622, "lng": -113.33242}, {"lat": 42.32569, "lng": -113.21039}, {"lat": 42.25459, "lng": -113.11089}, {"lat": 42.22078, "lng": -113.06155}, {"lat": 42.20059, "lng": -113.02702}, {"lat": 42.15203, "lng": -112.98562}, {"lat": 42.03123, "lng": -112.86568}, {"lat": 41.96142, "lng": -112.72396}, {"lat": 41.90508, "lng": -112.58408}, {"lat": 41.88771, "lng": -112.50096}, {"lat": 41.81591, "lng": -112.37328}, {"lat": 41.73462, "lng": -112.25087}, {"lat": 41.68929, "lng": -112.16101}, {"lat": 41.577, "lng": -112.07201}, {"lat": 41.4291, "lng": -112.05733}, {"lat": 41.35768, "lng": -112.04327}, {"lat": 41.261, "lng": -112.02451}, {"lat": 41.20548, "lng": -111.99439}, {"lat": 41.15387, "lng": -112.02518}, {"lat": 41.09924, "lng": -112.00024}, {"lat": 41.04339, "lng": -111.95512}, {"lat": 40.98558, "lng": -111.89996}, {"lat": 40.8935, "lng": -111.89615}, {"lat": 40.81986, "lng": -111.91687}, {"lat": 40.77373, "lng": -111.9107}, {"lat": 40.76058, "lng": -111.90886}, {"lat": 40.76056, "lng": -111.89131}, {"lat": 40.75848, "lng": -111.89155}, {"lat": 40.75753, "lng": -111.91108}, {"lat": 40.70377, "lng": -111.90374}, {"lat": 40.63092, "lng": -111.90431}, {"lat": 40.55015, "lng": -111.89633}, {"lat": 40.4574, "lng": -111.91462}, {"lat": 40.41089, "lng": -111.86458}, {"lat": 40.38081, "lng": -111.82581}, {"lat": 40.37109, "lng": -111.80225}, {"lat": 40.32337, "lng": -111.72847}, {"lat": 40.2813, "lng": -111.72409}, {"lat": 40.24965, "lng": -111.69547}, {"lat": 40.2173, "lng": -111.66695}, {"lat": 40.16751, "lng": -111.64685}, {"lat": 40.10787, "lng": -111.67819}, {"lat": 40.0272, "lng": -111.76091}, {"lat": 39.97059, "lng": -111.77885}, {"lat": 39.89458, "lng": -111.82854}, {"lat": 39.77125, "lng": -111.8402}, {"lat": 39.70009, "lng": -111.82437}, {"lat": 39.64221, "lng": -111.9013}, {"lat": 39.54262, "lng": -111.95289}, {"lat": 39.3991, "lng": -112.06126}, {"lat": 39.22285, "lng": -112.15242}, {"lat": 39.10072, "lng": -112.25917}, {"lat": 38.97634, "lng": -112.33992}, {"lat": 38.80838, "lng": -112.50752}, {"lat": 38.69441, "lng": -112.60138}, {"lat": 38.6541, "lng": -112.59786}, {"lat": 38.54184, "lng": -112.60905}, {"lat": 38.45284, "lng": -112.62574}, {"lat": 38.37393, "lng": -112.66269}, {"lat": 38.24414, "lng": -112.65014}, {"lat": 38.15561, "lng": -112.61472}, {"lat": 38.00091, "lng": -112.72718}, {"lat": 37.8374, "lng": -112.87477}, {"lat": 37.75525, "lng": -113.02481}, {"lat": 37.68355, "lng": -113.07975}, {"lat": 37.6234, "lng": -113.13876}, {"lat": 37.4801, "lng": -113.22141}, {"lat": 37.36845, "lng": -113.25735}, {"lat": 37.26244, "lng": -113.32768}, {"lat": 37.18454, "lng": -113.41345}, {"lat": 37.15647, "lng": -113.47737}, {"lat": 37.11431, "lng": -113.555}, {"lat": 37.10474, "lng": -113.56852}, {"lat": 37.10803, "lng": -113.58326}, {"lat": 37.10977, "lng": -113.56695}, {"lat": 37.11024, "lng": -113.55663}, {"lat": 37.15811, "lng": -113.47518}, {"lat": 37.16361, "lng": -113.44492}, {"lat": 37.16134, "lng": -113.39081}, {"lat": 37.17635, "lng": -113.33127}, {"lat": 37.17653, "lng": -113.29684}, {"lat": 37.18227, "lng": -113.27974}, {"lat": 37.16755, "lng": -113.26422}, {"lat": 37.11628, "lng": -113.15655}, {"lat": 37.032, "lng": -113.05929}, {"lat": 36.99713, "lng": -112.97612}, {"lat": 36.96097, "lng": -112.96738}, {"lat": 36.86919, "lng": -112.84991}, {"lat": 36.87161, "lng": -112.67758}, {"lat": 36.94617, "lng": -112.52643}, {"lat": 37.01162, "lng": -112.52597}, {"lat": 37.04225, "lng": -112.52637}, {"lat": 37.04301, "lng": -112.51879}, {"lat": 37.03124, "lng": -112.49236}, {"lat": 37.02685, "lng": -112.41717}, {"lat": 37.04033, "lng": -112.25266}, {"lat": 37.08607, "lng": -112.15312}, {"lat": 37.17077, "lng": -112.02481}, {"lat": 37.17248, "lng": -111.97342}, {"lat": 37.1238, "lng": -111.97232}, {"lat": 37.10383, "lng": -111.86019}, {"lat": 37.0579, "lng": -111.63975}, {"lat": 36.99974, "lng": -111.57079}, {"lat": 36.97821, "lng": -111.5215}, {"lat": 36.93514, "lng": -111.4899}, {"lat": 36.93061, "lng": -111.47272}, {"lat": 36.92295, "lng": -111.4641}, {"lat": 36.90683, "lng": -111.47235}, {"lat": 36.87563, "lng": -111.50123}, {"lat": 36.79057, "lng": -111.5269}, {"lat": 36.75673, "lng": -111.57044}, {"lat": 36.66458, "lng": -111.63319}, {"lat": 36.64015, "lng": -111.6299}, {"lat": 36.61917, "lng": -111.65425}, {"lat": 36.55228, "lng": -111.62763}, {"lat": 36.47757, "lng": -111.57268}, {"lat": 36.39281, "lng": -111.52502}, {"lat": 36.32312, "lng": -111.4818}, {"lat": 36.24092, "lng": -111.41264}, {"lat": 36.16259, "lng": -111.3985}, {"lat": 36.0324, "lng": -111.39819}, {"lat": 35.91908, "lng": -111.40284}, {"lat": 35.85514, "lng": -111.42487}, {"lat": 35.78433, "lng": -111.45385}, {"lat": 35.67362, "lng": -111.50938}, {"lat": 35.53946, "lng": -111.53944}, {"lat": 35.43728, "lng": -111.56676}, {"lat": 35.33341, "lng": -111.54858}, {"lat": 35.27016, "lng": -111.54523}, {"lat": 35.23236, "lng": -111.57676}, {"lat": 35.21629, "lng": -111.59468}, {"lat": 35.20416, "lng": -111.61508}, {"lat": 35.19382, "lng": -111.63333}, {"lat": 35.19855, "lng": -111.65366}, {"lat": 35.1914, "lng": -111.66028}, {"lat": 35.18445, "lng": -111.66145}, {"lat": 35.17002, "lng": -111.6639}, {"lat": 35.15439, "lng": -111.6801}, {"lat": 35.10647, "lng": -111.68128}, {"lat": 35.05297, "lng": -111.68281}, {"lat": 34.95852, "lng": -111.67866}, {"lat": 34.90975, "lng": -111.6413}, {"lat": 34.85432, "lng": -111.60792}, {"lat": 34.84354, "lng": -111.60373}, {"lat": 34.83279, "lng": -111.60634}, {"lat": 34.82291, "lng": -111.6128}, {"lat": 34.81617, "lng": -111.61309}, {"lat": 34.80965, "lng": -111.60525}, {"lat": 34.80535, "lng": -111.59837}, {"lat": 34.76819, "lng": -111.64762}, {"lat": 34.70594, "lng": -111.74237}, {"lat": 34.65584, "lng": -111.79367}, {"lat": 34.61404, "lng": -111.85246}, {"lat": 34.56673, "lng": -111.89783}, {"lat": 34.54304, "lng": -111.90859}, {"lat": 34.53418, "lng": -111.93874}, {"lat": 34.53375, "lng": -111.97546}, {"lat": 34.49189, "lng": -112.00726}, {"lat": 34.45456, "lng": -112.03448}, {"lat": 34.41828, "lng": -112.06421}, {"lat": 34.37411, "lng": -112.10778}, {"lat": 34.30036, "lng": -112.12806}, {"lat": 34.25611, "lng": -112.11517}, {"lat": 34.21703, "lng": -112.11167}, {"lat": 34.16972, "lng": -112.14251}, {"lat": 34.13953, "lng": -112.14877}, {"lat": 34.11129, "lng": -112.14419}, {"lat": 34.07982, "lng": -112.14085}, {"lat": 34.04714, "lng": -112.14854}, {"lat": 34.01306, "lng": -112.14592}, {"lat": 33.97965, "lng": -112.1334}, {"lat": 33.94495, "lng": -112.14058}, {"lat": 33.87986, "lng": -112.14738}, {"lat": 33.83875, "lng": -112.14461}, {"lat": 33.78627, "lng": -112.13311}, {"lat": 33.69376, "lng": -112.11365}, {"lat": 33.64913, "lng": -112.11507}, {"lat": 33.58173, "lng": -112.11713}, {"lat": 33.53533, "lng": -112.11248}, {"lat": 33.47267, "lng": -112.11284}, {"lat": 33.46143, "lng": -112.09024}, {"lat": 33.45866, "lng": -112.0765}, {"lat": 33.4503, "lng": -112.07519}, {"lat": 33.44821, "lng": -112.07406}]}, {"id": "C", "title": "C · Great Basin", "color": "#0f766e", "dash": false, "osrmMi": 1146, "osrmH": 22.4, "known": "Modeled as the Jackpot line, not Snowville then I-80 back to Wells.", "blurb": "I-84 to Twin Falls, US-93 via Jackpot and Wells to Ely, US-50/US-6 east to Delta, I-15 south through Fillmore, St. George, and Las Vegas, then US-93 via Kingman and Wickenburg. The western corridor is the Ely half; the Delta jog is what makes this the Great Basin route instead of the direct US-93 reference.", "waypoints": [{"lat": 43.612, "lng": -116.392}, {"lat": 42.56297, "lng": -114.46088}, {"lat": 41.98325, "lng": -114.67477}, {"lat": 41.11159, "lng": -114.9645}, {"lat": 39.24744, "lng": -114.88864}, {"lat": 39.35218, "lng": -112.57718}, {"lat": 38.96886, "lng": -112.32356}, {"lat": 37.10415, "lng": -113.58413}, {"lat": 36.17498, "lng": -115.13723}, {"lat": 35.18945, "lng": -114.05302}, {"lat": 33.96865, "lng": -112.72963}, {"lat": 33.44838, "lng": -112.07405}], "path": [{"lat": 43.61195, "lng": -116.392}, {"lat": 43.59381, "lng": -116.39383}, {"lat": 43.59716, "lng": -116.31924}, {"lat": 43.57222, "lng": -116.23664}, {"lat": 43.54502, "lng": -116.16455}, {"lat": 43.45866, "lng": -116.08755}, {"lat": 43.21351, "lng": -115.81251}, {"lat": 43.15705, "lng": -115.69113}, {"lat": 43.09746, "lng": -115.62195}, {"lat": 43.04187, "lng": -115.57373}, {"lat": 42.97896, "lng": -115.51023}, {"lat": 42.95586, "lng": -115.44514}, {"lat": 42.955, "lng": -115.37473}, {"lat": 42.96116, "lng": -115.30825}, {"lat": 42.96584, "lng": -115.25096}, {"lat": 42.97016, "lng": -115.19489}, {"lat": 42.95067, "lng": -115.11796}, {"lat": 42.93798, "lng": -114.97761}, {"lat": 42.89685, "lng": -114.89684}, {"lat": 42.85681, "lng": -114.84422}, {"lat": 42.80841, "lng": -114.77149}, {"lat": 42.76361, "lng": -114.69154}, {"lat": 42.72836, "lng": -114.55353}, {"lat": 42.68097, "lng": -114.51201}, {"lat": 42.64963, "lng": -114.46773}, {"lat": 42.59558, "lng": -114.45657}, {"lat": 42.58101, "lng": -114.4603}, {"lat": 42.56856, "lng": -114.46031}, {"lat": 42.55549, "lng": -114.47057}, {"lat": 42.53483, "lng": -114.47965}, {"lat": 42.53478, "lng": -114.54173}, {"lat": 42.48158, "lng": -114.57466}, {"lat": 42.3895, "lng": -114.57472}, {"lat": 42.33392, "lng": -114.57476}, {"lat": 42.21953, "lng": -114.59081}, {"lat": 42.17272, "lng": -114.66021}, {"lat": 42.09208, "lng": -114.68093}, {"lat": 42.0048, "lng": -114.67114}, {"lat": 41.98471, "lng": -114.67366}, {"lat": 41.97938, "lng": -114.67391}, {"lat": 41.94285, "lng": -114.68744}, {"lat": 41.86997, "lng": -114.71129}, {"lat": 41.79494, "lng": -114.73942}, {"lat": 41.74411, "lng": -114.77253}, {"lat": 41.69889, "lng": -114.82275}, {"lat": 41.6295, "lng": -114.81094}, {"lat": 41.52486, "lng": -114.77287}, {"lat": 41.42374, "lng": -114.75115}, {"lat": 41.36813, "lng": -114.79685}, {"lat": 41.31616, "lng": -114.8216}, {"lat": 41.21328, "lng": -114.84519}, {"lat": 41.1427, "lng": -114.91117}, {"lat": 41.10413, "lng": -114.96069}, {"lat": 41.10253, "lng": -114.95874}, {"lat": 41.02199, "lng": -114.96401}, {"lat": 40.85894, "lng": -114.98179}, {"lat": 40.73923, "lng": -115.03586}, {"lat": 40.60033, "lng": -114.97822}, {"lat": 40.49894, "lng": -114.9149}, {"lat": 40.36082, "lng": -114.80148}, {"lat": 40.2626, "lng": -114.74186}, {"lat": 40.16247, "lng": -114.65175}, {"lat": 40.06142, "lng": -114.61971}, {"lat": 39.98412, "lng": -114.68347}, {"lat": 39.88406, "lng": -114.73286}, {"lat": 39.77592, "lng": -114.74432}, {"lat": 39.66933, "lng": -114.75547}, {"lat": 39.56777, "lng": -114.76202}, {"lat": 39.41957, "lng": -114.7722}, {"lat": 39.38022, "lng": -114.79229}, {"lat": 39.29067, "lng": -114.83939}, {"lat": 39.25558, "lng": -114.86729}, {"lat": 39.24769, "lng": -114.88799}, {"lat": 39.25326, "lng": -114.87418}, {"lat": 39.22984, "lng": -114.86187}, {"lat": 39.16663, "lng": -114.8145}, {"lat": 39.08194, "lng": -114.74722}, {"lat": 39.02984, "lng": -114.6935}, {"lat": 39.02989, "lng": -114.66694}, {"lat": 39.03939, "lng": -114.64229}, {"lat": 39.04609, "lng": -114.62089}, {"lat": 39.03537, "lng": -114.6063}, {"lat": 39.02491, "lng": -114.58311}, {"lat": 39.09705, "lng": -114.4362}, {"lat": 39.1751, "lng": -114.39452}, {"lat": 39.15628, "lng": -114.3491}, {"lat": 39.12666, "lng": -114.31619}, {"lat": 39.11534, "lng": -114.27616}, {"lat": 39.08461, "lng": -114.20145}, {"lat": 39.04445, "lng": -113.88362}, {"lat": 39.07157, "lng": -113.65062}, {"lat": 39.08261, "lng": -113.58614}, {"lat": 39.08568, "lng": -113.56102}, {"lat": 39.02335, "lng": -113.36819}, {"lat": 39.05213, "lng": -113.26801}, {"lat": 39.1394, "lng": -113.08777}, {"lat": 39.31253, "lng": -112.76473}, {"lat": 39.3307, "lng": -112.61448}, {"lat": 39.35238, "lng": -112.57358}, {"lat": 39.25903, "lng": -112.4451}, {"lat": 38.98045, "lng": -112.4099}, {"lat": 38.96238, "lng": -112.32363}, {"lat": 38.94006, "lng": -112.3562}, {"lat": 38.75908, "lng": -112.56188}, {"lat": 38.68396, "lng": -112.60063}, {"lat": 38.62058, "lng": -112.6099}, {"lat": 38.48442, "lng": -112.61793}, {"lat": 38.43799, "lng": -112.63271}, {"lat": 38.33151, "lng": -112.65698}, {"lat": 38.19877, "lng": -112.64668}, {"lat": 38.13906, "lng": -112.62001}, {"lat": 37.91309, "lng": -112.77471}, {"lat": 37.82198, "lng": -112.91348}, {"lat": 37.72055, "lng": -113.06028}, {"lat": 37.6556, "lng": -113.08203}, {"lat": 37.60251, "lng": -113.16167}, {"lat": 37.42687, "lng": -113.23582}, {"lat": 37.34138, "lng": -113.27536}, {"lat": 37.24188, "lng": -113.35947}, {"lat": 37.17303, "lng": -113.43727}, {"lat": 37.14563, "lng": -113.49174}, {"lat": 37.10988, "lng": -113.56188}, {"lat": 37.10308, "lng": -113.57687}, {"lat": 37.09614, "lng": -113.58692}, {"lat": 37.08265, "lng": -113.58402}, {"lat": 37.04889, "lng": -113.58915}, {"lat": 36.98179, "lng": -113.64997}, {"lat": 36.97301, "lng": -113.71385}, {"lat": 36.96073, "lng": -113.76397}, {"lat": 36.93606, "lng": -113.82609}, {"lat": 36.92231, "lng": -113.85523}, {"lat": 36.89344, "lng": -113.92319}, {"lat": 36.81605, "lng": -114.05715}, {"lat": 36.78752, "lng": -114.13107}, {"lat": 36.77925, "lng": -114.25917}, {"lat": 36.74594, "lng": -114.41794}, {"lat": 36.67693, "lng": -114.51462}, {"lat": 36.6653, "lng": -114.56425}, {"lat": 36.60516, "lng": -114.63578}, {"lat": 36.38114, "lng": -114.89171}, {"lat": 36.31302, "lng": -114.94622}, {"lat": 36.26419, "lng": -115.07259}, {"lat": 36.19036, "lng": -115.14229}, {"lat": 36.17856, "lng": -115.14694}, {"lat": 36.17603, "lng": -115.13978}, {"lat": 36.16837, "lng": -115.12617}, {"lat": 36.14197, "lng": -115.09132}, {"lat": 36.08764, "lng": -115.06042}, {"lat": 36.02012, "lng": -114.99902}, {"lat": 35.99235, "lng": -114.9292}, {"lat": 35.96824, "lng": -114.9107}, {"lat": 35.96836, "lng": -114.86043}, {"lat": 35.97112, "lng": -114.85103}, {"lat": 35.97729, "lng": -114.84531}, {"lat": 35.99567, "lng": -114.82464}, {"lat": 36.00823, "lng": -114.79191}, {"lat": 36.01094, "lng": -114.77367}, {"lat": 36.01534, "lng": -114.7508}, {"lat": 35.99556, "lng": -114.7192}, {"lat": 35.96453, "lng": -114.67021}, {"lat": 35.87148, "lng": -114.60876}, {"lat": 35.78217, "lng": -114.51947}, {"lat": 35.66981, "lng": -114.45909}, {"lat": 35.50032, "lng": -114.33237}, {"lat": 35.24822, "lng": -114.15184}, {"lat": 35.21253, "lng": -114.11241}, {"lat": 35.19403, "lng": -114.07274}, {"lat": 35.18933, "lng": -114.05365}, {"lat": 35.21395, "lng": -114.04894}, {"lat": 35.1987, "lng": -113.91872}, {"lat": 35.17116, "lng": -113.77528}, {"lat": 35.13563, "lng": -113.6708}, {"lat": 35.03905, "lng": -113.66515}, {"lat": 34.9972, "lng": -113.66451}, {"lat": 34.90845, "lng": -113.65718}, {"lat": 34.82049, "lng": -113.62662}, {"lat": 34.76354, "lng": -113.61864}, {"lat": 34.70878, "lng": -113.61299}, {"lat": 34.65938, "lng": -113.57774}, {"lat": 34.5869, "lng": -113.5077}, {"lat": 34.56053, "lng": -113.45686}, {"lat": 34.50343, "lng": -113.40845}, {"lat": 34.49484, "lng": -113.39434}, {"lat": 34.46399, "lng": -113.30235}, {"lat": 34.44025, "lng": -113.26634}, {"lat": 34.40369, "lng": -113.2214}, {"lat": 34.34912, "lng": -113.16294}, {"lat": 34.20113, "lng": -113.06183}, {"lat": 34.12505, "lng": -112.95294}, {"lat": 34.06946, "lng": -112.87362}, {"lat": 34.03094, "lng": -112.81757}, {"lat": 34.01673, "lng": -112.79794}, {"lat": 34.00341, "lng": -112.77235}, {"lat": 33.99672, "lng": -112.75711}, {"lat": 33.98925, "lng": -112.74319}, {"lat": 33.97147, "lng": -112.72845}, {"lat": 33.97057, "lng": -112.72773}, {"lat": 33.96988, "lng": -112.72122}, {"lat": 33.96174, "lng": -112.71425}, {"lat": 33.95174, "lng": -112.70817}, {"lat": 33.92977, "lng": -112.68838}, {"lat": 33.91436, "lng": -112.67661}, {"lat": 33.89579, "lng": -112.66781}, {"lat": 33.87352, "lng": -112.64547}, {"lat": 33.84961, "lng": -112.61575}, {"lat": 33.82275, "lng": -112.58645}, {"lat": 33.77706, "lng": -112.52781}, {"lat": 33.71638, "lng": -112.45006}, {"lat": 33.66886, "lng": -112.39005}, {"lat": 33.6462, "lng": -112.36016}, {"lat": 33.61592, "lng": -112.32118}, {"lat": 33.60032, "lng": -112.28212}, {"lat": 33.59151, "lng": -112.25158}, {"lat": 33.57768, "lng": -112.23334}, {"lat": 33.56002, "lng": -112.21152}, {"lat": 33.52624, "lng": -112.17139}, {"lat": 33.50037, "lng": -112.14084}, {"lat": 33.48238, "lng": -112.11859}, {"lat": 33.46587, "lng": -112.09998}, {"lat": 33.4552, "lng": -112.08707}, {"lat": 33.4514, "lng": -112.07653}, {"lat": 33.44821, "lng": -112.07406}]}, {"id": "D", "title": "D · East of the Wasatch", "color": "#6b46c1", "dash": false, "osrmMi": 1163, "osrmH": 21.9, "known": "Does not use UT-12 or the Zion tunnel. Capitol Reef and Richfield are side trips.", "blurb": "I-84 to Salt Lake, I-15 to Spanish Fork, US-6 through Price to Green River, I-70 west to Salina, US-89 south through Panguitch and Kanab, US-89 to Page and Flagstaff, I-17 to Phoenix.", "waypoints": [{"lat": 43.612, "lng": -116.392}, {"lat": 42.56297, "lng": -114.46088}, {"lat": 40.76079, "lng": -111.89106}, {"lat": 40.11496, "lng": -111.65493}, {"lat": 39.59942, "lng": -110.81073}, {"lat": 38.99526, "lng": -110.16181}, {"lat": 38.95775, "lng": -111.85994}, {"lat": 37.82276, "lng": -112.43578}, {"lat": 37.04749, "lng": -112.52633}, {"lat": 36.91473, "lng": -111.45584}, {"lat": 35.19807, "lng": -111.65128}, {"lat": 33.44838, "lng": -112.07405}], "path": [{"lat": 43.61195, "lng": -116.392}, {"lat": 43.59336, "lng": -116.37216}, {"lat": 43.57835, "lng": -116.25005}, {"lat": 43.54285, "lng": -116.16201}, {"lat": 43.40161, "lng": -116.0148}, {"lat": 43.164, "lng": -115.70702}, {"lat": 43.09452, "lng": -115.61965}, {"lat": 43.00678, "lng": -115.54648}, {"lat": 42.95783, "lng": -115.45146}, {"lat": 42.95757, "lng": -115.36116}, {"lat": 42.96074, "lng": -115.27483}, {"lat": 42.97154, "lng": -115.19769}, {"lat": 42.94112, "lng": -115.08212}, {"lat": 42.91961, "lng": -114.92765}, {"lat": 42.85797, "lng": -114.84508}, {"lat": 42.78064, "lng": -114.7311}, {"lat": 42.73428, "lng": -114.58001}, {"lat": 42.68017, "lng": -114.51111}, {"lat": 42.63193, "lng": -114.44776}, {"lat": 42.58432, "lng": -114.46024}, {"lat": 42.56677, "lng": -114.4603}, {"lat": 42.54915, "lng": -114.46246}, {"lat": 42.5483, "lng": -114.41702}, {"lat": 42.55721, "lng": -114.30903}, {"lat": 42.57599, "lng": -114.2229}, {"lat": 42.57594, "lng": -114.09246}, {"lat": 42.57618, "lng": -113.87351}, {"lat": 42.56813, "lng": -113.77924}, {"lat": 42.56844, "lng": -113.54408}, {"lat": 42.46951, "lng": -113.37931}, {"lat": 42.35454, "lng": -113.24876}, {"lat": 42.25315, "lng": -113.1073}, {"lat": 42.21352, "lng": -113.04827}, {"lat": 42.17018, "lng": -113.00172}, {"lat": 42.01204, "lng": -112.84623}, {"lat": 41.93478, "lng": -112.65363}, {"lat": 41.89722, "lng": -112.53775}, {"lat": 41.81265, "lng": -112.34613}, {"lat": 41.71209, "lng": -112.20915}, {"lat": 41.60155, "lng": -112.07955}, {"lat": 41.42053, "lng": -112.05215}, {"lat": 41.30928, "lng": -112.02608}, {"lat": 41.20697, "lng": -111.99508}, {"lat": 41.13851, "lng": -112.02357}, {"lat": 41.05683, "lng": -111.9611}, {"lat": 40.98477, "lng": -111.89929}, {"lat": 40.86424, "lng": -111.90008}, {"lat": 40.79001, "lng": -111.9155}, {"lat": 40.76054, "lng": -111.90626}, {"lat": 40.76275, "lng": -111.88845}, {"lat": 40.75846, "lng": -111.90548}, {"lat": 40.69721, "lng": -111.90193}, {"lat": 40.61013, "lng": -111.906}, {"lat": 40.47734, "lng": -111.90454}, {"lat": 40.39376, "lng": -111.83735}, {"lat": 40.37426, "lng": -111.8124}, {"lat": 40.32435, "lng": -111.72946}, {"lat": 40.26899, "lng": -111.7137}, {"lat": 40.23597, "lng": -111.68706}, {"lat": 40.16751, "lng": -111.64685}, {"lat": 40.12616, "lng": -111.65375}, {"lat": 40.115, "lng": -111.65133}, {"lat": 40.11506, "lng": -111.63513}, {"lat": 40.09875, "lng": -111.61135}, {"lat": 40.06877, "lng": -111.57498}, {"lat": 40.05373, "lng": -111.54931}, {"lat": 40.03303, "lng": -111.51464}, {"lat": 40.00267, "lng": -111.4904}, {"lat": 39.99508, "lng": -111.45622}, {"lat": 39.99709, "lng": -111.41013}, {"lat": 39.98944, "lng": -111.37114}, {"lat": 39.9659, "lng": -111.31376}, {"lat": 39.95434, "lng": -111.2665}, {"lat": 39.95295, "lng": -111.22626}, {"lat": 39.92894, "lng": -111.18272}, {"lat": 39.93621, "lng": -111.13372}, {"lat": 39.93063, "lng": -111.08695}, {"lat": 39.874, "lng": -111.03475}, {"lat": 39.82285, "lng": -110.94582}, {"lat": 39.80599, "lng": -110.94354}, {"lat": 39.79189, "lng": -110.93174}, {"lat": 39.77686, "lng": -110.91532}, {"lat": 39.76379, "lng": -110.90108}, {"lat": 39.74584, "lng": -110.88215}, {"lat": 39.72694, "lng": -110.86753}, {"lat": 39.71543, "lng": -110.86875}, {"lat": 39.6869, "lng": -110.85654}, {"lat": 39.63462, "lng": -110.86196}, {"lat": 39.60084, "lng": -110.82799}, {"lat": 39.59955, "lng": -110.79776}, {"lat": 39.57969, "lng": -110.78638}, {"lat": 39.54246, "lng": -110.7238}, {"lat": 39.54699, "lng": -110.63132}, {"lat": 39.44939, "lng": -110.4739}, {"lat": 39.31953, "lng": -110.36431}, {"lat": 39.15713, "lng": -110.33817}, {"lat": 39.05622, "lng": -110.31164}, {"lat": 38.98461, "lng": -110.21965}, {"lat": 38.99547, "lng": -110.16758}, {"lat": 38.94831, "lng": -110.32151}, {"lat": 38.92469, "lng": -110.41923}, {"lat": 38.93763, "lng": -110.46713}, {"lat": 38.91216, "lng": -110.52374}, {"lat": 38.86756, "lng": -110.78265}, {"lat": 38.85381, "lng": -110.87893}, {"lat": 38.85315, "lng": -110.92466}, {"lat": 38.84631, "lng": -110.99176}, {"lat": 38.83911, "lng": -111.07425}, {"lat": 38.82504, "lng": -111.14504}, {"lat": 38.80978, "lng": -111.25217}, {"lat": 38.7678, "lng": -111.34329}, {"lat": 38.7601, "lng": -111.45262}, {"lat": 38.79693, "lng": -111.51036}, {"lat": 38.85088, "lng": -111.54273}, {"lat": 38.88272, "lng": -111.58766}, {"lat": 38.90451, "lng": -111.63523}, {"lat": 38.90338, "lng": -111.67882}, {"lat": 38.91597, "lng": -111.73703}, {"lat": 38.93263, "lng": -111.84595}, {"lat": 38.9576, "lng": -111.86005}, {"lat": 38.90395, "lng": -111.9025}, {"lat": 38.83602, "lng": -112.0297}, {"lat": 38.72442, "lng": -112.13044}, {"lat": 38.65407, "lng": -112.2101}, {"lat": 38.5899, "lng": -112.25799}, {"lat": 38.56574, "lng": -112.26851}, {"lat": 38.52509, "lng": -112.2662}, {"lat": 38.48972, "lng": -112.24301}, {"lat": 38.43461, "lng": -112.23091}, {"lat": 38.35972, "lng": -112.22253}, {"lat": 38.2796, "lng": -112.2241}, {"lat": 38.2062, "lng": -112.2272}, {"lat": 38.17055, "lng": -112.27881}, {"lat": 38.12045, "lng": -112.33531}, {"lat": 38.05033, "lng": -112.35332}, {"lat": 37.91614, "lng": -112.42746}, {"lat": 37.82762, "lng": -112.43572}, {"lat": 37.79442, "lng": -112.39739}, {"lat": 37.71805, "lng": -112.38636}, {"lat": 37.64695, "lng": -112.43447}, {"lat": 37.60503, "lng": -112.46803}, {"lat": 37.56551, "lng": -112.4842}, {"lat": 37.50702, "lng": -112.49816}, {"lat": 37.46417, "lng": -112.51857}, {"lat": 37.4152, "lng": -112.5472}, {"lat": 37.3785, "lng": -112.58913}, {"lat": 37.35438, "lng": -112.59816}, {"lat": 37.31636, "lng": -112.59754}, {"lat": 37.27627, "lng": -112.63126}, {"lat": 37.23565, "lng": -112.67451}, {"lat": 37.19522, "lng": -112.66186}, {"lat": 37.13254, "lng": -112.56595}, {"lat": 37.09208, "lng": -112.54247}, {"lat": 37.04985, "lng": -112.53502}, {"lat": 37.043, "lng": -112.52496}, {"lat": 37.02943, "lng": -112.48706}, {"lat": 37.03781, "lng": -112.34708}, {"lat": 37.07909, "lng": -112.16316}, {"lat": 37.18533, "lng": -111.99576}, {"lat": 37.13191, "lng": -111.97674}, {"lat": 37.10286, "lng": -111.86221}, {"lat": 37.04702, "lng": -111.62341}, {"lat": 36.98269, "lng": -111.54764}, {"lat": 36.93482, "lng": -111.48936}, {"lat": 36.92563, "lng": -111.47225}, {"lat": 36.91191, "lng": -111.46129}, {"lat": 36.87406, "lng": -111.50174}, {"lat": 36.78553, "lng": -111.53966}, {"lat": 36.66907, "lng": -111.62764}, {"lat": 36.63762, "lng": -111.63037}, {"lat": 36.57817, "lng": -111.64496}, {"lat": 36.48797, "lng": -111.57671}, {"lat": 36.37556, "lng": -111.5166}, {"lat": 36.2737, "lng": -111.43624}, {"lat": 36.16916, "lng": -111.39915}, {"lat": 36.01165, "lng": -111.3952}, {"lat": 35.86763, "lng": -111.41488}, {"lat": 35.78301, "lng": -111.455}, {"lat": 35.62575, "lng": -111.52099}, {"lat": 35.46705, "lng": -111.55902}, {"lat": 35.32838, "lng": -111.54559}, {"lat": 35.24978, "lng": -111.55997}, {"lat": 35.21904, "lng": -111.59124}, {"lat": 35.2025, "lng": -111.61652}, {"lat": 35.19649, "lng": -111.6459}, {"lat": 35.19211, "lng": -111.6594}, {"lat": 35.18203, "lng": -111.66144}, {"lat": 35.16241, "lng": -111.67473}, {"lat": 35.1096, "lng": -111.68159}, {"lat": 35.03359, "lng": -111.68407}, {"lat": 34.9312, "lng": -111.64956}, {"lat": 34.85432, "lng": -111.60792}, {"lat": 34.83767, "lng": -111.6047}, {"lat": 34.82528, "lng": -111.6111}, {"lat": 34.81577, "lng": -111.61289}, {"lat": 34.80818, "lng": -111.60114}, {"lat": 34.77631, "lng": -111.63475}, {"lat": 34.69895, "lng": -111.74415}, {"lat": 34.63673, "lng": -111.82393}, {"lat": 34.57279, "lng": -111.88899}, {"lat": 34.54009, "lng": -111.91105}, {"lat": 34.53373, "lng": -111.95875}, {"lat": 34.49568, "lng": -112.00556}, {"lat": 34.44388, "lng": -112.03807}, {"lat": 34.38958, "lng": -112.08519}, {"lat": 34.30116, "lng": -112.12817}, {"lat": 34.23831, "lng": -112.11553}, {"lat": 34.17579, "lng": -112.13604}, {"lat": 34.1378, "lng": -112.14836}, {"lat": 34.09381, "lng": -112.14322}, {"lat": 34.05267, "lng": -112.14729}, {"lat": 34.00549, "lng": -112.14171}, {"lat": 33.96966, "lng": -112.12785}, {"lat": 33.88985, "lng": -112.14768}, {"lat": 33.83321, "lng": -112.14504}, {"lat": 33.73277, "lng": -112.12183}, {"lat": 33.65346, "lng": -112.11474}, {"lat": 33.57044, "lng": -112.11738}, {"lat": 33.49169, "lng": -112.11315}, {"lat": 33.46149, "lng": -112.09095}, {"lat": 33.45716, "lng": -112.07521}, {"lat": 33.44821, "lng": -112.07406}]}, {"id": "REF", "title": "Reference · US-93 direct", "color": "#4a5568", "dash": true, "osrmMi": 919, "osrmH": 18.4, "known": "An earlier OSRM measure of Twin Falls / Ely / US-93 was about 932 mi. This trace is about 919.", "blurb": "I-84 to Twin Falls, US-93 Jackpot–Wells–Ely, US-93 south to Las Vegas, then US-93 via Kingman and Wickenburg to Phoenix. No Delta dogleg. This is the western corridor all the way.", "waypoints": [{"lat": 43.612, "lng": -116.392}, {"lat": 42.56297, "lng": -114.46088}, {"lat": 41.98325, "lng": -114.67477}, {"lat": 41.11159, "lng": -114.9645}, {"lat": 39.24744, "lng": -114.88864}, {"lat": 36.17498, "lng": -115.13723}, {"lat": 35.18945, "lng": -114.05302}, {"lat": 33.96865, "lng": -112.72963}, {"lat": 33.44838, "lng": -112.07405}], "path": [{"lat": 43.61195, "lng": -116.392}, {"lat": 43.59849, "lng": -116.39366}, {"lat": 43.59697, "lng": -116.35081}, {"lat": 43.58134, "lng": -116.25621}, {"lat": 43.56798, "lng": -116.20279}, {"lat": 43.53143, "lng": -116.15444}, {"lat": 43.4173, "lng": -116.03257}, {"lat": 43.17992, "lng": -115.771}, {"lat": 43.15536, "lng": -115.6879}, {"lat": 43.09978, "lng": -115.62399}, {"lat": 43.05714, "lng": -115.58799}, {"lat": 43, "lng": -115.53665}, {"lat": 42.95848, "lng": -115.46785}, {"lat": 42.94559, "lng": -115.41442}, {"lat": 42.95712, "lng": -115.35331}, {"lat": 42.95965, "lng": -115.29457}, {"lat": 42.96773, "lng": -115.24437}, {"lat": 42.97019, "lng": -115.19494}, {"lat": 42.9521, "lng": -115.12904}, {"lat": 42.93786, "lng": -115.03501}, {"lat": 42.91961, "lng": -114.92765}, {"lat": 42.87129, "lng": -114.8607}, {"lat": 42.84528, "lng": -114.82576}, {"lat": 42.78791, "lng": -114.74165}, {"lat": 42.75665, "lng": -114.66634}, {"lat": 42.72757, "lng": -114.5519}, {"lat": 42.68257, "lng": -114.51366}, {"lat": 42.65441, "lng": -114.47774}, {"lat": 42.60569, "lng": -114.45249}, {"lat": 42.58646, "lng": -114.46019}, {"lat": 42.57619, "lng": -114.46035}, {"lat": 42.56302, "lng": -114.46051}, {"lat": 42.55211, "lng": -114.47509}, {"lat": 42.53489, "lng": -114.48378}, {"lat": 42.53476, "lng": -114.54047}, {"lat": 42.50595, "lng": -114.57477}, {"lat": 42.41593, "lng": -114.57474}, {"lat": 42.35581, "lng": -114.5748}, {"lat": 42.25504, "lng": -114.57468}, {"lat": 42.19507, "lng": -114.61454}, {"lat": 42.15768, "lng": -114.67275}, {"lat": 42.07773, "lng": -114.67773}, {"lat": 42.00299, "lng": -114.67051}, {"lat": 41.9848, "lng": -114.67319}, {"lat": 41.98013, "lng": -114.6755}, {"lat": 41.9533, "lng": -114.67874}, {"lat": 41.90695, "lng": -114.70207}, {"lat": 41.84475, "lng": -114.71645}, {"lat": 41.77465, "lng": -114.75075}, {"lat": 41.74056, "lng": -114.77902}, {"lat": 41.69607, "lng": -114.82459}, {"lat": 41.63555, "lng": -114.81373}, {"lat": 41.53834, "lng": -114.78178}, {"lat": 41.45163, "lng": -114.75631}, {"lat": 41.37953, "lng": -114.77802}, {"lat": 41.34322, "lng": -114.80912}, {"lat": 41.2806, "lng": -114.82589}, {"lat": 41.20609, "lng": -114.85294}, {"lat": 41.1282, "lng": -114.92571}, {"lat": 41.10413, "lng": -114.96069}, {"lat": 41.1038, "lng": -114.96045}, {"lat": 41.0832, "lng": -114.96421}, {"lat": 40.89387, "lng": -114.96393}, {"lat": 40.77056, "lng": -115.02932}, {"lat": 40.68417, "lng": -115.01299}, {"lat": 40.54966, "lng": -114.95729}, {"lat": 40.48306, "lng": -114.89991}, {"lat": 40.35145, "lng": -114.79651}, {"lat": 40.26403, "lng": -114.74365}, {"lat": 40.19385, "lng": -114.68046}, {"lat": 40.08225, "lng": -114.62023}, {"lat": 39.99659, "lng": -114.6759}, {"lat": 39.93922, "lng": -114.70605}, {"lat": 39.8543, "lng": -114.73609}, {"lat": 39.75328, "lng": -114.74669}, {"lat": 39.66699, "lng": -114.75572}, {"lat": 39.56803, "lng": -114.762}, {"lat": 39.43426, "lng": -114.77025}, {"lat": 39.39353, "lng": -114.78567}, {"lat": 39.32039, "lng": -114.81981}, {"lat": 39.2612, "lng": -114.85705}, {"lat": 39.25225, "lng": -114.87908}, {"lat": 39.24676, "lng": -114.89289}, {"lat": 39.23146, "lng": -114.89725}, {"lat": 39.22731, "lng": -114.92461}, {"lat": 39.2213, "lng": -114.96226}, {"lat": 39.19248, "lng": -115.00435}, {"lat": 38.91455, "lng": -115.04584}, {"lat": 38.86238, "lng": -115.00791}, {"lat": 38.79043, "lng": -115.01493}, {"lat": 38.70123, "lng": -115.05061}, {"lat": 38.62455, "lng": -115.04728}, {"lat": 38.54373, "lng": -115.03026}, {"lat": 38.45013, "lng": -115.01133}, {"lat": 38.38154, "lng": -115.03503}, {"lat": 38.31031, "lng": -115.03461}, {"lat": 38.22107, "lng": -115.01385}, {"lat": 38.16334, "lng": -115.00188}, {"lat": 38.10252, "lng": -114.9992}, {"lat": 38.06314, "lng": -114.97428}, {"lat": 38.01095, "lng": -114.96266}, {"lat": 37.9584, "lng": -114.9775}, {"lat": 37.91883, "lng": -114.98958}, {"lat": 37.88196, "lng": -115.01103}, {"lat": 37.8501, "lng": -115.01947}, {"lat": 37.83716, "lng": -115.03756}, {"lat": 37.80721, "lng": -115.06874}, {"lat": 37.7552, "lng": -115.10536}, {"lat": 37.70714, "lng": -115.15826}, {"lat": 37.67966, "lng": -115.1938}, {"lat": 37.61785, "lng": -115.22613}, {"lat": 37.58779, "lng": -115.22521}, {"lat": 37.53893, "lng": -115.23552}, {"lat": 37.51882, "lng": -115.21753}, {"lat": 37.46586, "lng": -115.19368}, {"lat": 37.42761, "lng": -115.17746}, {"lat": 37.36458, "lng": -115.15966}, {"lat": 37.3318, "lng": -115.13868}, {"lat": 37.29314, "lng": -115.11799}, {"lat": 37.25711, "lng": -115.10594}, {"lat": 37.21467, "lng": -115.07132}, {"lat": 37.18895, "lng": -115.02167}, {"lat": 37.15388, "lng": -115.00704}, {"lat": 37.04989, "lng": -114.98574}, {"lat": 36.96318, "lng": -114.97532}, {"lat": 36.89246, "lng": -114.96292}, {"lat": 36.55674, "lng": -114.93019}, {"lat": 36.39271, "lng": -114.90689}, {"lat": 36.36494, "lng": -114.90167}, {"lat": 36.31235, "lng": -114.94758}, {"lat": 36.26476, "lng": -115.07175}, {"lat": 36.19623, "lng": -115.13866}, {"lat": 36.18101, "lng": -115.14573}, {"lat": 36.17719, "lng": -115.14298}, {"lat": 36.17493, "lng": -115.13719}, {"lat": 36.1676, "lng": -115.10581}, {"lat": 36.12659, "lng": -115.08705}, {"lat": 36.08642, "lng": -115.05602}, {"lat": 36.02223, "lng": -115.00155}, {"lat": 35.99837, "lng": -114.94167}, {"lat": 35.96878, "lng": -114.91264}, {"lat": 35.96681, "lng": -114.87706}, {"lat": 35.96974, "lng": -114.85441}, {"lat": 35.97241, "lng": -114.84883}, {"lat": 35.98259, "lng": -114.84352}, {"lat": 35.99951, "lng": -114.82149}, {"lat": 36.00821, "lng": -114.79137}, {"lat": 36.01075, "lng": -114.77391}, {"lat": 36.0145, "lng": -114.756}, {"lat": 36.00705, "lng": -114.72653}, {"lat": 35.97588, "lng": -114.69503}, {"lat": 35.92917, "lng": -114.63469}, {"lat": 35.85149, "lng": -114.59192}, {"lat": 35.75252, "lng": -114.50317}, {"lat": 35.66567, "lng": -114.45568}, {"lat": 35.50053, "lng": -114.33252}, {"lat": 35.29505, "lng": -114.18585}, {"lat": 35.21846, "lng": -114.1201}, {"lat": 35.20122, "lng": -114.08222}, {"lat": 35.19061, "lng": -114.06411}, {"lat": 35.19054, "lng": -114.0633}, {"lat": 35.2172, "lng": -114.02941}, {"lat": 35.1974, "lng": -113.90162}, {"lat": 35.17106, "lng": -113.77481}, {"lat": 35.13952, "lng": -113.67457}, {"lat": 35.06246, "lng": -113.66565}, {"lat": 35.01036, "lng": -113.66444}, {"lat": 34.95325, "lng": -113.66907}, {"lat": 34.89199, "lng": -113.65228}, {"lat": 34.80136, "lng": -113.62687}, {"lat": 34.75401, "lng": -113.61636}, {"lat": 34.70596, "lng": -113.61213}, {"lat": 34.66137, "lng": -113.57944}, {"lat": 34.5974, "lng": -113.51749}, {"lat": 34.57178, "lng": -113.47145}, {"lat": 34.53144, "lng": -113.43127}, {"lat": 34.50111, "lng": -113.40165}, {"lat": 34.48401, "lng": -113.36148}, {"lat": 34.45675, "lng": -113.29188}, {"lat": 34.43876, "lng": -113.26213}, {"lat": 34.40369, "lng": -113.2214}, {"lat": 34.36461, "lng": -113.17611}, {"lat": 34.22328, "lng": -113.06928}, {"lat": 34.17247, "lng": -113.02117}, {"lat": 34.10006, "lng": -112.91747}, {"lat": 34.05089, "lng": -112.8464}, {"lat": 34.02476, "lng": -112.80874}, {"lat": 34.01273, "lng": -112.79154}, {"lat": 34.00327, "lng": -112.772}, {"lat": 33.99701, "lng": -112.75779}, {"lat": 33.98998, "lng": -112.74501}, {"lat": 33.97997, "lng": -112.73414}, {"lat": 33.96859, "lng": -112.72969}, {"lat": 33.97178, "lng": -112.72301}, {"lat": 33.96627, "lng": -112.72057}, {"lat": 33.96056, "lng": -112.71303}, {"lat": 33.94991, "lng": -112.70667}, {"lat": 33.93034, "lng": -112.68872}, {"lat": 33.91537, "lng": -112.67663}, {"lat": 33.89899, "lng": -112.66903}, {"lat": 33.88238, "lng": -112.657}, {"lat": 33.85854, "lng": -112.62732}, {"lat": 33.84125, "lng": -112.61275}, {"lat": 33.81186, "lng": -112.57246}, {"lat": 33.76881, "lng": -112.51721}, {"lat": 33.71499, "lng": -112.44828}, {"lat": 33.67124, "lng": -112.39272}, {"lat": 33.65221, "lng": -112.36784}, {"lat": 33.63113, "lng": -112.34061}, {"lat": 33.60568, "lng": -112.30055}, {"lat": 33.59434, "lng": -112.26154}, {"lat": 33.58823, "lng": -112.24582}, {"lat": 33.57197, "lng": -112.22647}, {"lat": 33.55762, "lng": -112.20867}, {"lat": 33.52778, "lng": -112.1732}, {"lat": 33.50691, "lng": -112.14844}, {"lat": 33.48633, "lng": -112.12426}, {"lat": 33.47428, "lng": -112.10996}, {"lat": 33.46139, "lng": -112.09469}, {"lat": 33.45141, "lng": -112.08259}, {"lat": 33.44985, "lng": -112.07505}, {"lat": 33.44821, "lng": -112.07406}]}]}</script>
+  <script>
+(function () {
+  "use strict";
+  const DATA = JSON.parse(document.getElementById("trip-data").textContent);
+  const PLACES = DATA.places;
+  const ROUTES = DATA.routes;
+  const API_KEY = "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI";
+  const MAP_ID = "DEMO_MAP_ID";
+  const BOISE = { lat: 43.612, lng: -116.392 };
+
+  const KIND_STYLE = {
+    current:   { fill: "#dd6b20", stroke: "#9c4221", size: 30, label: "", text: "#fff", z: 1000 },
+    paid:      { fill: "#7ec8ff", stroke: "#1c5d99", size: 22, label: "", text: "#0b3d6b", z: 300 },
+    dispersed: { fill: "#2f855a", stroke: "#22543d", size: 20, label: "", text: "#fff", z: 250 },
+    outing:    { fill: "#7b3fa0", stroke: "#4a235f", size: 28, label: "★", text: "#fff", z: 800 },
+    view:      { fill: "#ffffff", stroke: "#2c7a7b", size: 18, label: "", text: "#2c7a7b", z: 700 },
+    twoday:    { fill: "#d69e2e", stroke: "#975a16", size: 26, label: "2", text: "#1a202c", z: 900 },
+    search:    { fill: "#805ad5", stroke: "#553c9a", size: 26, label: "●", text: "#fff", z: 1100 },
+    me:        { fill: "#4299e1", stroke: "#ffffff", size: 18, label: "", text: "#fff", z: 1200 }
+  };
+  const KIND_LABEL = {
+    current: "CURRENT SIT",
+    paid: "PAID CAMPGROUND / PARK",
+    dispersed: "SEARCH AREA",
+    outing: "OUTING",
+    view: "VIEWPOINT",
+    twoday: "TWO-DAY SIT",
+    search: "Searched place"
+  };
+  const LAYER_ORDER = ["current", "dispersed", "paid", "twoday", "outing", "view"];
+
+  const OPEN_NOTE = "Opens on Boise. Five route lines are toggles in the legend. Orange is home. Green is a named public-land search. Light blue is a paid campground or park. Gold squares are two-day sit ideas. Purple stars are outings. White diamonds are viewpoints. Nothing is reserved. Car times are not tow times.";
+
+  let gm = {};
+  let map = null;
+  let infoWindow = null;
+  let directionsService = null;
+  let useAdvanced = false;
+  let geolocPos = null;
+  let searchPlace = null;
+  let searchMarker = null;
+  let meMarker = null;
+  let pinRouteLines = [];
+  let lastDest = null;
+  let placesFailed = false;
+  const markerRecs = [];
+  const corridorLines = {};
+  const layerOn = {};
+  const routeOn = {};
+  LAYER_ORDER.forEach(k => { layerOn[k] = true; });
+  ROUTES.forEach(r => { routeOn[r.id] = true; });
+
+  const $ = (id) => document.getElementById(id);
+
+  function setMsg(text, isError) {
+    const el = $("msg");
+    el.textContent = text || "";
+    el.classList.toggle("error", !!(text && isError));
+  }
+  function fmtMiles(meters) {
+    const mi = meters / 1609.344;
+    return (mi >= 100 ? Math.round(mi).toLocaleString() : mi.toFixed(1)) + " mi";
+  }
+  function fmtDuration(sec) {
+    const totalMin = Math.round(sec / 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h === 0) return m + " min";
+    return h + " h " + m + " min";
+  }
+  function ll(p) {
+    if (!p) return null;
+    const lat = typeof p.lat === "function" ? p.lat() : p.lat;
+    const lng = typeof p.lng === "function" ? p.lng() : p.lng;
+    return { lat: Number(lat), lng: Number(lng) };
+  }
+  function coordStr(p) { return p.lat.toFixed(6) + "," + p.lng.toFixed(6); }
+  function gmapsUrl(origin, dest) {
+    let url = "https://www.google.com/maps/dir/?api=1";
+    if (origin) url += "&origin=" + coordStr(origin);
+    url += "&destination=" + coordStr(dest) + "&travelmode=driving";
+    return url;
+  }
+  function errText(e) {
+    if (!e) return "unknown error";
+    return String(e.message || e.code || e).slice(0, 300);
+  }
+  window.gm_authFailure = function () {
+    setMsg("Google Maps rejected the API key for this page (referrer restriction, or Maps JavaScript API not enabled).", true);
+  };
+
+  function pinElement(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.view;
+    const el = document.createElement("div");
+    el.className = "pin";
+    el.style.width = s.size + "px";
+    el.style.height = s.size + "px";
+    el.style.background = s.fill;
+    el.style.borderColor = s.stroke;
+    el.style.color = s.text;
+    if (kind === "view") { el.style.borderRadius = "3px"; el.style.transform = "rotate(45deg)"; }
+    if (kind === "twoday") { el.style.borderRadius = "4px"; el.textContent = "2"; }
+    else if (s.label && kind !== "view") el.textContent = s.label;
+    return el;
+  }
+  function classicIcon(kind) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.view;
+    const path = (kind === "view")
+      ? "M -1,0 0,-1 1,0 0,1 z"
+      : google.maps.SymbolPath.CIRCLE;
+    return {
+      path: path,
+      fillColor: s.fill,
+      fillOpacity: 1,
+      strokeColor: s.stroke,
+      strokeWeight: 2,
+      scale: kind === "view" ? 8 : s.size / 2.4,
+      rotation: 0
+    };
+  }
+  function setMarkerMap(marker, m) {
+    if (!marker) return;
+    if (useAdvanced) marker.map = m;
+    else marker.setMap(m);
+  }
+  function makeMarker(pos, kind, title, onTap) {
+    const s = KIND_STYLE[kind] || KIND_STYLE.view;
+    let marker;
+    if (useAdvanced) {
+      marker = new gm.AdvancedMarkerElement({
+        map: map, position: pos, title: title, content: pinElement(kind),
+        zIndex: s.z, gmpClickable: true
+      });
+      if (onTap) marker.addEventListener("gmp-click", () => onTap(marker));
+    } else {
+      marker = new google.maps.Marker({
+        map: map, position: pos, title: title, icon: classicIcon(kind), zIndex: s.z,
+        label: (s.label && kind !== "view") ? { text: s.label, color: kind === "twoday" ? "#1a202c" : "#fff", fontSize: "12px", fontWeight: "700" } : undefined
+      });
+      if (onTap) marker.addListener("click", () => onTap(marker));
+    }
+    return marker;
+  }
+  function infoContent(place) {
+    const root = document.createElement("div");
+    root.className = "iw";
+    const b = document.createElement("b");
+    b.textContent = place.name;
+    root.appendChild(b);
+    const sub = document.createElement("div");
+    sub.className = "sub";
+    sub.textContent = (KIND_LABEL[place.layer] || place.layer) + " · " +
+      place.lat.toFixed(5) + ", " + place.lng.toFixed(5);
+    root.appendChild(sub);
+    if (place.note) {
+      const n = document.createElement("div");
+      n.className = "note";
+      n.textContent = place.note;
+      root.appendChild(n);
+    }
+    if (place.links && place.links.length) {
+      const lk = document.createElement("div");
+      lk.className = "iw-links";
+      place.links.forEach((L) => {
+        const a = document.createElement("a");
+        a.className = "ctrl";
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = L.label;
+        a.href = L.href;
+        lk.appendChild(a);
+      });
+      root.appendChild(lk);
+    }
+    const actions = document.createElement("div");
+    actions.className = "iw-actions";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ctrl primary";
+    btn.textContent = "Directions here";
+    btn.addEventListener("click", () => {
+      infoWindow.close();
+      routeTo(place.lat, place.lng, place.name);
+    });
+    actions.appendChild(btn);
+    const link = document.createElement("a");
+    link.className = "ctrl";
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open in Google Maps";
+    link.href = gmapsUrl(knownOrigin(), { lat: place.lat, lng: place.lng });
+    actions.appendChild(link);
+    root.appendChild(actions);
+    return root;
+  }
+  function openInfo(place, marker) {
+    infoWindow.setContent(infoContent(place));
+    infoWindow.open({ map: map, anchor: marker });
+  }
+  function applyVisibility() {
+    markerRecs.forEach((rec) => {
+      setMarkerMap(rec.marker, layerOn[rec.layer] ? map : null);
+    });
+    Object.keys(corridorLines).forEach((id) => {
+      const line = corridorLines[id];
+      if (line) line.setMap(routeOn[id] ? map : null);
+    });
+  }
+  function buildLegend() {
+    const body = $("legend-body");
+    const rows = [
+      ["current", "stay", "Current sit — Boise. Map opens here."],
+      ["dispersed", "dispersed", "Named BLM, forest, or grassland search area. Not a secret site. The note says if it is free, a fee, or closed for winter."],
+      ["paid", "paid", "Paid campground or park. The note says if water and electric are actually on."],
+      ["twoday", "twoday", "Two-day sit idea. Gold square. Vicki picks."],
+      ["outing", "keystop", "Outing. Purple star. Not the overnight."],
+      ["view", "visit", "Viewpoint. White diamond."]
+    ];
+    rows.forEach(([key, sw, label]) => {
+      const row = document.createElement("label");
+      row.className = "layer-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = true;
+      cb.addEventListener("change", () => { layerOn[key] = cb.checked; applyVisibility(); });
+      const span = document.createElement("span");
+      span.innerHTML = '<span class="swatch ' + sw + '"></span>' + label;
+      row.appendChild(cb);
+      row.appendChild(span);
+      body.appendChild(row);
+    });
+    const head = document.createElement("div");
+    head.style.margin = "8px 0 4px";
+    head.innerHTML = "<b>Routes</b> <span class='fine'>Car router, not the trailer. Hitching is 2–3 hours. Weekday work ends at 3 p.m. MT.</span>";
+    body.appendChild(head);
+    ROUTES.forEach((r) => {
+      const row = document.createElement("label");
+      row.className = "route-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = true;
+      cb.addEventListener("change", () => { routeOn[r.id] = cb.checked; applyVisibility(); });
+      const span = document.createElement("span");
+      span.className = "route-copy";
+      span.innerHTML =
+        '<b><span class="swatch route" style="background:' + r.color + '"></span>' + r.title + '</b>' +
+        '<span class="fine" id="mi-' + r.id + '">OSRM trace ' + r.osrmMi.toLocaleString() + ' mi · ' + r.osrmH + ' h car. ' + r.known + '</span><br>' +
+        '<span class="fine">' + r.blurb + '</span>';
+      row.appendChild(cb);
+      row.appendChild(span);
+      body.appendChild(row);
+    });
+    const foot = document.createElement("div");
+    foot.style.marginTop = "8px";
+    foot.innerHTML = '<a href="locations.html">Locations</a> · <a href="tonight.html">Tonight</a> · <a href="tomorrow.html">Tomorrow</a> · <a href="../index.html">October trip</a>';
+    body.appendChild(foot);
+  }
+  function drawCorridor(route) {
+    const icons = route.dash ? [{
+      icon: { path: "M 0,-1 0,1", strokeOpacity: 1, scale: 3 },
+      offset: "0",
+      repeat: "14px"
+    }] : null;
+    const line = new google.maps.Polyline({
+      map: routeOn[route.id] ? map : null,
+      path: route.path,
+      geodesic: false,
+      strokeColor: route.color,
+      strokeOpacity: route.dash ? 0 : 0.9,
+      strokeWeight: route.dash ? 0 : 5,
+      icons: icons || undefined,
+      zIndex: route.dash ? 2 : 3,
+      clickable: false
+    });
+    corridorLines[route.id] = line;
+  }
+  function fitTrip() {
+    const bounds = new google.maps.LatLngBounds();
+    let any = false;
+    PLACES.forEach((p) => {
+      if (!layerOn[p.layer]) return;
+      bounds.extend({ lat: p.lat, lng: p.lng });
+      any = true;
+    });
+    ROUTES.forEach((r) => {
+      if (!routeOn[r.id]) return;
+      (r.path || []).forEach((p) => bounds.extend(p));
+      any = true;
+    });
+    if (any) map.fitBounds(bounds, 48);
+  }
+  function originMode() { return $("origin-select").value; }
+  function knownOrigin() {
+    const mode = originMode();
+    if (mode === "geolocation" && geolocPos) return geolocPos;
+    if (mode === "custom" && searchPlace) return { lat: searchPlace.lat, lng: searchPlace.lng };
+    return BOISE;
+  }
+  function originLabel() {
+    const mode = originMode();
+    if (mode === "geolocation") return "My location";
+    if (mode === "custom" && searchPlace) return searchPlace.name;
+    return "Boise / home";
+  }
+  function getGeolocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error("Location is not available in this browser.")); return; }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geolocPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setMarkerMap(meMarker, null);
+          meMarker = makeMarker(geolocPos, "me", "My location", null);
+          resolve(geolocPos);
+        },
+        (err) => reject(new Error("Couldn't get your location" + (err && err.message ? " (" + err.message + ")" : "") + ".")),
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 120000 }
+      );
+    });
+  }
+  async function resolveOrigin() {
+    const mode = originMode();
+    if (mode === "boise") return { pos: BOISE, name: "Boise / home" };
+    if (mode === "geolocation") {
+      if (geolocPos) return { pos: geolocPos, name: "My location" };
+      setMsg("Getting your location…");
+      return { pos: await getGeolocation(), name: "My location" };
+    }
+    if (mode === "custom") {
+      if (searchPlace) return { pos: { lat: searchPlace.lat, lng: searchPlace.lng }, name: searchPlace.name };
+      throw new Error("Search for a place first, then tap a pin → Directions here.");
+    }
+    return { pos: BOISE, name: "Boise / home" };
+  }
+  function showPanel(originName, origin, dest) {
+    $("dir-title").textContent = "To " + dest.name;
+    $("dir-route").textContent = "From " + (originName || "your location") + " · driving";
+    $("dir-summary").textContent = "";
+    $("dir-error").textContent = "";
+    $("dir-note").textContent = "";
+    $("dir-gmaps").href = gmapsUrl(origin, dest);
+    $("directions-panel").classList.add("show");
+  }
+  function hidePanel() { $("directions-panel").classList.remove("show"); }
+  function clearPinRoute() {
+    pinRouteLines.forEach((l) => l.setMap(null));
+    pinRouteLines = [];
+    hidePanel();
+    lastDest = null;
+    setMsg(OPEN_NOTE);
+  }
+  function directionsRoute(req) {
+    return new Promise((resolve, reject) => {
+      if (!directionsService) { reject(new Error("Directions service is not available.")); return; }
+      directionsService.route(req, (result, status) => {
+        if (status === "OK" && result) resolve(result);
+        else reject(new Error("Directions: " + status));
+      });
+    });
+  }
+  async function routeTo(lat, lng, name) {
+    const dest = { lat: Number(lat), lng: Number(lng), name: name || "Destination" };
+    lastDest = dest;
+    pinRouteLines.forEach((l) => l.setMap(null));
+    pinRouteLines = [];
+    showPanel(originLabel(), knownOrigin(), dest);
+    let origin, originName;
+    try {
+      const o = await resolveOrigin();
+      origin = o.pos; originName = o.name;
+    } catch (e) {
+      $("dir-error").textContent = errText(e);
+      setMsg(errText(e), true);
+      return;
+    }
+    if (lastDest !== dest) return;
+    showPanel(originName, origin, dest);
+    $("dir-summary").textContent = "Routing…";
+    try {
+      const result = await directionsRoute({
+        origin: origin,
+        destination: dest,
+        travelMode: google.maps.TravelMode.DRIVING
+      });
+      if (lastDest !== dest) return;
+      const r = result.routes[0];
+      const line = new google.maps.Polyline({
+        map: map,
+        path: r.overview_path,
+        strokeColor: "#c53030",
+        strokeOpacity: 0.95,
+        strokeWeight: 6,
+        zIndex: 40
+      });
+      pinRouteLines = [line];
+      let meters = 0, sec = 0;
+      r.legs.forEach((leg) => { meters += leg.distance.value; sec += leg.duration.value; });
+      $("dir-summary").textContent = fmtMiles(meters) + " · " + fmtDuration(sec);
+      $("dir-note").textContent = "Car time from Google. Towing is slower, and hitching is 2–3 hours before you roll. The colored lines are the whole-trip corridors.";
+      setMsg("Route ready: " + originName + " → " + dest.name);
+      const panelH = window.innerWidth < 760 ? $("directions-panel").offsetHeight : 0;
+      map.fitBounds(r.bounds, { top: 40, left: 30, right: window.innerWidth < 760 ? 30 : 390, bottom: 30 + panelH });
+    } catch (e) {
+      $("dir-summary").textContent = "";
+      $("dir-error").textContent = errText(e) + " Open in Google Maps still works.";
+      setMsg("Pin directions failed. Corridor lines are unchanged.", true);
+    }
+  }
+  async function upgradeCorridors() {
+    if (!directionsService) return;
+    for (const route of ROUTES) {
+      const wps = route.waypoints;
+      if (!wps || wps.length < 2) continue;
+      try {
+        const result = await directionsRoute({
+          origin: wps[0],
+          destination: wps[wps.length - 1],
+          waypoints: wps.slice(1, -1).map((p) => ({ location: p, stopover: true })),
+          travelMode: google.maps.TravelMode.DRIVING,
+          optimizeWaypoints: false
+        });
+        const r = result.routes[0];
+        const line = corridorLines[route.id];
+        if (line) {
+          line.setPath(r.overview_path);
+          if (route.dash) {
+            line.setOptions({ strokeOpacity: 0, strokeWeight: 0 });
+          }
+        }
+        route.path = r.overview_path.map(ll);
+        let meters = 0, sec = 0;
+        r.legs.forEach((leg) => { meters += leg.distance.value; sec += leg.duration.value; });
+        const el = document.getElementById("mi-" + route.id);
+        if (el) {
+          el.textContent = "Google car " + fmtMiles(meters) + " · " + fmtDuration(sec) + ". " + route.known;
+        }
+      } catch (e) {
+        console.warn("Corridor " + route.id + " stayed on the OSRM trace.", e);
+        const el = document.getElementById("mi-" + route.id);
+        if (el) el.textContent += " Directions did not replace this line.";
+      }
+    }
+  }
+  function placesError(detail) {
+    placesFailed = true;
+    setMsg("Place search is unavailable." + (detail ? " " + detail : ""), true);
+  }
+  async function onPlaceSelected(ev) {
+    const pred = ev.placePrediction || (ev.detail && ev.detail.placePrediction);
+    if (!pred) { setMsg("No place details returned.", true); return; }
+    let place;
+    try {
+      place = pred.toPlace();
+      await place.fetchFields({ fields: ["displayName", "location", "formattedAddress"] });
+    } catch (e) {
+      placesError(errText(e));
+      return;
+    }
+    const loc = ll(place.location);
+    if (!loc || isNaN(loc.lat)) { setMsg("That place has no location.", true); return; }
+    searchPlace = {
+      name: place.displayName || place.formattedAddress || "Searched place",
+      lat: loc.lat, lng: loc.lng, layer: "search",
+      note: "Searched place.",
+      links: []
+    };
+    setMarkerMap(searchMarker, null);
+    searchMarker = makeMarker(loc, "search", searchPlace.name, (mk) => openInfo(searchPlace, mk));
+    map.panTo(loc);
+    if (map.getZoom() < 8) map.setZoom(9);
+    if (originMode() === "custom") {
+      setMsg("Start set to " + searchPlace.name + ". Tap a pin → Directions here.");
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    } else {
+      routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+    }
+  }
+  function setupSearch() {
+    const wrap = $("search-wrap");
+    if (!gm.PlaceAutocompleteElement) {
+      wrap.innerHTML = '<input id="search-fallback" disabled placeholder="Place search unavailable" />';
+      return;
+    }
+    const pac = new gm.PlaceAutocompleteElement({ includedRegionCodes: ["us"] });
+    pac.setAttribute("placeholder", "Search a place or address…");
+    try { pac.placeholder = "Search a place or address…"; } catch (_) {}
+    wrap.innerHTML = "";
+    wrap.appendChild(pac);
+    pac.addEventListener("gmp-select", onPlaceSelected);
+    const onErr = (e) => placesError(errText(e && (e.error || e.detail || e)));
+    pac.addEventListener("gmp-error", onErr);
+    pac.addEventListener("gmp-requesterror", onErr);
+  }
+  async function init() {
+    if (window.innerWidth < 760) $("legend").removeAttribute("open");
+    buildLegend();
+    $("btn-go").addEventListener("click", () => {
+      if (!searchPlace) {
+        setMsg(placesFailed ? "Place search is unavailable. Tap a pin." : "Search for a place, or tap a pin.", placesFailed);
+        return;
+      }
+      if (originMode() === "custom") {
+        setMsg("The searched place is the start. Tap a pin for the destination.");
+        return;
+      }
+      routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+    });
+    $("btn-clear").addEventListener("click", clearPinRoute);
+    $("btn-fit").addEventListener("click", () => { clearPinRoute(); fitTrip(); });
+    $("dir-close").addEventListener("click", hidePanel);
+    $("origin-select").addEventListener("change", () => {
+      if (originMode() === "geolocation" && !geolocPos) {
+        getGeolocation().then(() => setMsg("Using your location as the start.")).catch((e) => setMsg(errText(e), true));
+      }
+      if (lastDest) routeTo(lastDest.lat, lastDest.lng, lastDest.name);
+    });
+
+    let mapsLib;
+    try { mapsLib = await google.maps.importLibrary("maps"); }
+    catch (e) { setMsg("Google Maps failed to load: " + errText(e), true); return; }
+    gm.Map = mapsLib.Map;
+    gm.InfoWindow = mapsLib.InfoWindow;
+    try {
+      const markerLib = await google.maps.importLibrary("marker");
+      gm.AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
+      useAdvanced = !!gm.AdvancedMarkerElement;
+    } catch (e) { useAdvanced = false; }
+    try {
+      const routesLib = await google.maps.importLibrary("routes");
+      const Svc = (routesLib && routesLib.DirectionsService) || google.maps.DirectionsService;
+      if (Svc) directionsService = new Svc();
+    } catch (e) {
+      if (google.maps.DirectionsService) directionsService = new google.maps.DirectionsService();
+    }
+
+    map = new gm.Map($("map"), {
+      center: BOISE,
+      zoom: 7,
+      mapId: useAdvanced ? MAP_ID : undefined,
+      mapTypeControl: true,
+      mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU, position: google.maps.ControlPosition.TOP_LEFT },
+      zoomControl: true,
+      streetViewControl: false,
+      fullscreenControl: false,
+      cameraControl: false,
+      scaleControl: true,
+      clickableIcons: false,
+      gestureHandling: "greedy"
+    });
+    infoWindow = new gm.InfoWindow({ maxWidth: 300 });
+    PLACES.forEach((place) => {
+      const marker = makeMarker({ lat: place.lat, lng: place.lng }, place.layer, place.name, (mk) => openInfo(place, mk));
+      markerRecs.push({ layer: place.layer, marker: marker });
+    });
+    ROUTES.forEach(drawCorridor);
+    setMsg(OPEN_NOTE);
+    try {
+      const placesLib = await google.maps.importLibrary("places");
+      gm.PlaceAutocompleteElement = placesLib.PlaceAutocompleteElement;
+    } catch (e) { console.warn("places library failed", e); }
+    setupSearch();
+    upgradeCorridors();
+  }
+  init();
+})();
+  </script>
+</body>
+</html>
