@@ -1,6 +1,7 @@
 # Trip maps — Ed and Vicki Henderson
 
 Trip maps on this GitHub Pages site. The October return is unchanged. Christmas 2026 Heber, the Leavenworth alternate, and the Phoenix scenic run each have their own folder.
+Family Christmas 2026 (snow + hot springs shortlist): https://sharpertool.github.io/back_to_boise/family-christmas-2026/
 
 ## Phoenix 2026 — scenic run to Phoenix
 
