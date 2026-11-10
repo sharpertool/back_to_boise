@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Family Christmas 2026 — area details</title>
 <style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:980px;margin:0 auto;padding:12px 16px;color:#1a202c;line-height:1.45}
 h1{font-size:1.4rem}h2{margin-top:2em;border-bottom:2px solid #e2e8f0;padding-bottom:4px}h3{margin:1em 0 .3em;font-size:1rem;color:#2c5282}
+h3.todo{margin:.55em 0 .45em;padding:10px 12px;background:#c05621;color:#fff;border-radius:10px;font-size:1.2rem;font-weight:800}section{scroll-margin-top:10px}
 .tag{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:10px;background:#edf2f7;margin-left:6px}.pc{background:#e9d8fd}
 table{border-collapse:collapse;font-size:.9rem}td,th{border:1px solid #cbd5e0;padding:4px 8px}a{color:#2b6cb0}ul{margin:.2em 0 .6em 1.1em;padding:0}nav a{margin-right:10px;white-space:nowrap}.fine{color:#4a5568;font-size:.85rem}</style></head>
 <body><p><a href="index.html">← Map</a> · <a href="locations.html">Ranking &amp; tables</a></p>
@@ -17,7 +18,9 @@ document.getElementById("toc").innerHTML=A.map(a=>'<a href="#'+a.id+'">'+esc(a.n
 document.getElementById("areas").innerHTML=A.map(a=>{
  const dr="<h3>Drive times</h3><table><tr><th>From</th><th>Miles</th><th>Hours</th></tr>"+Object.entries(a.drive).map(([k,v])=>"<tr><td>"+esc(k)+"</td><td>"+v[0]+"</td><td>"+v[1]+"</td></tr>").join("")+"</table>";
  const rent=a.rentals.length?"<h3>Rentals (from the map)</h3><ul>"+a.rentals.map(r=>"<li><b>"+esc(r.name)+"</b> — "+esc(r.note)+" "+r.links.map(l=>'<a href="'+esc(l.href)+'" target="_blank" rel="noopener">'+esc(l.label)+"</a>").join(" · ")+"</li>").join("")+"</ul>":"<h3>Rentals</h3><ul><li>None shortlisted.</li></ul>";
- return '<section id="'+a.id+'"><h2>'+esc(a.name)+'<span class="tag'+(a.group==="Near Park City"?" pc":"")+'">'+esc(a.rank)+"</span></h2><p>"+esc(a.overview)+"</p>"+
+ return '<section id="'+a.id+'"><h2>'+esc(a.name)+'<span class="tag'+(a.group==="Near Park City"?" pc":"")+'">'+esc(a.rank)+"</span></h2>"+'<h3 class="todo">Things to do</h3><p>'+esc(a.overview)+"</p>"+
  sec("Things to do with kids &amp; family (Emily 2, Prize 15, Fisher 12, adults)",a.kids)+sec("Hot springs",a.hot)+sec("Sledding / tubing / snow play",a.snow)+sec("Cross-country skiing (Vicki)",a.xc)+sec("Indoor / bad-weather",a.indoor)+sec("Food &amp; groceries",a.food)+sec("RV options for Ed (X195)",a.rv)+dr+rent+'<p class="fine"><a href="index.html">← back to map</a></p></section>';}).join("");
+document.getElementById("areas").insertAdjacentHTML("beforeend",'<section id="reference"><h2>Home cities and Park City<span class="tag">Reference pins</span></h2><h3 class="todo">Things to do</h3><p>Boise, Mountain Home, and Vista are city-level pins for where the families leave from, not places to stay. Park City is Porter’s work reference. Ed excluded it as a stay because it is pricey. Things to do for this trip are in the areas above.</p><p class="fine"><a href="index.html">← back to map</a></p></section>');
+document.getElementById("toc").insertAdjacentHTML("beforeend",'<a href="#reference">Home &amp; Park City</a>');
 if(location.hash){const el=document.querySelector(location.hash);if(el)el.scrollIntoView();}
 </script></body></html>
