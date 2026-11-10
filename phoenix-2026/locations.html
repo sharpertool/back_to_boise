@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Phoenix 2026 — Locations</title>
+<style>
+:root { --bg:#f7fafc; --card:#fff; --ink:#1a202c; --muted:#4a5568; --accent:#2b6cb0; --border:#e2e8f0; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; background:var(--bg); color:var(--ink); line-height:1.45; }
+header { background:#1a365d; color:#fff; padding:1rem 1.25rem; }
+header a { color:#bee3f8; }
+main { max-width: 44rem; margin: 0 auto; padding: 1rem; }
+h1 { margin:0 0 .35rem; font-size:1.35rem; }
+h2 { margin-top:1.75rem; border-bottom:2px solid var(--border); padding-bottom:.35rem; font-size:1.15rem; }
+h3 { margin:0 0 4px; }
+.meta { color:#cbd5e0; font-size:.9rem; }
+.note { background:#fffaf0; border:1px solid #fbd38d; padding:.75rem 1rem; border-radius:8px; margin:1rem 0; }
+.note ul { margin:.4rem 0 0; padding-left:1.15rem; }
+.note li { margin:.35rem 0; }
+a { color:var(--accent); }
+nav { margin:.55rem 0 0; font-size:.95rem; }
+footer { padding:1.25rem; color:var(--muted); font-size:.85rem; max-width:44rem; margin:0 auto; }
+.onx-btn{display:inline-block;margin:8px 8px 0 0;padding:12px 14px;background:#2e6b30;color:#fff!important;border-radius:8px;text-decoration:none;font-weight:bold;min-height:44px}
+.g-btn{display:inline-block;margin:8px 8px 0 0;padding:12px 14px;background:#1a73e8;color:#fff!important;border-radius:8px;text-decoration:none;font-weight:bold;min-height:44px}
+.web-btn{display:inline-block;margin:8px 8px 0 0;padding:12px 14px;background:#4a5568;color:#fff!important;border-radius:8px;text-decoration:none;font-weight:bold;min-height:44px}
+.sit{margin:12px 0;padding:12px;border:2px solid #2b6cb0;border-radius:10px;background:#fff}
+.sit.current{border-color:#dd6b20;background:#fffaf0}
+.sit.green{border-color:#2f855a;background:#f0fff4}
+.sit.paid{border-color:#2b6cb0;background:#ebf8ff}
+.sit.two{border-color:#b7791f;background:#fffaf0}
+.sit.out{border-color:#6b46c1;background:#faf5ff}
+.role{display:inline-block;color:#fff;border-radius:4px;padding:2px 8px;font-size:.78em;font-weight:700;margin-right:6px;vertical-align:middle}
+.role.current{background:#dd6b20}
+.role.sit{background:#2f855a}
+.role.paid{background:#2b6cb0}
+.role.two{background:#b7791f}
+.role.out{background:#6b46c1}
+.role.view{background:#2c7a7b}
+.coords{font-family:ui-monospace,monospace;color:#2d3748;font-size:.92em}
+.jump{margin:.5rem 0 0}
+.jump a{display:inline-block;margin:4px 8px 0 0;padding:8px 10px;background:#edf2f7;border-radius:8px;text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+<h1>Phoenix 2026 — Locations</h1>
+<div class="meta">Ed and Vicki Henderson · 2025 F-350 · X195 about 25–26 ft · three weeks · planning only</div>
+<nav>
+  <a href="index.html">← Trip map</a>
+  · <a href="tonight.html">Tonight</a>
+  · <a href="tomorrow.html">Tomorrow</a>
+  · <a href="../leavenworth-2026/index.html">Leavenworth</a>
+  · <a href="../christmas-2026/index.html">Heber</a>
+  · <a href="../index.html">October trip</a>
+</nav>
+</header>
+<main>
+
+<div class="note"><strong>Planning only. Nothing is reserved.</strong> One unhurried week down from Boise, one week with family in Phoenix, one week back. Interesting country beats staying next to a town. Ed works remote weekdays 6 a.m.–3 p.m. Mountain time, and hitching takes 2–3 hours, so the long days are weekend days. Weekday departures after 3 p.m. are too late for a November tow. The X195 has no black tank: do not plan a dump station. The lifetime Senior Pass is 50% at federal campgrounds that honor it. It does not discount Nevada, Utah, or Arizona state parks, or Maricopa County. No Harvest Hosts site and no Elks RV pad is pinned; a public page did not verify a pad coordinate and length on this corridor.</div>
+
+<p class="jump">
+  <a href="#routes">Routes</a>
+  <a href="#elko">Elko</a>
+  <a href="#ely">Ely</a>
+  <a href="#us93">US-93 south</a>
+  <a href="#stgeorge">St. George</a>
+  <a href="#page">Kanab and Page</a>
+  <a href="#flag">Flagstaff</a>
+  <a href="#phoenix">Phoenix</a>
+  <a href="#east">East of the Wasatch</a>
+  <a href="#twoday">Two-day sit ideas</a>
+</p>
+
+<h2 id="routes">How the lines were drawn</h2>
+<p>Ed’s three corridors are the middle (I-15 through Salt Lake and St. George), the east side of the Wasatch (Provo and Price), and the west (US-93 through Ely). The map draws four routes plus a dashed reference. Miles below are a car router (OSRM), not a tow. Google Directions on the map replaces the line when that service answers. An earlier OSRM set was about 1,067 miles for the Las Vegas route, about 1,059 for a shorter Salt Lake–Flagstaff–I-17 line, and about 932 for US-93 via Twin Falls and Ely.</p>
+<ul>
+<li><strong>A · Las Vegas (middle).</strong> I-84 to Salt Lake, I-15 through St. George and Las Vegas, US-93 via Kingman and Wickenburg to Phoenix. This trace: about 1,065 miles, 19.3 hours by car.</li>
+<li><strong>B · Grand Staircase / Page.</strong> I-84 to Salt Lake, I-15 to St. George, then UT-59 and AZ-389 through Colorado City and Fredonia to Kanab, US-89 via Page to Flagstaff, I-17 to Phoenix. The Zion–Mt. Carmel Tunnel is not on this line. A combined vehicle is limited to 50 feet overall, the trailer to 26 feet from hitch to rear axle, 7 feet 10 inches wide, and 11 feet 4 inches tall (<a href="https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm">NPS</a>). This trace: about 1,092 miles. It is longer than the 1,059-mile Salt Lake–Flagstaff figure because it drops to St. George first.</li>
+<li><strong>C · Great Basin.</strong> Modeled as I-84 to Twin Falls, US-93 via Jackpot and Wells to Ely, US-50/US-6 east to Delta, then I-15 south through Fillmore, St. George, and Las Vegas, then US-93 via Kingman and Wickenburg. This is the Jackpot option, not “out to Snowville, then I-80 west back to Wells.” This trace: about 1,146 miles, 22.4 hours by car.</li>
+<li><strong>D · East of the Wasatch.</strong> I-84 to Salt Lake, I-15 to Spanish Fork, US-6 through Price to Green River, I-70 west to Salina, US-89 south through Panguitch and Kanab (not UT-12, and not the Zion tunnel), US-89 to Page and Flagstaff, I-17 to Phoenix. Capitol Reef on UT-24 and Richfield (about 20 miles west of Salina on I-70) are side trips, not the through-line. This trace: about 1,163 miles.</li>
+<li><strong>Reference · US-93 direct.</strong> Same as C until Ely, then US-93 south all the way to Las Vegas, Kingman, Wickenburg, and Phoenix. No Delta jog. This trace: about 919 miles, 18.4 hours by car. The earlier 932-mile figure is the same corridor measured a different way.</li>
+</ul>
+<p>Boise to Elko on that US-93 path (I-84, US-93, I-80) is about 300 miles and a little over 5 hours by car, not 400. Elko to Ely via Wells is about 189 miles and 3.6 hours by car. Both are weekend mornings, not 3 p.m. starts. November and December days on this run are short, on the order of 9.5–10 hours. Be parked while you can still see the site.</p>
+
+<h2>Read before you go</h2>
+<div class="note">
+<ul>
+<li><strong>Cold sits.</strong> Elko is about 5,000 feet and Ely about 6,400 feet. November and December nights there run to the teens and single digits. US-93 and US-50 can take snow. The X195 is Imperial-rated to about −40°F with the heat and heated tanks on. Freeze risk remains if the heat is off. Page, Kanab, and Flagstaff are high enough to snow. St. George and Phoenix are the mild end.</li>
+<li><strong>Water.</strong> Many spigots shut off after October. The note on each park says what was actually published. Call before you count on a hose. Do not leave a hose connected overnight when it will freeze.</li>
+<li><strong>Nevada BLM.</strong> Unless a site posts otherwise, dispersed camping is 14 days in any 28-day period, then move at least 25 miles. <a href="https://www.blm.gov/programs/recreation/recreation-activities/nevada">BLM Nevada</a>.</li>
+<li><strong>St. George BLM.</strong> Dispersed camping is not allowed inside Red Cliffs National Conservation Area, within a mile of Red Cliffs Recreation Area or Baker Dam Recreation Area, or within a half mile of the Smithsonian Butte Backcountry Byway. Stay limit in that field office is 14 days inside a 30-mile radius in 28 days. <a href="https://www.blm.gov/sites/blm.gov/files/uploads/recreation_utah_stgeorgeCampingBrochure.pdf">Field office camping brochure</a>.</li>
+<li><strong>Pins are search areas.</strong> Each dot is a named park, campground, or byway center from the agency page, Recreation.gov, or the USGS names layer. It is the place you drop into onX. It is not a secret dispersed pad.</li>
+</ul>
+</div>
+
+<h2>Current sit</h2>
+<div class="sit current" id="boise">
+<h3><span class="role current">Current</span> Boise / home</h3>
+<p>Where the map opens. Same home pin as the October map. Leave from here.</p>
+<p class="coords">43.612, -116.392</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/43.612,-116.392,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=43.612,-116.392" target="_blank" rel="noopener">Google Maps</a>
+</div>
+
+<h2 id="elko">Elko area — first night and a two-day</h2>
+<p>Western corridor. Sit long enough to work a couple of weekdays. California Trail Interpretive Center is free, Wednesday–Sunday 8:30 a.m.–5 p.m., closed Thanksgiving, Christmas, and New Year’s, at I-80 exit 292, eight miles west of town (<a href="https://www.blm.gov/learn/interpretive-centers/california-trail-interpretive-center">BLM</a>). That schedule still works after a 3 p.m. workday on Wednesday–Friday.</p>
+
+<div class="sit paid" id="south-fork">
+<h3><span class="role paid">Paid park</span> South Fork State Recreation Area</h3>
+<p>First look for night one. South of Elko on SR-228. Camping is open all year. East Campground has power; the power fee applies if you occupy the site. Water spigots are fill, then unhook. 14 days in a 30-day period. Non-Nevada rate is higher. Not on the Nov 1, 2026 winterization list. Call 775-744-4346. Senior Pass does not apply. Coordinate is the one on the State Parks map link.</p>
+<p class="coords">40.65720, -115.73886</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/40.6572015,-115.7388639,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=40.6572015,-115.7388639" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/south-fork" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="wild-horse">
+<h3><span class="role paid">Paid park</span> Wild Horse State Recreation Area</h3>
+<p>North of Elko on SR-225. Open year-round, 14 days in 30. No hookups on the park page. A May 12, 2026 update said Loop 2 electricity was not yet available. Summer-only water faucets. Nov 1, 2026 winterization: flush restrooms and showers closed, pit toilets open. Colder than town. Coordinate is the State Parks map link.</p>
+<p class="coords">41.66939, -115.80029</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/41.669393,-115.800286,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=41.669393,-115.800286" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/wild-horse" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit green" id="lamoille">
+<h3><span class="role sit">NF search</span> Lamoille Canyon / Thomas Canyon</h3>
+<p>Humboldt-Toiyabe, Ruby Mountains. Pin is Thomas Canyon Campground, 40.6472, -115.4068, 7,200 feet, about 30 miles from Elko. Reservation season is generally Memorial Day to Labor Day; fall first-come has the water off. The canyon road is not plowed. Do not plan a November night here. It is the scenic day when the road is open.</p>
+<p class="coords">40.6472, -115.4068</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/40.6472,-115.4068,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=40.6472,-115.4068" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.fs.usda.gov/r04/humboldt-toiyabe/recreation/thomas-canyon-campground" target="_blank" rel="noopener">Forest Service</a>
+</div>
+
+<div class="sit paid" id="tabor">
+<h3><span class="role paid">BLM fee</span> Tabor Creek, near Wells</h3>
+<p>On the US-93 approach, west of Wells. BLM coordinate 41.41032, -115.10803. Tables and shade. No drinking water listed. On the Jan 2025 Nevada fee-site list. Call Elko District 775-753-0200. Not a hookup park.</p>
+<p class="coords">41.41032, -115.10803</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/41.41032,-115.10803,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=41.41032,-115.10803" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.blm.gov/visit/tabor-creek-campground" target="_blank" rel="noopener">BLM</a>
+</div>
+
+<h2 id="ely">Ely — key multi-day sit</h2>
+<p>A few days, so the work week happens in one place. Great Basin and the railway are truck days. The trailer stays lower.</p>
+
+<div class="sit paid" id="cave-lake">
+<h3><span class="role paid">Paid park</span> Cave Lake State Park, Lake View</h3>
+<p>Off US-50/6/93 at Success Summit. Lake View is open year-round. Elk Flat is closed November 1 through May 1. No hookups listed. Flush toilets and showers may close in extreme cold. Call 775-296-1505. Stay limit on the park page is seven days in 30. The park says a normal winter can put several feet of snow on the ground, and plowing can wait a day or two. Senior Pass does not apply. Coordinate is the State Parks map link.</p>
+<p class="coords">39.18382, -114.71726</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.1838213,-114.7172603,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.1838213,-114.7172603" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/cave-lake" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit green" id="ward">
+<h3><span class="role sit">BLM / NF search</span> Ward Mountain</h3>
+<p>About 6 miles southwest of Ely on US-6. Pin is the BLM north trailhead, 39.22259, -114.96999: free, restrooms, no potable water. The Forest Service campground is across the highway at 39.2092, -114.9712, about 7,350 feet, fee, no hookups. Snow at the summit is likely. Nevada BLM 14-day / 25-mile rule unless posted.</p>
+<p class="coords">39.22259, -114.96999</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.22259,-114.96999,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.22259,-114.96999" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.blm.gov/visit/ward-mountain-recreation-area" target="_blank" rel="noopener">BLM</a>
+<a class="web-btn" href="https://www.fs.usda.gov/r04/humboldt-toiyabe/recreation/ward-mountain-campground" target="_blank" rel="noopener">USFS campground</a>
+</div>
+
+<div class="sit green" id="sacramento">
+<h3><span class="role sit">BLM search</span> Sacramento Pass</h3>
+<p>Free, first-come, 10 sites, 14-day limit, no potable water. On US-50 about 40 miles east of Ely, about 20 miles from Great Basin. The lower backup if the park’s own campgrounds are closed or too short. Coordinate published by BLM: 39.1215, -114.305.</p>
+<p class="coords">39.1215, -114.305</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.1215,-114.305,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.1215,-114.305" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.blm.gov/visit/sacramento-pass-rec-area" target="_blank" rel="noopener">BLM</a>
+</div>
+
+<div class="sit out" id="grba">
+<h3><span class="role out">Outing</span> Great Basin National Park / Lehman Caves</h3>
+<p>Not the sit. Pin is the Lehman Caves Visitor Center, 39.005691, -114.219904. Book tours on the NPS page; winter schedules change. Wheeler Peak Campground allows neither a vehicle nor a towed unit over 24 feet, and it closes for snow, sometimes from September. Baker Creek has no potable water. Do not take the X195 up the Wheeler Peak road. Drive the truck from Ely or from Sacramento Pass.</p>
+<p class="coords">39.00569, -114.21990</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.005691,-114.219904,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.005691,-114.219904" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.nps.gov/grba/planyourvisit/lehman-caves-tours.htm" target="_blank" rel="noopener">Lehman Caves</a>
+</div>
+
+<div class="sit out" id="ovens">
+<h3><span class="role out">Outing</span> Ward Charcoal Ovens State Historic Park</h3>
+<p>Open every day of the year. Camping is described on the park page, 14 days in 30. Do not climb the ovens. Senior Pass does not apply. Winter use of the trails is ski and snowshoe, not a promise the spur is plowed. Coordinate is the State Parks map link.</p>
+<p class="coords">39.03690, -114.84730</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.0368996,-114.8472976,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.0368996,-114.8472976" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/ward-charcoal-ovens" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<h2 id="us93">US-93 south of Ely</h2>
+<p>The direct reference line and the Las Vegas half of Route A and Route C. These are the named stops between Ely and Las Vegas. Cathedral Gorge is the one with electric and water still described as year-round.</p>
+
+<div class="sit paid" id="cathedral">
+<h3><span class="role paid">Paid park</span> Cathedral Gorge State Park</h3>
+<p>At Pioche. 22 sites with electric hookups. Water and flush restrooms with showers are open year-round on the park page. 14 days in 30. Open every day. Not on the Nov 1, 2026 winterization list. Senior Pass does not apply.</p>
+<p class="coords">37.82405, -114.41546</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.8240508,-114.4154551,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.8240508,-114.4154551" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/cathedral-gorge" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="echo">
+<h3><span class="role paid">Paid park</span> Echo Canyon State Park</h3>
+<p>East of Pioche. Nov 1, 2026 winterization notice: water off at each RV site; bathrooms and showers still available; group bathroom closed. Senior Pass does not apply.</p>
+<p class="coords">37.91101, -114.26728</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.911011,-114.267281,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.911011,-114.267281" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/echo-canyon" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="kershaw">
+<h3><span class="role paid">Paid park</span> Kershaw-Ryan State Park</h3>
+<p>Rainbow Canyon at Caliente, on US-93. Nov 1, 2026 notice: day-use water off; showers, bathrooms, and frost-free spigots in the campground still open. Senior Pass does not apply.</p>
+<p class="coords">37.58886, -114.52129</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.5888639,-114.521294,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.5888639,-114.521294" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/kershaw-ryan" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit green" id="patterson">
+<h3><span class="role sit">BLM search</span> Patterson Pass</h3>
+<p>No fee. From Pioche, 47 miles north on US-93, then 1 mile west. Restrooms, tables, grills, shade. No drinking water listed. Ely District 775-726-8100. BLM coordinate 37.97734, -114.53748.</p>
+<p class="coords">37.97734, -114.53748</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.97734,-114.53748,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.97734,-114.53748" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.blm.gov/visit/patterson-pass" target="_blank" rel="noopener">BLM</a>
+</div>
+
+<div class="sit two" id="vof">
+<h3><span class="role two">Two-day</span> Valley of Fire State Park</h3>
+<p>Short side off I-15, before Las Vegas. Two campgrounds, 72 sites, shade, grills, water, restrooms, showers, reservations, 14 days in 30. The park closes every year December 1 through December 14, including anyone on foot. Do not plan those dates. Senior Pass does not apply. Coordinate is the State Parks map link.</p>
+<p class="coords">36.43035, -114.51433</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/36.4303452,-114.5143309,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=36.4303452,-114.5143309" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://parks.nv.gov/parks/valley-of-fire" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="boulder-beach">
+<h3><span class="role paid">NPS campground</span> Boulder Beach, Lake Mead</h3>
+<p>Open year-round, large sites, water spigots. Electric hookups were not listed in the Recreation.gov text retrieved here. Entrance fee is separate. Confirm the Senior Pass camping discount on the reservation screen. Max stay on the listing is 30 nights. The two-day town is Boulder City; Hoover Dam is a truck stop. Do not take the trailer across the dam.</p>
+<p class="coords">36.03709, -114.80175</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/36.037088,-114.801748,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=36.037088,-114.801748" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.recreation.gov/camping/campgrounds/10075120" target="_blank" rel="noopener">Recreation.gov</a>
+<a class="web-btn" href="https://www.nps.gov/lake/index.htm" target="_blank" rel="noopener">Lake Mead</a>
+</div>
+
+<h2 id="stgeorge">St. George — key multi-day sit</h2>
+<p>Mild winter. A few days if you are on the I-15 corridor (Routes A, B, and C). Zion is a day in the truck from the south entrance. Leave the trailer in one of these parks.</p>
+
+<div class="sit paid" id="quail">
+<h3><span class="role paid">Paid park</span> Quail Creek State Park</h3>
+<p>Open year-round. Drinking water in the campground. Partial-hookup sites and standard sites. Published November and December hours are 7 a.m. to 5 p.m.; confirm an overnight camper can pass the gate after 5. The park describes a mild winter. Senior Pass does not apply. Reservations 1-800-322-3770. Recreation.gov coordinate.</p>
+<p class="coords">37.18540, -113.39760</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.1854,-113.3976,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.1854,-113.3976" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://stateparks.utah.gov/parks/quail-creek/" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="sand-hollow">
+<h3><span class="role paid">Paid park</span> Sand Hollow State Park</h3>
+<p>Hurricane, next to St. George. Recreation.gov coordinate 37.1218007, -113.3852791. This pass did not re-read a hookup table. Confirm winter water and electric on the state parks page. Senior Pass does not apply. Quail Creek is the one that publishes water and electric in the sources checked here.</p>
+<p class="coords">37.12180, -113.38528</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.1218007,-113.3852791,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.1218007,-113.3852791" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://stateparks.utah.gov/parks/sand-hollow/" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit paid" id="snow">
+<h3><span class="role paid">Paid park</span> Snow Canyon State Park</h3>
+<p>The park page lists drinking water, electricity, and year-round camping, and it says there is no camping outside the campground. Reservations are recommended. Senior Pass does not apply. Recreation.gov coordinate. Also the hike day.</p>
+<p class="coords">37.20306, -113.64139</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.203056,-113.641389,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.203056,-113.641389" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://stateparks.utah.gov/parks/snow-canyon/" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit out" id="zion">
+<h3><span class="role out">Outing</span> Zion National Park</h3>
+<p>Truck only from St. George to the south entrance. The tow routes do not use the Mt. Carmel tunnel. Watchman non-electric sites do not take a vehicle or combination 19 feet and over, so the X195 does not belong in that loop. Pin is the Recreation.gov park coordinate, 37.298393, -113.026514.</p>
+<p class="coords">37.29839, -113.02651</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.298393,-113.026514,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.298393,-113.026514" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm" target="_blank" rel="noopener">Tunnel limits</a>
+</div>
+
+<p>Red Cliffs Campground is inside the NCA, open year-round, reservation only, potable water, no hookups, Senior Pass takes half off the camping fee, and the access rejects a vehicle over 11 feet 9 inches tall or wide. Measure before you count on it. Dispersed camping in the NCA is prohibited. Pine Valley Recreation Area on the Dixie is closed until further notice, so it is not a pin. Baker Dam is the other small BLM campground north of town (no potable water in the field-office brochure); it is not pinned.</p>
+
+<h2 id="page">Kanab and Page</h2>
+<p>Routes B and D. Higher and more likely to snow than St. George.</p>
+
+<div class="sit paid" id="coral">
+<h3><span class="role paid">Paid park</span> Coral Pink Sand Dunes State Park</h3>
+<p>The park page lists drinking water, electricity, and showers. Hours are posted as daylight hours. A hose left on overnight can freeze even when the spigot works. Senior Pass does not apply. Do not plan the dump. Recreation.gov coordinate.</p>
+<p class="coords">37.03768, -112.73253</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.037682,-112.7325284,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.037682,-112.7325284" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://stateparks.utah.gov/parks/coral-pink/" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit green" id="whitehouse">
+<h3><span class="role sit">BLM search</span> White House Campground, Paria</h3>
+<p>Grand Staircase named camp on the way toward the Vermilion Cliffs. Recreation.gov: open year-round, first-come, vault toilets, seven car sites plus walk-in tents. Confirm the fee on the board. Not a hookup park. Scout the dirt in the truck before you bring the trailer. Coordinate 37.07993889, -111.8902833.</p>
+<p class="coords">37.07994, -111.89028</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.07993889,-111.8902833,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.07993889,-111.8902833" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.recreation.gov/camping/campgrounds/256924" target="_blank" rel="noopener">Recreation.gov</a>
+</div>
+
+<div class="sit paid" id="lonerock">
+<h3><span class="role paid">NPS primitive</span> Lone Rock Beach, Glen Canyon</h3>
+<p>The Page camping search. Primitive beach, not a hookup park. $14 per night per vehicle plus entrance, first-come. No potable water. Vault toilets year-round; flush toilets and showers are the summer setup. Sandy after the pavement. Senior or Access Pass is 50% off the camping fee and does not make it free (fees page updated Nov 4, 2026). 14 consecutive days, 30 days a calendar year in the park. Pin 37.01516, -111.53777 is an NPS-published Lone Rock coordinate.</p>
+<p class="coords">37.01516, -111.53777</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/37.01516,-111.53777,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=37.01516,-111.53777" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.nps.gov/glca/planyourvisit/lone-rock-beach.htm" target="_blank" rel="noopener">NPS</a>
+</div>
+
+<h2 id="flag">Flagstaff and the Verde</h2>
+<p>Routes B and D use I-17 south of Flagstaff. Flagstaff itself snows. Bonito Campground at Sunset Crater posted a close for roadwork starting September 21, 2026, so it is an outing pin only.</p>
+
+<div class="sit paid" id="ashurst">
+<h3><span class="role paid">Forest campground</span> Ashurst Lake, Coconino</h3>
+<p>South of Flagstaff, toward Mormon Lake. Recreation.gov: no utility hookups, drinking water, trailers up to 35 feet. The X195 is under 35 feet. A November open date was not in the text retrieved. Snow is the risk. Coordinate 35.01953, -111.40847.</p>
+<p class="coords">35.01953, -111.40847</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/35.01953,-111.40847,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=35.01953,-111.40847" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.recreation.gov/camping/campgrounds/10210112" target="_blank" rel="noopener">Recreation.gov</a>
+</div>
+
+<div class="sit paid" id="kaibab-lake">
+<h3><span class="role paid">Forest campground</span> Kaibab Lake, Williams</h3>
+<p>Kaibab National Forest, about 30 miles west of Flagstaff, off the I-17 line. Recreation.gov: trailers up to 40 feet, 6,800 feet, potable water for drinking only (do not fill the RV tank there). November open date was not in the text retrieved. Call the Williams district. Coordinate 35.2811111, -112.1569444.</p>
+<p class="coords">35.28111, -112.15694</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/35.2811111,-112.1569444,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=35.2811111,-112.1569444" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.recreation.gov/camping/campgrounds/233957" target="_blank" rel="noopener">Recreation.gov</a>
+</div>
+
+<p>Verde Valley (Camp Verde, Montezuma Castle, Tuzigoot, Jerome) is a two-day truck loop off I-17. Potato Patch Campground on 89A caps a combined vehicle at 40 feet, at 7,200 feet, so the hitched rig does not fit. Prescott National Forest stay limit printed on that listing is 14 days in 30, including dispersed. No Verde campground is pinned.</p>
+
+<h2 id="phoenix">Phoenix family week</h2>
+<p>The week in town. Two different searches: a county park with hookups, or a permit zone on the Tonto. BLM Phoenix District land is the other dispersed search; no single district-wide coordinate is published here, so it is not a pin. Call the district before you treat a spot as legal.</p>
+
+<div class="sit paid" id="pleasant">
+<h3><span class="role paid">County park</span> Lake Pleasant Regional Park</h3>
+<p>Northwest of Phoenix. Developed sites have water and electricity. Semi-developed sites do not all have hookups. Shoreline camping is not available. 14 nights in any 28 days. Reservations. Senior Pass does not apply. Pin is the Recreation.gov Lake Pleasant coordinate, 33.86337, -112.32155.</p>
+<p class="coords">33.86337, -112.32155</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/33.86337,-112.32155,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=33.86337,-112.32155" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.maricopacountyparks.net/park-locator/lake-pleasant-regional-park/camping/" target="_blank" rel="noopener">County page</a>
+</div>
+
+<div class="sit green" id="bulldog">
+<h3><span class="role sit">Permit zone</span> Bulldog Canyon, Tonto NF</h3>
+<p>East side, Saguaro Lake / Mesa side of the valley. Pin is the Recreation.gov point for the OHV permit zone, 33.550932, -111.581588, not a campsite. Since January 1, 2025 every motorized vehicle in the zone needs a Tonto OHV permit, including the truck. No camping in the staging areas, none in the first mile from a gate (two miles from Blue Point), and none within 300 feet of the road in that stretch. Past that, 14 days in 30. No running water and no developed campground in the zone. Buy the permit before you drive in.</p>
+<p class="coords">33.55093, -111.58159</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/33.550932,-111.581588,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=33.550932,-111.581588" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.fs.usda.gov/sites/nfs/files/r03/tonto/publication/OHV%20Permit%20Zones%20Rules%20Regulations%2020250516.pdf" target="_blank" rel="noopener">Rules PDF</a>
+</div>
+
+<div class="sit green" id="wildcow">
+<h3><span class="role sit">BLM search</span> Wild Cow Springs, Hualapai Mountains</h3>
+<p>The Kingman public-land search, from the Recreation.gov coordinate 35.0613, -113.86918. Fee, water, and November road status were not on the page retrieved. Call the <a href="https://www.blm.gov/office/kingman-field-office">Kingman Field Office</a> before you climb. Hualapai Mountain Park is the county alternative in the two-day note; a pad coordinate for that county park was not taken from an agency page, so it is not a separate pin.</p>
+<p class="coords">35.0613, -113.86918</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/35.0613,-113.86918,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=35.0613,-113.86918" target="_blank" rel="noopener">Google Maps</a>
+</div>
+
+<h2 id="east">East of the Wasatch, and the I-84 side</h2>
+
+<div class="sit paid" id="little-sahara">
+<h3><span class="role paid">BLM fee area</span> Little Sahara Recreation Area</h3>
+<p>Fillmore Field Office, the named BLM area for Delta and Fillmore on Route C. Four campgrounds were listed open, and dispersed camping is allowed outside them. On Nov 10, 2026 the page said water fill, the dump stations, and flush toilets were closed, and the visitor center is closed November 8 through spring 2027. Camping is included in the entry fee, first-come. Sand OHV area: keep the trailer on the paved campground roads. Recreation.gov coordinate 39.726489, -112.307417.</p>
+<p class="coords">39.72649, -112.30742</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/39.726489,-112.307417,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=39.726489,-112.307417" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.blm.gov/visit/little-sahara-recreation-area" target="_blank" rel="noopener">BLM</a>
+</div>
+
+<div class="sit paid" id="green-river-sp">
+<h3><span class="role paid">Paid park</span> Green River State Park</h3>
+<p>In town on Route D. Recreation.gov coordinate 38.9900343, -110.1569074. Confirm winter water and hookups on the state parks page. Senior Pass does not apply. Goblin Valley and the San Rafael are the days out, not this pad.</p>
+<p class="coords">38.99003, -110.15691</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/38.9900343,-110.1569074,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=38.9900343,-110.1569074" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://stateparks.utah.gov/parks/green-river/" target="_blank" rel="noopener">Park page</a>
+</div>
+
+<div class="sit two" id="fruita">
+<h3><span class="role two">Two-day side trip</span> Capitol Reef, Fruita Campground</h3>
+<p>UT-24, off Route D. Not the modeled highway (that stays on I-70 to Salina, then US-89). Fruita is reservable year-round. Recreation.gov mentions potable water and a dump, picnic tables and fire rings, and a 14-day limit per year. No cell service. Confirm the site length. Senior Pass covers entrance; confirm the camping line. Coordinate 38.2824861, -111.2468889.</p>
+<p class="coords">38.28249, -111.24689</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/38.2824861,-111.2468889,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=38.2824861,-111.2468889" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.nps.gov/care/" target="_blank" rel="noopener">Park</a>
+</div>
+
+<div class="sit green" id="curlew">
+<h3><span class="role sit">Grassland</span> Curlew Campground</h3>
+<p>Curlew National Grassland, about 7 miles north of Snowville. On the I-84 used by Routes A, B, and D. Route C turns south at Twin Falls and misses it. Recreation.gov: open year-round, no electric, water, or sewer hookups. Stone Reservoir is closed to boats. Concessionaire 208-757-3999; confirm any fee. Coordinate 42.0705556, -112.6913889.</p>
+<p class="coords">42.07056, -112.69139</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/42.0705556,-112.6913889,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=42.0705556,-112.6913889" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.recreation.gov/camping/campgrounds/233970" target="_blank" rel="noopener">Recreation.gov</a>
+</div>
+
+<div class="sit two" id="ciro">
+<h3><span class="role two">Two-day</span> City of Rocks National Reserve</h3>
+<p>South of I-84 between Burley and Snowville, so it is on Routes A, B, and D, not on the Jackpot line. The reserve is open year-round; snow can close roads. The campground has seasonal water and some electric; confirm which loop is open in November. 14 days in 30. Pin is the campground coordinate 42.067203, -113.701382. Silent City is the walk.</p>
+<p class="coords">42.06720, -113.70138</p>
+<a class="onx-btn" href="https://webmap.onxmaps.com/offroad/map/query/42.067203,-113.701382,13/overview" target="_blank" rel="noopener">onX Offroad</a>
+<a class="g-btn" href="https://www.google.com/maps?q=42.067203,-113.701382" target="_blank" rel="noopener">Google Maps</a>
+<a class="web-btn" href="https://www.nps.gov/ciro/planyourvisit/camping.htm" target="_blank" rel="noopener">Camping</a>
+</div>
+
+<p>San Rafael Swell is real BLM country south of Price and around Green River. A range-center dot would sit in country that may not be a road. No Swell campsite is pinned. Drop into onX from Green River or Price and use the field office rules. Nine Mile Canyon’s BLM byway point is 39.55555, -110.6678, no fee on that listing, and it is a truck scout.</p>
+
+<h2 id="twoday">Two-day sit ideas</h2>
+<p>Gold squares on the map. These are places worth two days or a few, not drive-through exits. Pick from the list. The camping search named in each row is one of the pins above. Hours that were not re-read this pass say so.</p>
+
+<div class="sit two">
+<h3><span class="role two">Elko</span> Western corridor, Route C and the US-93 reference</h3>
+<p class="coords">40.83243, -115.76314 · USGS populated place</p>
+<p>Highlights: <a href="https://www.blm.gov/learn/interpretive-centers/california-trail-interpretive-center">California Trail Interpretive Center</a> (free, Wed–Sun 8:30–5, closed Thanksgiving, Christmas, New Year’s) and Lamoille Canyon when the road is open. Winter: town nights in the teens or single digits; the canyon road is not a November camp. Nearby search: South Fork, Wild Horse, the Lamoille pin.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Ely</span> Route C and the US-93 reference</h3>
+<p class="coords">39.24744, -114.88864 · USGS populated place</p>
+<p>Highlights: <a href="https://nnry.com/">Nevada Northern Railway</a> (check the winter schedule), <a href="https://parks.nv.gov/parks/ward-charcoal-ovens">Ward Charcoal Ovens</a> (open every day), <a href="https://www.nps.gov/grba/planyourvisit/lehman-caves-tours.htm">Lehman Caves / Great Basin</a> (truck; Wheeler Peak campground is a 24-foot limit and closes for snow). Nearby search: Cave Lake, Ward Mountain, Sacramento Pass.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Delta</span> Route C</h3>
+<p class="coords">39.35218, -112.57718 · USGS populated place</p>
+<p>Highlights: <a href="https://topazmuseum.org/">Topaz Museum</a> (confirm winter hours) and the Great Basin Museum in town (confirm hours locally; no web address is linked). Nearby search: Little Sahara.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Fillmore</span> Route C, on I-15</h3>
+<p class="coords">38.96886, -112.32356 · USGS populated place</p>
+<p>Highlight: <a href="https://stateparks.utah.gov/parks/territorial-statehouse/">Territorial Statehouse State Park</a>. Confirm hours on that page. Nearby search: Little Sahara, to the north.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Cedar City</span> Routes A and B, and C after it joins I-15</h3>
+<p class="coords">37.67748, -113.06190 · USGS populated place</p>
+<p>Highlight: <a href="https://www.nps.gov/cebr/planyourvisit/conditions.htm">Cedar Breaks</a>. Visitor center closed about mid-October to late May. SR-148 to the south overlooks is usually closed about mid-November to mid-May. Over 10,000 feet. The pin is the USGS summit name, not a lot. Nearby pinned camping is at St. George, not in the closed Pine Valley area.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">St. George</span> Routes A, B, and C</h3>
+<p class="coords">37.10415, -113.58413 · USGS populated place</p>
+<p>Highlights: Zion from the south entrance in the truck (<a href="https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm">tunnel limits</a>), <a href="https://stateparks.utah.gov/parks/snow-canyon/">Snow Canyon</a>, and the Quail Creek / Sand Hollow campgrounds. Mild. Red Cliffs NCA has no dispersed camping.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Kanab</span> Routes B and D</h3>
+<p class="coords">37.04749, -112.52633 · USGS populated place</p>
+<p>Highlights: <a href="https://stateparks.utah.gov/parks/coral-pink/">Coral Pink Sand Dunes</a>, <a href="https://bestfriends.org/sanctuary">Best Friends</a> (a scheduled visit, not a camp), and Vermilion Cliffs via the White House / Paria pin. US-89 can snow. The Wave is a permit hike, not a night.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Page</span> Routes B and D</h3>
+<p class="coords">36.91473, -111.45584 · USGS populated place</p>
+<p>Highlights: <a href="https://www.nps.gov/glca/planyourvisit/horseshoe-bend.htm">Horseshoe Bend</a> (truck), Glen Canyon Dam via the <a href="https://www.nps.gov/glca/planyourvisit/visitorcenters.htm">NPS visitor centers page</a>, and <a href="https://navajonationparks.org/">Antelope Canyon</a> (Navajo Nation guided tours; confirm winter trips). Nearby search: Lone Rock, primitive, no potable water off season.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Flagstaff</span> Routes B and D</h3>
+<p class="coords">35.19807, -111.65128 · USGS populated place</p>
+<p>Highlights: <a href="https://lowell.edu/">Lowell Observatory</a>, <a href="https://www.nps.gov/waca/">Walnut Canyon</a>, <a href="https://www.nps.gov/sucr/">Sunset Crater</a> and <a href="https://www.nps.gov/wupa/">Wupatki</a>. Confirm winter hours. Bonito Campground closed for roadwork starting Sept 21, 2026. Snow is normal. Nearby search: Ashurst Lake and Kaibab Lake at Williams, with the winter caveat on each.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Camp Verde / Verde Valley</span> Routes B and D, off I-17</h3>
+<p class="coords">34.56364, -111.85433 · USGS Camp Verde</p>
+<p>Highlights: <a href="https://www.nps.gov/moca/">Montezuma Castle</a>, <a href="https://www.nps.gov/tuzi/">Tuzigoot</a>, and Jerome. Potato Patch will not take the hitched rig (40-foot combined limit). Nearest pinned searches are Lake Pleasant and Bulldog Canyon, south toward Phoenix, not a Verde campground.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Kingman</span> Routes A, C, and the reference</h3>
+<p class="coords">35.18945, -114.05302 · USGS populated place</p>
+<p>Highlights: Historic Route 66 Museum at the Powerhouse (<a href="https://www.explorekingman.com/">Explore Kingman</a> for hours) and a look at Hualapai Mountain Park if the county confirms a November site. Nearby search: Wild Cow Springs.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Boulder City</span> Routes A, C, and the reference</h3>
+<p class="coords">35.97860, -114.83250 · USGS populated place</p>
+<p>Highlights: Hoover Dam and Lake Mead (<a href="https://www.nps.gov/lake/index.htm">NPS</a>). Do not take the trailer across the dam. Nearby search: Boulder Beach.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Valley of Fire</span> Short side of A, C, and the reference</h3>
+<p class="coords">36.43035, -114.51433</p>
+<p>The park is the sit. Closed December 1–14 every year. Water, restrooms, showers, reservations. See the card above.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Wickenburg</span> Routes A, C, and the reference</h3>
+<p class="coords">33.96865, -112.72963 · USGS populated place</p>
+<p>Highlight: <a href="https://westernmuseum.org/">Desert Caballeros Western Museum</a>. Confirm hours. No Wickenburg campground is pinned. Lake Pleasant is the nearest developed pin, back toward Phoenix.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Price</span> Route D</h3>
+<p class="coords">39.59942, -110.81073 · USGS populated place</p>
+<p>Highlights: <a href="https://eastern.usu.edu/prehistoric-museum/">USU Eastern Prehistoric Museum</a> and <a href="https://www.blm.gov/visit/nine-mile-canyon">Nine Mile Canyon</a> (truck). Nearby developed pin to the south is Green River State Park.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Green River</span> Route D</h3>
+<p class="coords">38.99526, -110.16181 · USGS populated place</p>
+<p>Highlights: <a href="https://stateparks.utah.gov/parks/goblin-valley/">Goblin Valley</a> and a San Rafael day on BLM, scouted in onX. Nearby: Green River State Park. No Swell site pin.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Goblin Valley</span> Side of Route D</h3>
+<p class="coords">38.56897, -110.70629 · Recreation.gov park coordinate</p>
+<p>The valley is the hike and a possible night. Confirm winter water and hookups on the state parks page; an automated read was blocked. Senior Pass does not apply.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Capitol Reef / Fruita</span> Side of Route D on UT-24</h3>
+<p class="coords">38.28249, -111.24689</p>
+<p>See the Fruita card. Not the through-route. Scenic drive and petroglyphs on UT-24. Year-round reservations, 14 days per year.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">Richfield</span> A 20-mile jog west of the Route D turn at Salina</h3>
+<p class="coords">38.77247, -112.08411 · USGS populated place</p>
+<p>Highlight: <a href="https://stateparks.utah.gov/parks/fremont-indian/">Fremont Indian State Park</a>. Fish Lake is high and a poor November trailer target; Doctor Creek was not pinned. The modeled line does not pass Richfield.</p>
+</div>
+
+<div class="sit two">
+<h3><span class="role two">City of Rocks</span> Routes A, B, and D on the I-84 side</h3>
+<p class="coords">42.06720, -113.70138 · campground</p>
+<p>Not on Route C. <a href="https://www.nps.gov/ciro/planyourvisit/hours.htm">Open year-round</a>, roads can close in snow. <a href="https://www.nps.gov/ciro/planyourvisit/camping.htm">Camping</a> has seasonal water and some electric. 14 days in 30. California Trail ruts and the Silent City.</p>
+</div>
+
+<h2>Looked at, not pinned</h2>
+<ul>
+<li><strong>Angel Lake</strong> (Humboldt-Toiyabe, near Wells). Forest Service page shows the site closed for the season; reservations are generally Memorial Day to Labor Day. Not a November camp.</li>
+<li><strong>Berry Creek dispersed</strong> and the other high Schell Creek camps (Timber Creek, East Creek). Forest Service seasons end in September or mid-October. Left off so they do not look open.</li>
+<li><strong>Comins Lake.</strong> USGS reservoir point 39.15162, -114.80770, near Ely. No official campground page was found. Do not assume the shore is legal camping.</li>
+<li><strong>North Wildhorse BLM</strong> campground lists a 24-foot maximum trailer. The X195 is about 25–26 feet. Wilson Reservoir’s road is not maintained in winter, and BLM has closed that access for fire. Zunino-Jiggs is described in the Elko business plan as reachable year-round on SR-228, but an agency coordinate was not in the pages read here, so it is not pinned. Call 775-753-0200.</li>
+<li><strong>Cleve Creek BLM</strong> says it is not suitable for large trailers. Garnet Hill says RVs and large trailers are not recommended.</li>
+<li><strong>Beaver Dam State Park.</strong> Nov 1, 2026 notice: winter access may be limited or impassable, campground water off, water at the fee station.</li>
+<li><strong>Spring Valley State Park</strong> near Pioche was not on that winterization list. Not pinned, to keep the US-93 set to Cathedral Gorge, Echo Canyon, Kershaw-Ryan, and Patterson Pass.</li>
+<li><strong>Bear River / Golden Spike.</strong> The refuge and <a href="https://www.nps.gov/gosp/index.htm">Golden Spike</a> sit near Brigham City where I-84 meets I-15. November hours for a real two-day were not confirmed, so there is no pin. City of Rocks is the Snowville-side two-day that did check out.</li>
+<li><strong>Red Cliffs Campground</strong> height and width limit, and <strong>Pine Valley</strong> closed, are under St. George above.</li>
+<li><strong>Doctor Creek</strong> at Fish Lake is a high forest campground with no hookups. Not pinned for a November trailer.</li>
+</ul>
+
+<h2>Sources checked Nov 10, 2026</h2>
+<ul>
+<li>Nevada State Parks pages for South Fork, Wild Horse, Cave Lake, Cathedral Gorge, Echo Canyon, Kershaw-Ryan, Valley of Fire, and Ward Charcoal Ovens. Map-link coordinates from those pages. Winterization notice dated Nov 1, 2026 (Wild Horse, Echo Canyon, Kershaw-Ryan, Beaver Dam named; South Fork, Cathedral Gorge, and Valley of Fire were not on that list).</li>
+<li><a href="https://www.blm.gov/programs/recreation/recreation-activities/nevada">BLM Nevada camping rules</a> · Ward Mountain, Sacramento Pass, Patterson Pass, Tabor Creek, Little Sahara, Nine Mile Canyon, California Trail Interpretive Center.</li>
+<li>Forest Service: Thomas Canyon, Ward Mountain Campground. Recreation.gov: Curlew, White House, Fruita, Boulder Beach, Kaibab Lake, Ashurst Lake, Bonito (close dated Sept 21, 2026), state-park and NRA area coordinates.</li>
+<li><a href="https://www.nps.gov/zion/planyourvisit/the-zion-mount-carmel-tunnel.htm">Zion tunnel limits</a> · <a href="https://www.nps.gov/cebr/planyourvisit/conditions.htm">Cedar Breaks conditions</a> · <a href="https://www.nps.gov/glca/planyourvisit/lone-rock-beach.htm">Lone Rock</a> · <a href="https://www.nps.gov/glca/planyourvisit/fees.htm">Glen Canyon fees</a> (updated Nov 4, 2026) · <a href="https://www.nps.gov/ciro/planyourvisit/camping.htm">City of Rocks camping</a>.</li>
+<li><a href="https://www.maricopacountyparks.net/park-locator/lake-pleasant-regional-park/camping/">Lake Pleasant camping</a> · <a href="https://www.fs.usda.gov/sites/nfs/files/r03/tonto/publication/OHV%20Permit%20Zones%20Rules%20Regulations%2020250516.pdf">Tonto OHV permit rules</a> · St. George BLM camping brochure.</li>
+<li>Towns and Horseshoe Bend and Cedar Breaks summit: USGS Geographic Names.</li>
+<li>Route miles: OSRM driving traces through the town coordinates named above. Google Directions on the map is the line you see after it loads.</li>
+</ul>
+
+</main>
+<footer>
+Phoenix 2026 planning map. Prices, winter water, and road plowing change. Call before you count on a spigot, a pad, or a canyon road.
+Other trips stay where they are: <a href="../leavenworth-2026/index.html">Leavenworth</a>,
+<a href="../christmas-2026/index.html">Heber</a>,
+<a href="../index.html">October return</a>.
+</footer>
+</body>
+</html>

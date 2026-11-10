@@ -1,6 +1,19 @@
 # Trip maps — Ed and Vicki Henderson
 
-Trip maps on this GitHub Pages site. The October return is unchanged. Christmas 2026 Heber and the Leavenworth alternate each have their own folder.
+Trip maps on this GitHub Pages site. The October return is unchanged. Christmas 2026 Heber, the Leavenworth alternate, and the Phoenix scenic run each have their own folder.
+
+## Phoenix 2026 — scenic run to Phoenix
+
+Three weeks, planning only: an unhurried week down from Boise, a week with family in Phoenix, a week back. F-350 and the X195. No black tank. The map opens on Boise.
+
+| Page | URL |
+|---|---|
+| **Map** | https://sharpertool.github.io/back_to_boise/phoenix-2026/ |
+| **Locations** | https://sharpertool.github.io/back_to_boise/phoenix-2026/locations.html |
+| Tonight (home) | https://sharpertool.github.io/back_to_boise/phoenix-2026/tonight.html |
+| Tomorrow (Elko-area first night) | https://sharpertool.github.io/back_to_boise/phoenix-2026/tomorrow.html |
+
+Four toggleable routes plus a dashed US-93 reference. Middle corridor is I-15 through Salt Lake and St. George (Route A). East of the Wasatch is Provo, Price, Green River, then US-89 (Route D). West is US-93 through Ely (the reference, and Route C as far as Ely before it turns east to Delta). Route B leaves I-15 at St. George for Kanab and Page and does not use the Zion tunnel. Orange is home. Green is a named public-land search. Light blue is a paid campground or park. Gold squares are two-day sit ideas. Purple stars are outings. White diamonds are viewpoints.
 
 ## Leavenworth 2026 — alternate Christmas (Wenatchee Valley)
 
