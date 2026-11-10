@@ -532,14 +532,43 @@
     lastDest = null;
     setMsg(OPEN_NOTE);
   }
-  function directionsRoute(req) {
-    return new Promise((resolve, reject) => {
-      if (!directionsService) { reject(new Error("Directions service is not available.")); return; }
-      directionsService.route(req, (result, status) => {
-        if (status === "OK" && result) resolve(result);
-        else reject(new Error("Directions: " + status));
-      });
+  async function computeRoutes(origin, dest, vias) {
+    const body = {
+      origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+      destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
+      travelMode: "DRIVE",
+      routingPreference: "TRAFFIC_UNAWARE",
+      polylineQuality: "OVERVIEW"
+    };
+    if (vias && vias.length) {
+      body.intermediates = vias.map((p) => ({
+        location: { latLng: { latitude: p.lat, longitude: p.lng } }
+      }));
+    }
+    const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": API_KEY,
+        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline"
+      },
+      body: JSON.stringify(body)
     });
+    let data = null;
+    try { data = await res.json(); } catch (_) { /* ignore */ }
+    if (!res.ok) {
+      const m = (data && data.error && data.error.message) || ("HTTP " + res.status);
+      throw new Error(m);
+    }
+    if (!data || !data.routes || !data.routes.length) throw new Error("No driving route.");
+    const r = data.routes[0];
+    if (!gm.encoding) {
+      const geo = await google.maps.importLibrary("geometry");
+      gm.encoding = geo.encoding;
+    }
+    const path = gm.encoding.decodePath(r.polyline.encodedPolyline);
+    const sec = parseFloat(String(r.duration || "0").replace("s", "")) || 0;
+    return { path: path, meters: r.distanceMeters || 0, sec: sec };
   }
   async function routeTo(lat, lng, name) {
     const dest = { lat: Number(lat), lng: Number(lng), name: name || "Destination" };
@@ -560,29 +589,24 @@
     showPanel(originName, origin, dest);
     $("dir-summary").textContent = "Routing…";
     try {
-      const result = await directionsRoute({
-        origin: origin,
-        destination: dest,
-        travelMode: google.maps.TravelMode.DRIVING
-      });
+      const result = await computeRoutes(origin, dest, null);
       if (lastDest !== dest) return;
-      const r = result.routes[0];
       const line = new google.maps.Polyline({
         map: map,
-        path: r.overview_path,
+        path: result.path,
         strokeColor: "#c53030",
         strokeOpacity: 0.95,
         strokeWeight: 6,
         zIndex: 40
       });
       pinRouteLines = [line];
-      let meters = 0, sec = 0;
-      r.legs.forEach((leg) => { meters += leg.distance.value; sec += leg.duration.value; });
-      $("dir-summary").textContent = fmtMiles(meters) + " · " + fmtDuration(sec);
-      $("dir-note").textContent = "Car time from Google. Towing is slower, and hitching is 2–3 hours before you roll. The colored lines are the whole-trip corridors.";
+      $("dir-summary").textContent = fmtMiles(result.meters) + " · " + fmtDuration(result.sec);
+      $("dir-note").textContent = "Car time from Google Routes. Towing is slower, and hitching is 2–3 hours before you roll. The colored lines are the whole-trip corridors.";
       setMsg("Route ready: " + originName + " → " + dest.name);
       const panelH = window.innerWidth < 760 ? $("directions-panel").offsetHeight : 0;
-      map.fitBounds(r.bounds, { top: 40, left: 30, right: window.innerWidth < 760 ? 30 : 390, bottom: 30 + panelH });
+      const b = new google.maps.LatLngBounds();
+      result.path.forEach((p) => b.extend(p));
+      map.fitBounds(b, { top: 40, left: 30, right: window.innerWidth < 760 ? 30 : 390, bottom: 30 + panelH });
     } catch (e) {
       $("dir-summary").textContent = "";
       $("dir-error").textContent = errText(e) + " Open in Google Maps still works.";
@@ -590,37 +614,25 @@
     }
   }
   async function upgradeCorridors() {
-    if (!directionsService) return;
     for (const route of ROUTES) {
       const wps = route.waypoints;
       if (!wps || wps.length < 2) continue;
       try {
-        const result = await directionsRoute({
-          origin: wps[0],
-          destination: wps[wps.length - 1],
-          waypoints: wps.slice(1, -1).map((p) => ({ location: p, stopover: true })),
-          travelMode: google.maps.TravelMode.DRIVING,
-          optimizeWaypoints: false
-        });
-        const r = result.routes[0];
+        const result = await computeRoutes(wps[0], wps[wps.length - 1], wps.slice(1, -1));
         const line = corridorLines[route.id];
         if (line) {
-          line.setPath(r.overview_path);
-          if (route.dash) {
-            line.setOptions({ strokeOpacity: 0, strokeWeight: 0 });
-          }
+          line.setPath(result.path);
+          if (route.dash) line.setOptions({ strokeOpacity: 0, strokeWeight: 0 });
         }
-        route.path = r.overview_path.map(ll);
-        let meters = 0, sec = 0;
-        r.legs.forEach((leg) => { meters += leg.distance.value; sec += leg.duration.value; });
+        route.path = result.path.map(ll);
         const el = document.getElementById("mi-" + route.id);
         if (el) {
-          el.textContent = "Google car " + fmtMiles(meters) + " · " + fmtDuration(sec) + ". " + route.known;
+          el.textContent = "Google Routes car " + fmtMiles(result.meters) + " · " + fmtDuration(result.sec) + ". " + route.known;
         }
       } catch (e) {
         console.warn("Corridor " + route.id + " stayed on the OSRM trace.", e);
         const el = document.getElementById("mi-" + route.id);
-        if (el) el.textContent += " Directions did not replace this line.";
+        if (el) el.textContent += " Google Routes did not replace this line.";
       }
     }
   }
@@ -708,14 +720,6 @@
       gm.AdvancedMarkerElement = markerLib.AdvancedMarkerElement;
       useAdvanced = !!gm.AdvancedMarkerElement;
     } catch (e) { useAdvanced = false; }
-    try {
-      const routesLib = await google.maps.importLibrary("routes");
-      const Svc = (routesLib && routesLib.DirectionsService) || google.maps.DirectionsService;
-      if (Svc) directionsService = new Svc();
-    } catch (e) {
-      if (google.maps.DirectionsService) directionsService = new google.maps.DirectionsService();
-    }
-
     map = new gm.Map($("map"), {
       center: BOISE,
       zoom: 7,
