@@ -42,7 +42,7 @@ Drive times are OSRM car estimates with no stops. Winter driving and towing will
 Dropped or not pursued:
 - Sun Valley and Park City: excluded by Ed.
 - Bend/Sunriver: no developed hot springs nearby.
-- Baker City/La Grande: Anthony Lakes is good for Nordic, but there is no winter family hot-springs pool verified nearby. **Not researched in depth.**
+- Baker City/La Grande: added Nov 10 as a budget pick. See the Baker City section in locations.html. Hot springs are weak for Emily, and town snow is not guaranteed.
 - Jarbidge: no rentals, and winter road access is poor.
 - Elko/Ruby and Logan/Bear Lake: **not researched this pass.**
 
@@ -155,7 +155,7 @@ Room plan: Porter and Lauren get a queen or king; Prize gets her own room; Joel,
   - Whether Elks #674 is open in winter.
 - 2026 holiday hours are not yet posted for Activity Barn tubing (last year it opened Dec 20; Fri–Sun) or Pebble Creek.
 - Snow: Brundage showed only 3" season-to-date on Nov 10. Snow in town at Cascade and Lava is not guaranteed.
-- Vrbo was not searched this pass. Baker City was not researched. Boise-centered listings were not re-priced for Dec 21–28 (except Beckwith's).
+- Vrbo was not searched this pass. Boise-centered listings were not re-priced for Dec 21–28 (except Beckwith's and the Baker City section).
 
 ## Near Park City (Porter's work in Park City — cheaper bases nearby)
 Park City itself is excluded as pricey. Prices are Airbnb search-card totals for **Dec 21–28**, 7 guests (taxes possibly excluded, not checked at checkout).
