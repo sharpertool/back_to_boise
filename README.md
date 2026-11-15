@@ -14,7 +14,7 @@ Three weeks, planning only: an unhurried week down from Boise, a week with famil
 | Tonight (home) | https://sharpertool.github.io/back_to_boise/phoenix-2026/tonight.html |
 | Tomorrow (Elko-area first night) | https://sharpertool.github.io/back_to_boise/phoenix-2026/tomorrow.html |
 
-Four toggleable routes plus a dashed US-93 reference. Middle corridor is I-15 through Salt Lake and St. George (Route A). East of the Wasatch is Provo, Price, Green River, then US-89 (Route D). West is US-93 through Ely (the reference, and Route C as far as Ely before it turns east to Delta). Route B leaves I-15 at St. George for Kanab and Page and does not use the Zion tunnel. Orange is home. Green is a named public-land search. Light blue is a paid campground or park. Gold squares are two-day sit ideas. Purple stars are outings. White diamonds are viewpoints.
+Five toggleable routes plus a dashed US-93 reference. Middle corridor is I-15 through Salt Lake and St. George (Route A). East of the Wasatch is Provo, Price, Green River, then US-89 (Route D). West is US-93 through Ely (the reference, and Route C as far as Ely before it turns east to Delta). Route B leaves I-15 at St. George for Kanab and Page and does not use the Zion tunnel. Route E (Nov 15–22) is Boise to Ely to Cathedral Gorge to Sand Hollow, then US-89A through Jacob Lake to Flagstaff and I-17, skipping Las Vegas. It ends at the Greenway Road interchange, not a house. Orange is home. Green is a named public-land search. Light blue is a paid campground or park. Gold squares are two-day sit ideas. Purple stars are outings. White diamonds are viewpoints.
 
 ## Leavenworth 2026 — alternate Christmas (Wenatchee Valley)
 
