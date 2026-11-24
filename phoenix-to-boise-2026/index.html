@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Phoenix to Boise — Nov 28 to Dec 4, 2026</title>
+<style>
+:root { --text:#1a202c; --muted:#4a5568; --accent:#2b6cb0; --border:#cbd5e0; --err:#c53030; --tap:44px; }
+* { box-sizing: border-box; }
+html, body { margin:0; height:100%; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--text); background:#e2e8f0; }
+body { display:flex; flex-direction:column; height:100dvh; }
+header { padding:8px 10px; background:#fff; border-bottom:1px solid var(--border); }
+.title-row { display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+h1 { margin:0; font-size:1rem; }
+.title-links { display:flex; gap:10px; }
+.title-links a { color:var(--accent); font-weight:700; text-decoration:none; font-size:.85rem; }
+#controls { display:grid; gap:6px; margin-top:6px; }
+#origin-select, #search-fallback { width:100%; min-height:var(--tap); font-size:16px; border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
+.btn-row { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+button.ctrl, a.ctrl { min-height:var(--tap); border:1px solid var(--border); border-radius:8px; background:#edf2f7; font-weight:700; text-decoration:none; color:var(--text); display:inline-flex; align-items:center; justify-content:center; }
+button.ctrl.primary, a.ctrl.primary { background:var(--accent); color:#fff; border-color:#2c5282; }
+#msg { margin-top:6px; font-size:13px; color:var(--muted); }
+#msg:empty { display:none; }
+#msg.error { color:var(--err); background:#fff5f5; border:1px solid #feb2b2; border-radius:8px; padding:8px; font-weight:700; }
+#map-wrap { position:relative; flex:1; min-height:240px; }
+#map { position:absolute; inset:0; }
+#legend, #plan { position:absolute; z-index:5; background:rgba(255,255,255,.96); border:1px solid #ccc; border-radius:8px; max-width:min(360px, calc(100vw - 16px)); font-size:12px; line-height:1.4; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+#legend { left:8px; bottom:18px; }
+#plan { left:8px; top:8px; }
+summary { cursor:pointer; padding:10px 12px; font-weight:800; min-height:44px; display:flex; align-items:center; }
+.body { padding:0 12px 10px; max-height:40vh; overflow:auto; }
+.swatch { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:4px; vertical-align:-1px; }
+.swatch.route { width:18px; height:4px; border-radius:2px; }
+.swatch.stay { background:#dd6b20; } .swatch.paid { background:#7ec8ff; border:2px solid #1c5d99; } .swatch.dispersed { background:#2f855a; }
+.fine { color:var(--muted); }
+.layer-row, .route-row { display:flex; gap:6px; margin:4px 0; align-items:flex-start; }
+#directions-panel { position:absolute; z-index:6; left:0; right:0; bottom:0; background:#fff; display:none; padding:10px 12px; max-height:50%; overflow:auto; }
+#directions-panel.show { display:block; }
+#dir-summary { font-size:20px; font-weight:800; }
+#dir-error { color:var(--err); font-weight:700; }
+#dir-error:empty, #dir-summary:empty { display:none; }
+.iw { max-width:280px; font-size:14px; line-height:1.4; }
+.iw .note { font-size:12px; margin:4px 0; }
+.iw a { margin-right:8px; color:var(--accent); font-weight:700; }
+@media (min-width:760px) {
+  #controls { grid-template-columns:minmax(220px,320px) 1fr auto; align-items:center; }
+  .btn-row { grid-template-columns:repeat(3,auto); }
+  #directions-panel { left:auto; right:12px; top:12px; bottom:auto; width:340px; border-radius:10px; border:1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="title-row">
+    <h1>Phoenix to Boise — Nov 28 to Dec 4</h1>
+    <span class="title-links"><a href="locations.html">Locations →</a><a href="details.html">Details →</a></span>
+  </div>
+  <div id="controls">
+    <select id="origin-select" aria-label="Directions origin">
+      <option value="origin">From: Elks #335 / Greenway &amp; I-17</option>
+      <option value="geolocation">From: My location</option>
+      <option value="custom">From: Searched place</option>
+    </select>
+    <div id="search-wrap"><input id="search-fallback" type="text" disabled placeholder="Loading place search…" /></div>
+    <div class="btn-row">
+      <button type="button" class="ctrl primary" id="btn-go">Directions</button>
+      <button type="button" class="ctrl" id="btn-clear">Clear route</button>
+      <button type="button" class="ctrl" id="btn-fit">Fit trip</button>
+    </div>
+  </div>
+  <div id="msg" role="status" aria-live="polite"></div>
+</header>
+<div id="map-wrap">
+  <div id="map" role="application" aria-label="Phoenix to Boise map"></div>
+  <details id="plan">
+    <summary>3-day plan</summary>
+    <div class="body">
+      <p>Leave Saturday Nov 28. Home by Friday Dec 4. Three drive days, ideally home Tuesday Dec 1 ahead of the Dec 2 rain. F-350 and the Imperial X195, about 26 ft. No KOAs.</p>
+      <p><b>Day 1.</b> Phoenix area to Page Elks, or Hurricane Cliffs BLM. About 8–8.5 h via Page.</p>
+      <p><b>Day 2.</b> If night 1 was Page, go to Dixie Elks in St. George. Otherwise continue north on I-15 toward Yuba or Jerome.</p>
+      <p><b>Day 3.</b> Jerome Elks or Mountain Home Elks, then Boise.</p>
+      <p class="fine">Avoid UT-20, Cedar Breaks, US-89A over Jacob Lake in a storm, and the Zion tunnel. Angel Lake is closed. Times are OSRM car estimates, not Google and not tow times. Pins are search areas, not exact campsites. The start pin is the Greenway Road and I-17 interchange, not a house.</p>
+    </div>
+  </details>
+  <details id="legend" open>
+    <summary>Legend and routes</summary>
+    <div class="body" id="legend-body"></div>
+  </details>
+  <div id="directions-panel">
+    <div class="head"><h2 id="dir-title">Directions</h2><button type="button" id="dir-close" aria-label="Close">×</button></div>
+    <div id="dir-summary"></div>
+    <div id="dir-error"></div>
+    <a id="dir-gmaps" class="ctrl primary" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+    <div id="dir-note" class="fine"></div>
+  </div>
+</div>
+<script>
+/* Same referrer-restricted Maps key as phoenix-2026 and family-christmas-2026.
+   HTTP-referrer-restricted to sharpertool.github.io. */
+(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+  key: "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI",
+  v: "weekly",
+  loading: "async"
+});
+</script>
+<script id="trip-data" type="application/json">{"places": [{"name": "DEPARTURE: Elks #335 / Greenway Rd & I-17", "lat": 33.62528, "lng": -112.11327, "layer": "current", "note": "Departure area for Sat Nov 28, 2026. Elks Lodge #335 Phoenix is in this Greenway Road and I-17 area. This pin is the public interchange, not a home and not a street address. Nothing is reserved.", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=33.62528,-112.11327"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/33.62528,-112.11327,12/overview"}], "phone": "", "cost": "", "hookups": "", "water": "", "type": "Reference"}, {"name": "HOME AREA: Boise", "lat": 43.612, "lng": -116.392, "layer": "current", "note": "Home area in Boise / Meridian. Not a street address. Be here by Friday Dec 4, and ideally by Tuesday Dec 1 ahead of the Dec 2 rain. Three drive days.", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=43.612,-116.392"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/43.612,-116.392,12/overview"}], "phone": "", "cost": "", "hookups": "", "water": "", "type": "Reference"}, {"name": "Page Elks Lodge #2498", "lat": 36.90912, "lng": -111.45482, "layer": "paid", "note": "Paid electric. 806 Aqua Ave, Page. 10 sites, 30/50 amp, 75 ft max, about $35–45. Winter water is off. Call 928-645-2498. Pin is the lodge, not a reserved site. No KOA.", "phone": "928-645-2498", "cost": "$35–45", "hookups": "30/50 amp electric", "water": "Off in winter", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=36.90912,-111.45482"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/36.90912,-111.45482,12/overview"}, {"label": "928-645-2498", "href": "tel:9286452498"}]}, {"name": "Dixie Elks Lodge #1743, St. George", "lat": 37.128902, "lng": -113.599914, "layer": "paid", "note": "Paid electric. 630 W 1250 N, St. George. 12 sites, 30/50 amp, 45 ft max, $25 donation. Check in at the bar. Call 435-673-1743. Lodge pin, not a reserved pad.", "phone": "435-673-1743", "cost": "$25 donation", "hookups": "30/50 amp electric", "water": "Ask at the lodge", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.128902,-113.599914"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.128902,-113.599914,12/overview"}, {"label": "435-673-1743", "href": "tel:4356731743"}]}, {"name": "Snake River Elks Lodge #2807, Jerome", "lat": 42.695154, "lng": -114.513088, "layer": "paid", "note": "Paid electric. 6 sites, 30/50 amp, $20. Call 208-324-0200. Lodge area pin, not a reserved pad. Useful Day 3 stop before Mountain Home and Boise.", "phone": "208-324-0200", "cost": "$20", "hookups": "30/50 amp electric", "water": "Ask at the lodge", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=42.695154,-114.513088"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/42.695154,-114.513088,12/overview"}, {"label": "208-324-0200", "href": "tel:2083240200"}]}, {"name": "Rupert Elks Lodge #2106", "lat": 42.61908, "lng": -113.67723, "layer": "paid", "note": "Paid electric. 8 sites, about $30. Call 208-436-6852. Pin is the Rupert town center, not the lodge door and not a campsite. Confirm the building on onX.", "phone": "208-436-6852", "cost": "$30", "hookups": "Electric (confirm amps)", "water": "Confirm with the lodge", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=42.61908,-113.67723"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/42.61908,-113.67723,12/overview"}, {"label": "208-436-6852", "href": "tel:2084366852"}]}, {"name": "Mountain Home Elks Lodge #2276", "lat": 43.13189, "lng": -115.69398, "layer": "paid", "note": "Paid electric. 8 sites, water at the site, about $30–40. Bartender is the contact after 3 p.m. Call 208-587-9926. Pin is the Mountain Home town center, not a reserved pad. Last electric stop before Boise.", "phone": "208-587-9926", "cost": "$30–40", "hookups": "Electric, water at the site", "water": "At the site", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=43.13189,-115.69398"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/43.13189,-115.69398,12/overview"}, {"label": "208-587-9926", "href": "tel:2085879926"}]}, {"name": "Golden Spike Elks Lodge #719, Roy", "lat": 41.17154, "lng": -112.02737, "layer": "paid", "note": "Electric is listed. Details are unverified. Call 801-773-1682 before you count on a site. Pin is the Roy town center, not a confirmed pad.", "phone": "801-773-1682", "cost": "Unverified", "hookups": "Electric listed, unverified", "water": "Unverified", "type": "Elks, paid electric", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=41.17154,-112.02737"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/41.17154,-112.02737,12/overview"}, {"label": "801-773-1682", "href": "tel:8017731682"}]}, {"name": "Hurricane Cliffs BLM search", "lat": 37.1375, "lng": -113.29747, "layer": "dispersed", "note": "Search area, not a numbered site. OSM names Hurricane Cliffs here (way 1461354602). The 56 designated free sites are off UT-59 / Sheep Bridge Road near Hurricane. 14 days in any 28. Not every site fits a trailer. No water; fill in La Verkin or Springdale. BLM St. George 435-688-3200. Confirm the site number on onX.", "phone": "435-688-3200", "cost": "Free designated sites", "hookups": "None", "water": "None; fill in La Verkin or Springdale", "type": "BLM search area", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.1375,-113.29747"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.1375,-113.29747,12/overview"}, {"label": "435-688-3200", "href": "tel:4356883200"}]}, {"name": "Lake Mead Boulder Basin / Callville Bay search", "lat": 36.13859, "lng": -114.70833, "layer": "dispersed", "note": "Search area for the Boulder Basin. Callville Bay is the electric option. Pin is Callville Bay, not a reserved pad. Confirm winter electric and water before you count on a pedestal.", "phone": "", "cost": "Confirm at the marina", "hookups": "Electric at Callville Bay", "water": "Confirm", "type": "BLM / park search area", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=36.13859,-114.70833"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/36.13859,-114.70833,12/overview"}]}, {"name": "Burro Creek BLM search", "lat": 34.53904, "lng": -113.56708, "layer": "dispersed", "note": "Search area on US-93 in Arizona, between the Phoenix start and Kingman. Not an exact boondock pin. Confirm a legal site and trailer access on onX. No KOA.", "phone": "", "cost": "BLM; confirm any fee", "hookups": "None expected", "water": "Confirm", "type": "BLM search area", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=34.53904,-113.56708"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/34.53904,-113.56708,12/overview"}]}, {"name": "Ely-area BLM search", "lat": 39.22259, "lng": -114.96999, "layer": "dispersed", "note": "Search area, not an exact site. Pin is the Ward Mountain BLM north trailhead area on US-6, about 6 miles southwest of Ely: restrooms, no potable water. Nevada dispersed rule is 14 days in any 28, then move at least 25 miles. Use onX for a firm pullout.", "phone": "775-753-0200", "cost": "Free BLM", "hookups": "None", "water": "None at the trailhead", "type": "BLM search area", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=39.22259,-114.96999"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/39.22259,-114.96999,12/overview"}, {"label": "775-753-0200", "href": "tel:7757530200"}]}, {"name": "White House at Paria search", "lat": 37.07994, "lng": -111.89028, "layer": "dispersed", "note": "Page-route search area, not a reserved site. White House Campground, BLM Kanab Field Office, Monument Road 751, about 2 miles south of US-89. 7 first-come vehicle sites. The last 2 miles are sand and gravel. Water is at the Contact Station, not at the sites. https://www.blm.gov/visit/white-house-campground", "phone": "", "cost": "BLM fee; confirm", "hookups": "None", "water": "Contact Station, not the sites", "type": "BLM search area", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.07994,-111.89028"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.07994,-111.89028,12/overview"}]}, {"name": "Sand Hollow State Park", "lat": 37.1218, "lng": -113.38528, "layer": "paid", "note": "Electric backup near Hurricane. Confirm the winter rate, water, and the 9 p.m. gate before you arrive after dark. Pin is the park, not a reserved site.", "phone": "", "cost": "Confirm winter rate", "hookups": "Electric sites", "water": "Confirm in winter", "type": "Park, electric backup", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.1218,-113.38528"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.1218,-113.38528,12/overview"}]}, {"name": "Wahweap Campground, Page", "lat": 36.99773, "lng": -111.4996, "layer": "paid", "note": "Electric backup at Page, on Lake Shore Drive. Confirm winter water and whether a Senior Pass discount applies to the concession fee. Pin is the campground area, not a reserved site.", "phone": "", "cost": "Confirm", "hookups": "Electric", "water": "Confirm in winter", "type": "Park, electric backup", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=36.99773,-111.4996"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/36.99773,-111.4996,12/overview"}]}, {"name": "Cathedral Gorge State Park", "lat": 37.82405, "lng": -114.41546, "layer": "paid", "note": "Electric backup on US-93 at Panaca. Year-round park with electric sites, water, and showers. Senior Pass does not discount Nevada state parks. Confirm the fee. Pin is the park, not a reserved site.", "phone": "", "cost": "Confirm; Senior Pass does not apply", "hookups": "Electric", "water": "Yes, confirm in a freeze", "type": "Park, electric backup", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.82405,-114.41546"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.82405,-114.41546,12/overview"}]}, {"name": "Pahranagat National Wildlife Refuge", "lat": 37.25116, "lng": -115.11147, "layer": "paid", "note": "Refuge area on US-93 north of Alamo. Confirm whether the campground has electric or water in late November. Pin is the refuge center, not a site.", "phone": "", "cost": "Confirm", "hookups": "Confirm", "water": "Confirm", "type": "Refuge campground", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=37.25116,-115.11147"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/37.25116,-115.11147,12/overview"}]}, {"name": "Yuba State Park / Oasis", "lat": 39.37885, "lng": -112.02743, "layer": "paid", "note": "Electric backup on I-15. Electric is on. The water hydrant is behind the store. Pin is the Yuba Lake park area, not one site. Confirm which loop is open.", "phone": "", "cost": "Confirm", "hookups": "Electric on", "water": "Hydrant behind the store", "type": "Park, electric backup", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=39.37885,-112.02743"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/39.37885,-112.02743,12/overview"}]}, {"name": "Bruneau Dunes State Park", "lat": 42.8909, "lng": -115.7028, "layer": "paid", "note": "Open year-round, with electric. South of Mountain Home, off the last day's I-84 run. Confirm the winter rate and water. Pin is the park, not a site. Senior Pass does not discount Idaho state parks.", "phone": "", "cost": "Confirm", "hookups": "Electric", "water": "Confirm", "type": "Park, electric backup", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=42.8909,-115.7028"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/42.8909,-115.7028,12/overview"}]}, {"name": "Cove at CJ Strike", "lat": 42.94671, "lng": -115.97573, "layer": "paid", "note": "About $15. Pin is the C.J. Strike Dam area, not a pad. Cove is the campground on the reservoir near Grand View. Confirm electric, water, and that the loop is open in late November.", "phone": "", "cost": "$15", "hookups": "Confirm", "water": "Confirm", "type": "Park campground", "links": [{"label": "Google Maps", "href": "https://www.google.com/maps?q=42.94671,-115.97573"}, {"label": "onX", "href": "https://webmap.onxmaps.com/offroad/map/query/42.94671,-115.97573,12/overview"}]}], "routes": [{"id": "1", "title": "1 · I-15 (top pick)", "color": "#c53030", "dash": false, "off": false, "osrmMi": 1055, "osrmH": 19.0, "known": "Current top pick. About 1,055 mi and 19.0 h by car (OSRM). Planning figure was about 1,051 mi / 19 h.", "blurb": "US-93 to Kingman and the Las Vegas area, I-15 through St. George and Salt Lake City, then I-84 to Boise. Pine Creek summit is 6,611 ft. This is the current top pick.", "waypoints": [{"lat": 33.62528, "lng": -112.11327}, {"lat": 33.9681, "lng": -112.73014}, {"lat": 35.18959, "lng": -114.0533}, {"lat": 35.97876, "lng": -114.83376}, {"lat": 37.10818, "lng": -113.58332}, {"lat": 37.67742, "lng": -113.06183}, {"lat": 40.75962, "lng": -111.8868}, {"lat": 41.96541, "lng": -112.71034}, {"lat": 43.612, "lng": -116.392}], "path": [{"lat": 33.62529, "lng": -112.11327}, {"lat": 33.79946, "lng": -112.13361}, {"lat": 33.86379, "lng": -112.63317}, {"lat": 33.96818, "lng": -112.73004}, {"lat": 34.64839, "lng": -113.57029}, {"lat": 35.13848, "lng": -113.67236}, {"lat": 35.18965, "lng": -114.05329}, {"lat": 35.95015, "lng": -114.64781}, {"lat": 36.01526, "lng": -114.74853}, {"lat": 35.97877, "lng": -114.8336}, {"lat": 36.09696, "lng": -115.0797}, {"lat": 36.26147, "lng": -115.07558}, {"lat": 36.66273, "lng": -114.57112}, {"lat": 36.98766, "lng": -113.6296}, {"lat": 37.10808, "lng": -113.58338}, {"lat": 37.28524, "lng": -113.30482}, {"lat": 37.67737, "lng": -113.06183}, {"lat": 38.14844, "lng": -112.6113}, {"lat": 38.37297, "lng": -112.66244}, {"lat": 38.72042, "lng": -112.59729}, {"lat": 39.27074, "lng": -112.09702}, {"lat": 39.70897, "lng": -111.81713}, {"lat": 39.94155, "lng": -111.80973}, {"lat": 40.13089, "lng": -111.64714}, {"lat": 40.32329, "lng": -111.72806}, {"lat": 40.45083, "lng": -111.9129}, {"lat": 40.75962, "lng": -111.88643}, {"lat": 41.62502, "lng": -112.09232}, {"lat": 41.79421, "lng": -112.2864}, {"lat": 41.96554, "lng": -112.71034}, {"lat": 41.99155, "lng": -112.82406}, {"lat": 42.56911, "lng": -113.51546}, {"lat": 42.57755, "lng": -114.2973}, {"lat": 42.93729, "lng": -114.95422}, {"lat": 42.95976, "lng": -115.48452}, {"lat": 43.54603, "lng": -116.16534}, {"lat": 43.61195, "lng": -116.392}]}, {"id": "2", "title": "2 · US-93 (shortest)", "color": "#0f766e", "dash": false, "off": false, "osrmMi": 918, "osrmH": 18.0, "known": "Shortest. About 918 mi and 18.0 h by car (OSRM). Planning figure was about 915 mi / 18 h.", "blurb": "US-93 through the Las Vegas area, Alamo, Ely, and Wells, then Twin Falls and I-84 to Boise. Shortest of the three.", "waypoints": [{"lat": 33.62528, "lng": -112.11327}, {"lat": 33.9681, "lng": -112.73014}, {"lat": 35.18959, "lng": -114.0533}, {"lat": 35.97876, "lng": -114.83376}, {"lat": 37.36496, "lng": -115.16446}, {"lat": 39.24806, "lng": -114.89172}, {"lat": 41.11073, "lng": -114.96314}, {"lat": 42.55585, "lng": -114.47007}, {"lat": 43.612, "lng": -116.392}], "path": [{"lat": 33.62529, "lng": -112.11327}, {"lat": 33.79946, "lng": -112.13361}, {"lat": 33.86379, "lng": -112.63317}, {"lat": 33.96818, "lng": -112.73004}, {"lat": 34.64839, "lng": -113.57029}, {"lat": 35.13848, "lng": -113.67236}, {"lat": 35.18965, "lng": -114.05329}, {"lat": 35.95015, "lng": -114.64781}, {"lat": 36.01526, "lng": -114.74853}, {"lat": 35.97877, "lng": -114.8336}, {"lat": 36.00302, "lng": -114.98175}, {"lat": 36.13152, "lng": -115.08952}, {"lat": 36.2576, "lng": -115.07947}, {"lat": 36.3802, "lng": -114.89105}, {"lat": 36.441, "lng": -114.96056}, {"lat": 37.17343, "lng": -115.01126}, {"lat": 37.36496, "lng": -115.16377}, {"lat": 37.61621, "lng": -115.22672}, {"lat": 38.00022, "lng": -114.9629}, {"lat": 38.66071, "lng": -115.06248}, {"lat": 38.86774, "lng": -115.00813}, {"lat": 38.99739, "lng": -115.12422}, {"lat": 39.24804, "lng": -114.89182}, {"lat": 39.41957, "lng": -114.7722}, {"lat": 39.88472, "lng": -114.73271}, {"lat": 40.06517, "lng": -114.61392}, {"lat": 40.7399, "lng": -115.03611}, {"lat": 41.11084, "lng": -114.963}, {"lat": 41.41198, "lng": -114.74988}, {"lat": 41.69033, "lng": -114.82688}, {"lat": 41.95754, "lng": -114.67637}, {"lat": 42.14332, "lng": -114.68291}, {"lat": 42.24604, "lng": -114.5753}, {"lat": 42.56277, "lng": -114.57472}, {"lat": 42.55585, "lng": -114.47007}, {"lat": 42.64523, "lng": -114.44029}, {"lat": 42.93729, "lng": -114.95422}, {"lat": 42.96025, "lng": -115.48547}, {"lat": 43.54603, "lng": -116.16534}, {"lat": 43.61195, "lng": -116.392}]}, {"id": "3", "title": "3 · US-89 Page (leaning)", "color": "#2b6cb0", "dash": false, "off": false, "osrmMi": 1042, "osrmH": 18.8, "known": "Most scenic, and the one Ed is leaning toward. About 1,042 mi and 18.8 h by car (OSRM). Planning figure was about 1,035 mi / 18 h 42 min. No Las Vegas.", "blurb": "I-17 to Flagstaff (6,902 ft), US-89 through Page and Kanab, AZ-389 and UT-59 to Hurricane, then I-15 north and I-84 to Boise. No Las Vegas. Do not use US-89A over Jacob Lake in a storm.", "waypoints": [{"lat": 33.62528, "lng": -112.11327}, {"lat": 35.19875, "lng": -111.65182}, {"lat": 36.91483, "lng": -111.45729}, {"lat": 37.04817, "lng": -112.52852}, {"lat": 36.94993, "lng": -112.52534}, {"lat": 37.17503, "lng": -113.28989}, {"lat": 37.67742, "lng": -113.06183}, {"lat": 40.75962, "lng": -111.8868}, {"lat": 41.96541, "lng": -112.71034}, {"lat": 43.612, "lng": -116.392}], "path": [{"lat": 33.62529, "lng": -112.11327}, {"lat": 34.36217, "lng": -112.11655}, {"lat": 34.79014, "lng": -111.59108}, {"lat": 34.97391, "lng": -111.68513}, {"lat": 35.19842, "lng": -111.65198}, {"lat": 35.27384, "lng": -111.54359}, {"lat": 35.3826, "lng": -111.58051}, {"lat": 35.9908, "lng": -111.39308}, {"lat": 36.21738, "lng": -111.39629}, {"lat": 36.59685, "lng": -111.65708}, {"lat": 36.91504, "lng": -111.45688}, {"lat": 37.07459, "lng": -111.65545}, {"lat": 37.12394, "lng": -111.97455}, {"lat": 37.18621, "lng": -111.98787}, {"lat": 37.04172, "lng": -112.21936}, {"lat": 37.04817, "lng": -112.52854}, {"lat": 36.95028, "lng": -112.52569}, {"lat": 36.85841, "lng": -112.72628}, {"lat": 36.88126, "lng": -112.89539}, {"lat": 37.17511, "lng": -113.28989}, {"lat": 37.53497, "lng": -113.20556}, {"lat": 37.67737, "lng": -113.06183}, {"lat": 38.14844, "lng": -112.6113}, {"lat": 38.37297, "lng": -112.66244}, {"lat": 38.72042, "lng": -112.59729}, {"lat": 39.27074, "lng": -112.09702}, {"lat": 39.70897, "lng": -111.81713}, {"lat": 39.94155, "lng": -111.80973}, {"lat": 40.13089, "lng": -111.64714}, {"lat": 40.32329, "lng": -111.72806}, {"lat": 40.45083, "lng": -111.9129}, {"lat": 40.75962, "lng": -111.88643}, {"lat": 41.62502, "lng": -112.09232}, {"lat": 41.79421, "lng": -112.2864}, {"lat": 41.96554, "lng": -112.71034}, {"lat": 41.99155, "lng": -112.82406}, {"lat": 42.56911, "lng": -113.51546}, {"lat": 42.57755, "lng": -114.2973}, {"lat": 42.93729, "lng": -114.95422}, {"lat": 42.95976, "lng": -115.48452}, {"lat": 43.54603, "lng": -116.16534}, {"lat": 43.61195, "lng": -116.392}]}, {"id": "REF", "title": "Reference · Idaho Falls / US-20 (not recommended)", "color": "#4a5568", "dash": true, "off": true, "osrmMi": 1187, "osrmH": 21.9, "known": "Not recommended. About 1,187 mi and 21.9 h by car (OSRM). Craters Loop is closed.", "blurb": "I-15 to Idaho Falls, then US-20/26 toward Arco and Mountain Home. Not recommended because the Craters Loop is closed. Off until you turn it on.", "waypoints": [{"lat": 33.62528, "lng": -112.11327}, {"lat": 33.9681, "lng": -112.73014}, {"lat": 35.18959, "lng": -114.0533}, {"lat": 35.97876, "lng": -114.83376}, {"lat": 37.10818, "lng": -113.58332}, {"lat": 37.67742, "lng": -113.06183}, {"lat": 40.75962, "lng": -111.8868}, {"lat": 43.48879, "lng": -112.03628}, {"lat": 43.63534, "lng": -113.29995}, {"lat": 43.13189, "lng": -115.69398}, {"lat": 43.612, "lng": -116.392}], "path": [{"lat": 33.62529, "lng": -112.11327}, {"lat": 33.79946, "lng": -112.13361}, {"lat": 33.86379, "lng": -112.63317}, {"lat": 33.96818, "lng": -112.73004}, {"lat": 34.64839, "lng": -113.57029}, {"lat": 35.13848, "lng": -113.67236}, {"lat": 35.18965, "lng": -114.05329}, {"lat": 35.95015, "lng": -114.64781}, {"lat": 36.01526, "lng": -114.74853}, {"lat": 35.97877, "lng": -114.8336}, {"lat": 36.09696, "lng": -115.0797}, {"lat": 36.26147, "lng": -115.07558}, {"lat": 36.66273, "lng": -114.57112}, {"lat": 36.98766, "lng": -113.6296}, {"lat": 37.10808, "lng": -113.58338}, {"lat": 37.28524, "lng": -113.30482}, {"lat": 37.67737, "lng": -113.06183}, {"lat": 38.14844, "lng": -112.6113}, {"lat": 38.37297, "lng": -112.66244}, {"lat": 38.72042, "lng": -112.59729}, {"lat": 39.27074, "lng": -112.09702}, {"lat": 39.70897, "lng": -111.81713}, {"lat": 39.94155, "lng": -111.80973}, {"lat": 40.13089, "lng": -111.64714}, {"lat": 40.32329, "lng": -111.72806}, {"lat": 40.45083, "lng": -111.9129}, {"lat": 40.75962, "lng": -111.88643}, {"lat": 40.96835, "lng": -111.89131}, {"lat": 41.12655, "lng": -112.02501}, {"lat": 41.58562, "lng": -112.07295}, {"lat": 41.7081, "lng": -112.19219}, {"lat": 42.78209, "lng": -112.23053}, {"lat": 42.80261, "lng": -112.36984}, {"lat": 42.91595, "lng": -112.44094}, {"lat": 43.17594, "lng": -112.38341}, {"lat": 43.48869, "lng": -112.03603}, {"lat": 43.55732, "lng": -112.4402}, {"lat": 43.51087, "lng": -112.94647}, {"lat": 43.63522, "lng": -113.29981}, {"lat": 43.3932, "lng": -113.63768}, {"lat": 43.29599, "lng": -113.9674}, {"lat": 43.32039, "lng": -115.42099}, {"lat": 43.13186, "lng": -115.69396}, {"lat": 43.56213, "lng": -116.18826}, {"lat": 43.61195, "lng": -116.392}]}]}</script>
+<script>
+(function () {
+  "use strict";
+  const DATA = JSON.parse(document.getElementById("trip-data").textContent);
+  const PLACES = DATA.places;
+  const ROUTES = DATA.routes;
+  const API_KEY = "AIzaSyA_zmAaC2Cn5JJPHqs7zN0nDECRk3B-mhI";
+  const ORIGIN = { lat: 33.62528, lng: -112.11327 };
+  const KIND = {
+    current: { fill: "#dd6b20", stroke: "#9c4221", scale: 11 },
+    paid: { fill: "#7ec8ff", stroke: "#1c5d99", scale: 8 },
+    dispersed: { fill: "#2f855a", stroke: "#22543d", scale: 8 }
+  };
+  const OPEN_NOTE = "Opens on the Greenway Road and I-17 departure area, not a house. Rank 1 is I-15, the current top pick. Rank 2 is US-93, the shortest. Rank 3 is the Page route, no Las Vegas, and the one Ed is leaning toward. Orange is departure and Boise. Light blue is Elks or an electric park. Green is a BLM search area, not an exact site. No KOAs. Times are OSRM car estimates, not tow times.";
+  let map = null, infoWindow = null, geolocPos = null, searchPlace = null, searchMarker = null, pinLine = null, lastDest = null;
+  const markerRecs = [];
+  const corridorLines = {};
+  const labelRecs = [];
+  const layerOn = { current: true, paid: true, dispersed: true };
+  const routeOn = {};
+  ROUTES.forEach(function (r) { routeOn[r.id] = !r.off; });
+  const $ = function (id) { return document.getElementById(id); };
+  function setMsg(text, isError) {
+    const el = $("msg");
+    el.textContent = text || "";
+    el.classList.toggle("error", !!(text && isError));
+  }
+  function fmtMiles(meters) {
+    const mi = meters / 1609.344;
+    return (mi >= 100 ? Math.round(mi).toLocaleString() : mi.toFixed(1)) + " mi";
+  }
+  function fmtDuration(sec) {
+    const total = Math.round(sec / 60);
+    return Math.floor(total / 60) + " h " + (total % 60) + " min";
+  }
+  function errText(e) { return String((e && (e.message || e)) || "unknown").slice(0, 300); }
+  window.gm_authFailure = function () {
+    setMsg("Google Maps rejected the API key for this page (referrer restriction, or Maps JavaScript API not enabled).", true);
+  };
+  function iconFor(kind) {
+    const s = KIND[kind] || KIND.dispersed;
+    return { path: google.maps.SymbolPath.CIRCLE, scale: s.scale, fillColor: s.fill, fillOpacity: 1, strokeColor: s.stroke, strokeWeight: 2 };
+  }
+  function applyVisibility() {
+    markerRecs.forEach(function (rec) { rec.marker.setMap(layerOn[rec.layer] ? map : null); });
+    Object.keys(corridorLines).forEach(function (id) {
+      if (corridorLines[id]) corridorLines[id].setMap(routeOn[id] ? map : null);
+    });
+    labelRecs.forEach(function (rec) { rec.marker.setMap(routeOn[rec.id] ? map : null); });
+  }
+  function buildLegend() {
+    const body = $("legend-body");
+    [["current", "stay", "Departure and Boise. The map opens on Greenway and I-17."],
+     ["paid", "paid", "Elks or a park electric backup. Confirm winter water. No KOAs."],
+     ["dispersed", "dispersed", "BLM or refuge search area. Not an exact campsite."]
+    ].forEach(function (row) {
+      const el = document.createElement("label");
+      el.className = "layer-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = true;
+      cb.addEventListener("change", function () { layerOn[row[0]] = cb.checked; applyVisibility(); });
+      const span = document.createElement("span");
+      span.innerHTML = '<span class="swatch ' + row[1] + '"></span>' + row[2];
+      el.appendChild(cb); el.appendChild(span); body.appendChild(el);
+    });
+    const head = document.createElement("div");
+    head.innerHTML = "<b>Routes</b> <span class='fine'>Each line is its own toggle. Rank, miles, and car hours are on the label.</span>";
+    body.appendChild(head);
+    ROUTES.forEach(function (r) {
+      const el = document.createElement("label");
+      el.className = "route-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = !!routeOn[r.id];
+      cb.addEventListener("change", function () { routeOn[r.id] = cb.checked; applyVisibility(); });
+      const span = document.createElement("span");
+      span.innerHTML = '<b><span class="swatch route" style="background:' + r.color + '"></span>' + r.title + " · " + r.osrmMi.toLocaleString() + " mi · " + r.osrmH + ' h</b><br><span class="fine" id="mi-' + r.id + '">' + r.known + '</span><br><span class="fine">' + r.blurb + "</span>";
+      el.appendChild(cb); el.appendChild(span); body.appendChild(el);
+    });
+    const foot = document.createElement("div");
+    foot.innerHTML = '<a href="locations.html">Locations</a> · <a href="details.html">Details</a> · <a href="../phoenix-2026/">Scenic Phoenix map</a>';
+    body.appendChild(foot);
+  }
+  function drawCorridor(route) {
+    const icons = route.dash ? [{ icon: { path: "M 0,-1 0,1", strokeOpacity: 1, scale: 3 }, offset: "0", repeat: "14px" }] : null;
+    corridorLines[route.id] = new google.maps.Polyline({
+      map: routeOn[route.id] ? map : null,
+      path: route.path, geodesic: false, strokeColor: route.color,
+      strokeOpacity: route.dash ? 0 : 0.9, strokeWeight: route.dash ? 0 : 5,
+      icons: icons || undefined, clickable: false, zIndex: route.dash ? 1 : 2
+    });
+    const mid = route.path[Math.floor(route.path.length / 2)];
+    labelRecs.push({
+      id: route.id,
+      marker: new google.maps.Marker({
+        map: routeOn[route.id] ? map : null,
+        position: mid, clickable: false, zIndex: 4,
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 0, strokeOpacity: 0, fillOpacity: 0 },
+        label: { text: route.title.split("·")[0].trim() + " · " + route.osrmMi.toLocaleString() + " mi · " + route.osrmH + " h", color: "#1a202c", fontSize: "12px", fontWeight: "700" }
+      })
+    });
+  }
+  function fitTrip() {
+    const b = new google.maps.LatLngBounds();
+    PLACES.forEach(function (p) { if (layerOn[p.layer]) b.extend(p); });
+    ROUTES.forEach(function (r) { if (routeOn[r.id]) r.path.forEach(function (p) { b.extend(p); }); });
+    map.fitBounds(b, 40);
+  }
+  async function resolveOrigin() {
+    const mode = $("origin-select").value;
+    if (mode === "geolocation") {
+      if (geolocPos) return geolocPos;
+      return await new Promise(function (res, rej) {
+        navigator.geolocation.getCurrentPosition(function (p) {
+          geolocPos = { lat: p.coords.latitude, lng: p.coords.longitude };
+          res(geolocPos);
+        }, function () { rej(new Error("Location permission denied.")); }, { enableHighAccuracy: true, timeout: 15000 });
+      });
+    }
+    if (mode === "custom") {
+      if (searchPlace) return { lat: searchPlace.lat, lng: searchPlace.lng };
+      throw new Error("Search for a place first.");
+    }
+    return ORIGIN;
+  }
+  async function computeRoutes(origin, dest, vias) {
+    const body = {
+      origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+      destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
+      travelMode: "DRIVE", routingPreference: "TRAFFIC_UNAWARE", polylineQuality: "OVERVIEW"
+    };
+    if (vias && vias.length) {
+      body.intermediates = vias.map(function (p) {
+        return { location: { latLng: { latitude: p.lat, longitude: p.lng } } };
+      });
+    }
+    const res = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": API_KEY,
+        "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline"
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json().catch(function () { return null; });
+    if (!res.ok) throw new Error((data && data.error && data.error.message) || ("HTTP " + res.status));
+    if (!data || !data.routes || !data.routes.length) throw new Error("No driving route.");
+    const r = data.routes[0];
+    const geo = await google.maps.importLibrary("geometry");
+    return {
+      path: geo.encoding.decodePath(r.polyline.encodedPolyline),
+      meters: r.distanceMeters || 0,
+      sec: parseFloat(String(r.duration || "0").replace("s", "")) || 0
+    };
+  }
+  async function routeTo(lat, lng, name) {
+    const dest = { lat: Number(lat), lng: Number(lng), name: name || "Stop" };
+    lastDest = dest;
+    $("dir-title").textContent = "To " + dest.name;
+    $("dir-error").textContent = "";
+    $("dir-summary").textContent = "Routing…";
+    $("directions-panel").classList.add("show");
+    try {
+      const origin = await resolveOrigin();
+      $("dir-gmaps").href = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + origin.lat.toFixed(5) + "," + origin.lng.toFixed(5) + "&destination=" + dest.lat.toFixed(5) + "," + dest.lng.toFixed(5);
+      const result = await computeRoutes(origin, dest, null);
+      if (lastDest !== dest) return;
+      if (pinLine) pinLine.setMap(null);
+      pinLine = new google.maps.Polyline({ map: map, path: result.path, strokeColor: "#1a202c", strokeWeight: 6, zIndex: 30 });
+      $("dir-summary").textContent = fmtMiles(result.meters) + " · " + fmtDuration(result.sec);
+      $("dir-note").textContent = "Car time from Google Routes. Towing is slower. Colored lines are the trip corridors.";
+    } catch (e) {
+      $("dir-summary").textContent = "";
+      $("dir-error").textContent = errText(e);
+    }
+  }
+  async function upgradeCorridors() {
+    for (let i = 0; i < ROUTES.length; i++) {
+      const route = ROUTES[i];
+      const wps = route.waypoints || [];
+      if (wps.length < 2) continue;
+      try {
+        const result = await computeRoutes(wps[0], wps[wps.length - 1], wps.slice(1, -1));
+        const line = corridorLines[route.id];
+        if (line) {
+          line.setPath(result.path);
+          if (route.dash) line.setOptions({ strokeOpacity: 0, strokeWeight: 0 });
+        }
+        const el = document.getElementById("mi-" + route.id);
+        if (el) el.textContent = "Google Routes car " + fmtMiles(result.meters) + " · " + fmtDuration(result.sec) + ". " + route.known;
+      } catch (e) {
+        console.warn("Corridor " + route.id + " stayed on the OSRM trace.", e);
+      }
+    }
+  }
+  async function init() {
+    if (window.innerWidth < 760) {
+      $("legend").removeAttribute("open");
+      $("plan").removeAttribute("open");
+    }
+    buildLegend();
+    $("btn-fit").addEventListener("click", fitTrip);
+    $("btn-clear").addEventListener("click", function () {
+      if (pinLine) { pinLine.setMap(null); pinLine = null; }
+      $("directions-panel").classList.remove("show");
+      setMsg(OPEN_NOTE);
+    });
+    $("btn-go").addEventListener("click", function () {
+      if (!searchPlace) { setMsg("Search for a place, or tap a pin.", true); return; }
+      routeTo(searchPlace.lat, searchPlace.lng, searchPlace.name);
+    });
+    $("dir-close").addEventListener("click", function () { $("directions-panel").classList.remove("show"); });
+    let mapsLib;
+    try { mapsLib = await google.maps.importLibrary("maps"); }
+    catch (e) { setMsg("Google Maps failed to load: " + errText(e), true); return; }
+    map = new mapsLib.Map($("map"), {
+      center: ORIGIN, zoom: 6, mapTypeControl: true, streetViewControl: false,
+      fullscreenControl: false, gestureHandling: "greedy", clickableIcons: false
+    });
+    infoWindow = new mapsLib.InfoWindow({ maxWidth: 320 });
+    PLACES.forEach(function (place) {
+      const marker = new google.maps.Marker({
+        map: map, position: { lat: place.lat, lng: place.lng }, title: place.name,
+        icon: iconFor(place.layer), zIndex: place.layer === "current" ? 30 : 6
+      });
+      marker.addListener("click", function () {
+        const root = document.createElement("div");
+        root.className = "iw";
+        const title = document.createElement("b");
+        title.textContent = place.name;
+        root.appendChild(title);
+        const note = document.createElement("div");
+        note.className = "note"; note.textContent = place.note;
+        root.appendChild(note);
+        (place.links || []).forEach(function (L) {
+          const a = document.createElement("a");
+          a.href = L.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = L.label;
+          root.appendChild(a);
+        });
+        const btn = document.createElement("button");
+        btn.type = "button"; btn.className = "ctrl primary"; btn.textContent = "Directions here";
+        btn.addEventListener("click", function () { routeTo(place.lat, place.lng, place.name); });
+        root.appendChild(btn);
+        infoWindow.setContent(root);
+        infoWindow.open({ map: map, anchor: marker });
+      });
+      markerRecs.push({ layer: place.layer, marker: marker });
+    });
+    ROUTES.forEach(drawCorridor);
+    applyVisibility();
+    setMsg(OPEN_NOTE);
+    try {
+      await google.maps.importLibrary("places");
+      const wrap = $("search-wrap");
+      if (google.maps.places && google.maps.places.PlaceAutocompleteElement) {
+        const pac = new google.maps.places.PlaceAutocompleteElement({ includedRegionCodes: ["us"] });
+        pac.setAttribute("placeholder", "Search a place or address…");
+        wrap.innerHTML = "";
+        wrap.appendChild(pac);
+        pac.addEventListener("gmp-select", async function (ev) {
+          const pred = ev.placePrediction || (ev.detail && ev.detail.placePrediction);
+          if (!pred) return;
+          try {
+            const place = pred.toPlace();
+            await place.fetchFields({ fields: ["displayName", "location"] });
+            const lat = typeof place.location.lat === "function" ? place.location.lat() : place.location.lat;
+            const lng = typeof place.location.lng === "function" ? place.location.lng() : place.location.lng;
+            searchPlace = { name: place.displayName || "Searched place", lat: lat, lng: lng };
+            if (searchMarker) searchMarker.setMap(null);
+            searchMarker = new google.maps.Marker({ map: map, position: { lat: lat, lng: lng }, title: searchPlace.name });
+            map.panTo({ lat: lat, lng: lng });
+          } catch (e) { setMsg(errText(e), true); }
+        });
+      }
+    } catch (e) { console.warn("places library failed", e); }
+    upgradeCorridors();
+  }
+  init();
+})();
+
+</script>
+</body>
+</html>
